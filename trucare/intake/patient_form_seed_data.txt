@@ -1,0 +1,497 @@
+SEED BLUEPRINT FOR DYNAMIC CONDITION FORM
+Source: patient_form.html
+Target models: Condition, ChoiceSet, Choice, ConditionQuestion
+
+FORMAT NOTES
+- condition_code must fit max_length=30 in Condition.code.
+- question_type must be one of: text, yes_no, number, date, single_choice, multiple_choice.
+- For yes_no questions, set question_type=yes_no and leave choice_set empty.
+- For single_choice/multiple_choice, attach the listed choice_set.
+- The top "condition request" selects should map to PatientCondition.requested (boolean).
+
+====================================================================
+1) CHOICE SETS (ChoiceSet + Choice)
+====================================================================
+
+CHOICE_SET: PAIN_LOCATIONS_ALL
+CHOICES:
+- Face
+- Head
+- Neck
+- Right Shoulder
+- Left Shoulder
+- Right Arm
+- Left Arm
+- Right elbow
+- Left elbow
+- Right wrist
+- Left Wrist
+- Right hand
+- Left hand
+- Right fingers
+- Left fingers
+- Upper back
+- Lower Back
+- Chest
+- Stomach
+- Right hip
+- Left Hip
+- Right thigh
+- Left thigh
+- Right knee
+- Left knee
+- Right Leg
+- Left Leg
+- Right foot & ankle
+- Left foot & ankle
+- Right toes
+- Left toes
+
+CHOICE_SET: YES_NO_DONT_KNOW
+CHOICES:
+- Yes
+- No
+- Don't Know
+
+CHOICE_SET: FREQUENCY_STANDARD
+CHOICES:
+- Constantly
+- Frequently
+- Occasionally
+- Intermittently
+
+CHOICE_SET: SYMPTOMS_CHANGING
+CHOICES:
+- Getting worse
+- Staying the same
+- Getting better
+
+CHOICE_SET: PAIN_TYPE
+CHOICES:
+- Aching
+- Burning
+- Stabbing
+- Cramping
+- Sharp
+- Dull
+
+CHOICE_SET: SCALE_1_TO_10
+CHOICES:
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+
+CHOICE_SET: THERAPEUTIC_INTERVENTIONS
+CHOICES:
+- Rest
+- Exercise
+- PT
+- injections
+- anti-inflammatories
+- corticosteroids
+- NSAIDs
+- steroids
+- opioids
+- oxycodone
+- non-prescription medications
+- prescription medications
+- muscle relaxants
+- Other
+
+CHOICE_SET: COLD_SORES_BLISTER_DESCRIPTION
+CHOICES:
+- Single
+- Multiple
+- Small (pinhead size)
+- Large (pea size)
+
+CHOICE_SET: MIGRAINE_HEADACHE_CHARACTER
+CHOICES:
+- Throbbing
+- pulsating
+- pounding
+
+CHOICE_SET: MIGRAINE_HEAD_PAIN_LOCATION
+CHOICES:
+- Left
+- Right
+- Both Sides
+- Front
+- Back
+
+CHOICE_SET: MIGRAINE_PRIOR_SYMPTOMS
+CHOICES:
+- Light Sensitivity
+- Visual Symptoms
+- Dizziness
+- Nausea
+- Vomiting
+
+CHOICE_SET: COUGH_SEVERITY
+CHOICES:
+- Mild
+- Moderate
+- Severe
+
+CHOICE_SET: ALLERGY_RELIEF_METHODS
+CHOICES:
+- Antihistamines
+- allergy shots
+- Steroids
+- Other
+- None
+
+CHOICE_SET: DIABETES_CURRENT_CONDITIONS
+CHOICES:
+- Diabetes or Prediabetes
+- I might have diabetes or Prediabetes but have never been diagnosed
+- High blood pressure aka hypertension
+- High Cholesterol aka hyperlipidemia
+- None of the above
+
+CHOICE_SET: DIABETES_TYPE
+CHOICES:
+- Prediabetes
+- Type 2 diabetes
+- Type 1 diabetes
+- Gestational diabetes
+- I am not sure
+
+CHOICE_SET: DIABETES_FURTHER_DIAGNOSED
+CHOICES:
+- Kidney or Renal Disease
+- Live or Hepatic Disease
+- Stroke
+- Congestive heart failure
+- Peripheral artery disease
+- Coronary artery disease
+- Acute or Chronic metabolic acidosis
+- None of the above
+
+CHOICE_SET: ACNE_BUMPS_COUNT
+CHOICES:
+- 1-2
+- 3-5
+- 5-10
+- 11-20
+- 21-30
+- More than 30
+- Unspecified
+
+CHOICE_SET: YES_NO_UNSPECIFIED
+CHOICES:
+- Yes
+- No
+- Unspecified
+
+CHOICE_SET: ACNE_PUS_COUNT
+CHOICES:
+- 3-5
+- 5-10
+- 11-20
+- 21-30
+- More than 30
+- Most of them
+- All of them
+- Unspecified
+
+CHOICE_SET: ACNE_PREVIOUS_TREATMENTS
+CHOICES:
+- Face washes
+- Retinoids -like drugs
+- Oral Antibiotics
+- Topical Antibiotics
+- Azelaic Acid
+- Salicylic Acid
+- Benzoyl Peroxide
+- Hormones or birth control
+- No past treatments
+- Unspecified
+
+CHOICE_SET: LASER_PAIN_LOCATIONS
+CHOICES:
+- Neck
+- Right Shoulder
+- Left Shoulder
+- Right Elbow
+- Left Elbow
+- Right Wrist
+- Left Wrist
+- Lower Back
+- Right Knee
+- Left Knee
+- Right Foot & Ankle
+- Left Foot & Ankle
+- Right Hip
+- Left Hip
+
+CHOICE_SET: LASER_PAIN_LEVEL
+CHOICES:
+- No Pain
+- Mild Pain
+- Moderate Pain
+- Severe Pain
+- Worst Pain Possible
+
+CHOICE_SET: DIFFICULTY_MOVEMENTS_GT_5LB
+CHOICES:
+- None
+- Lifting
+- Pushing
+- Pulling
+- Bending
+- Rotating
+
+CHOICE_SET: SURGERY_HISTORY
+CHOICES:
+- Yes (Surgical)
+- No (Non Surgical)
+
+CHOICE_SET: CCT_PAIN_LOCATIONS
+CHOICES:
+- Neck
+- Elbow
+- Leg
+- Foot/Ankle
+- Shoulder
+- Knee
+- Wrist
+- Back
+
+CHOICE_SET: CCT_ORIENTATION
+CHOICES:
+- Left
+- Right
+- Bilateral
+- N/A
+
+====================================================================
+2) CONDITIONS (Condition)
+====================================================================
+
+- code: pain_request | name: Pain condition request?
+- code: muscle_relaxer | name: Muscle relaxer condition request?
+- code: dermatitis_eczema_psoriasis | name: Dermatitis/Eczema/Psoriasis condition request?
+- code: scar_wound_actinic | name: Scar/wound/actinic keratosis condition request?
+- code: acid_reflux | name: Acid reflux condition request?
+- code: allergy | name: Allergy condition request?
+- code: cough | name: Cough condition request?
+- code: topical_antifungal | name: Topical anti-fungal condition request?
+- code: migraine_headache | name: Migraine and Headache condition request?
+- code: foot_bath | name: Foot bath condition request?
+- code: cold_sores | name: Cold sores condition request?
+- code: oral_nsaids | name: Oral NSAIDs condition request?
+- code: acne | name: Acne condition request?
+- code: diabetes | name: Diabetes condition request?
+- code: laser_therapy_pain | name: Laser Therapy Pain treatment request?
+- code: cold_compression | name: Cold Compression Therapy request?
+
+====================================================================
+3) REQUEST TOGGLES (PatientCondition.requested)
+====================================================================
+
+Top-level request fields in HTML (all yes/no):
+- pain_condition_request
+- muscle_condition_request
+- dermatitis_condition_request
+- scar_condition_request
+- acid_reflux_condition_request
+- allergy_condition_request
+- cough_condition_request
+- topical_anti_fungal_condition_request
+- migraine_condition_request
+- foot_bath_condition_request
+- cold_sores_condition_request
+- oral_condition_request
+- acne_condition_request
+- diabetes_condition_request
+- laser_therapy_pain_treatment_request
+- coldcompression_therapy_request
+
+====================================================================
+4) QUESTIONS BY CONDITION (ConditionQuestion)
+====================================================================
+
+CONDITION: pain_request
+1. [yes_no] Have you consulted other medical professionals for your problem? If yes, what was the diagnosis?
+2. [text] Diagnosis (shown when Q1 = Yes)
+3. [yes_no] Have you tried other medications for this condition?
+4. [text] Medications (shown when Q3 = Yes)
+5. [yes_no] Have you ever used Lidocaine for pain?
+6. [text] For what pain (shown when Q5 = Yes)
+7. [single_choice | PAIN_TYPE] What type of pain are you experiencing?
+8. [single_choice | SCALE_1_TO_10] On a scale of 1 to 10, rate severity of your pain
+9. [multiple_choice | PAIN_LOCATIONS_ALL] Where is the pain located?
+10. [text] How long have you had this problem (days, weeks, months etc.)?
+11. [single_choice | FREQUENCY_STANDARD] How often do you experience the symptoms?
+12. [single_choice | SYMPTOMS_CHANGING] How are your symptoms changing with time?
+13. [text] How do you think your problem began?
+14. [text] What activities make the pain worse?
+15. [text] What activities reduce the pain?
+16. [multiple_choice | THERAPEUTIC_INTERVENTIONS] What prior therapeutic interventions have you tried?
+17. [text] Other prior therapeutic intervention (shown when "Other" selected in Q16)
+18. [multiple_choice | THERAPEUTIC_INTERVENTIONS] Which (if any) of the above therapeutic interventions afforded improvement of symptoms?
+19. [text] Other intervention that afforded improvement (shown when "Other" selected in Q18)
+20. [yes_no] Do you have a history of seizures, heart arrhythmias, or pacemaker use?
+
+CONDITION: muscle_relaxer
+1. [yes_no] Do you have muscle spasms?
+2. [multiple_choice | PAIN_LOCATIONS_ALL] Location of muscle spasms (shown when Q1 = Yes)
+3. [yes_no] Do you have any cramping or tightening in any muscle?
+4. [multiple_choice | PAIN_LOCATIONS_ALL] Location of cramping/tightening (shown when Q3 = Yes)
+
+CONDITION: oral_nsaids
+1. [multiple_choice | PAIN_LOCATIONS_ALL] What areas are affected by muscle or joint inflammation?
+2. [text] How long have you experienced inflammation?
+3. [multiple_choice | THERAPEUTIC_INTERVENTIONS] Past inflammation treatments
+4. [text] Other past inflammation treatment (shown when "Other" selected in Q3)
+
+CONDITION: cold_sores
+1. [yes_no] Do you currently have blisters?
+2. [multiple_choice | PAIN_LOCATIONS_ALL] Location of blisters (shown when Q1 = Yes)
+3. [multiple_choice | COLD_SORES_BLISTER_DESCRIPTION] Describe the blisters (shown when Q1 = Yes)
+4. [yes_no] Have you consulted other medical professionals for your problem? If yes, what was the diagnosis?
+5. [text] Diagnosis (shown when Q4 = Yes)
+6. [yes_no] Have you tried other medications for this condition?
+7. [text] Medication name (shown when Q6 = Yes)
+8. [yes_no] Did it work? (shown when Q6 = Yes)
+9. [yes_no] Have you had previous cold sore episodes?
+10. [yes_no] Were the previous episodes similar to the current episode? (shown when Q9 = Yes)
+11. [yes_no] Do you concurrently have eye symptoms, ear symptoms, or severe headaches?
+
+CONDITION: foot_bath
+1. [yes_no] Have you consulted other medical professionals for your problem? If yes, what was the diagnosis?
+2. [text] Diagnosis (shown when Q1 = Yes)
+3. [yes_no] Have you tried other medications for this condition?
+4. [text] Medication name (shown when Q3 = Yes)
+5. [yes_no] Did it work? (shown when Q3 = Yes)
+6. [multiple_choice | PAIN_LOCATIONS_ALL] Location of lesion
+7. [text] Size of lesion
+
+CONDITION: migraine_headache
+1. [yes_no] Have you consulted other medical professionals for your problem? If yes, what was the diagnosis?
+2. [text] Diagnosis (shown when Q1 = Yes)
+3. [yes_no] Do you have migraines 15 or more times a month?
+4. [yes_no] Have you tried other medications for this condition?
+5. [text] Medication name (shown when Q4 = Yes)
+6. [yes_no] Did it work? (shown when Q4 = Yes)
+7. [yes_no] Have you been previously diagnosed with migraine by a health professional?
+8. [single_choice | MIGRAINE_HEADACHE_CHARACTER] Is your headache throbbing, pulsating or pounding?
+9. [multiple_choice | MIGRAINE_HEAD_PAIN_LOCATION] Where is the head pain located?
+10. [single_choice | FREQUENCY_STANDARD] How often does your headache occur?
+11. [multiple_choice | MIGRAINE_PRIOR_SYMPTOMS] Do you experience symptoms prior to the migraine?
+12. [yes_no] Are you currently taking any migraine medication(s)?
+13. [text] Current migraine medication name (shown when Q12 = Yes)
+14. [yes_no] Do you have a history of hypertension, stroke, or any type of heart disease?
+15. [multiple_choice | MIGRAINE_DISEASE_HISTORY_TYPES] Disease history types (shown when Q14 = Yes)
+
+CHOICE_SET: MIGRAINE_DISEASE_HISTORY_TYPES
+CHOICES:
+- Hypertension
+- Stroke
+- Heart Disease
+
+CONDITION: topical_antifungal
+1. [yes_no] Have you consulted other medical professionals for your problem? If yes, what was the diagnosis?
+2. [text] Diagnosis (shown when Q1 = Yes)
+3. [yes_no] Have you tried other medications for this condition?
+4. [text] Medication name (shown when Q3 = Yes)
+5. [yes_no] Did it work? (shown when Q3 = Yes)
+6. [multiple_choice | PAIN_LOCATIONS_ALL] Location of lesion
+7. [text] Size of lesion
+
+CONDITION: cough
+1. [yes_no] Do you have a cough?
+2. [yes_no] Is your cough dry (no phlegm)? (shown when Q1 = Yes)
+3. [single_choice | COUGH_SEVERITY] How would you rate the severity of your cough?
+4. [single_choice | YES_NO_DONT_KNOW] Is your cough due to an allergy?
+5. [text] Allergy to what? (shown when Q4 = Yes)
+
+CONDITION: allergy
+1. [yes_no] Do you have any type of allergy (food, drug, environment, dust chemical, hay, animal, insect, material, etc)?
+2. [text] Allergy to (shown when Q1 = Yes)
+3. [text] Reaction (shown when Q1 = Yes)
+4. [multiple_choice | ALLERGY_RELIEF_METHODS] What have you tried to alleviate your allergy symptoms?
+5. [yes_no] Did antihistamines help? (shown when "Antihistamines" selected)
+6. [yes_no] Did allergy shots help? (shown when "allergy shots" selected)
+7. [yes_no] Did steroids help? (shown when "Steroids" selected)
+8. [text] Other method name (shown when "Other" selected)
+9. [yes_no] Did other method help? (shown when "Other" selected)
+
+CONDITION: acid_reflux
+1. [yes_no] Have you consulted other medical professionals for your problem? If yes, what was the diagnosis?
+2. [text] Diagnosis (shown when Q1 = Yes)
+3. [yes_no] Have you tried other medications for this condition?
+4. [text] Medication name (shown when Q3 = Yes)
+5. [yes_no] Did it work? (shown when Q3 = Yes)
+6. [yes_no] Do you have heartburn?
+7. [single_choice | SCALE_1_TO_10] On a scale of 1 to 10, rate heartburn severity (shown when Q6 = Yes)
+8. [single_choice | FREQUENCY_STANDARD] How frequently does it occur?
+9. [yes_no] Do you have bloating or gassy feelings?
+
+CONDITION: scar_wound_actinic
+1. [yes_no] Have you consulted other medical professionals for your problem? If yes, what was the diagnosis?
+2. [text] Diagnosis (shown when Q1 = Yes)
+3. [yes_no] Have you tried other medications for this condition?
+4. [text] Medication name (shown when Q3 = Yes)
+5. [yes_no] Did it work? (shown when Q3 = Yes)
+6. [multiple_choice | PAIN_LOCATIONS_ALL] Location of lesion
+7. [text] Size of lesion
+8. [text] Cause of lesion
+
+CONDITION: dermatitis_eczema_psoriasis
+1. [yes_no] Have you consulted other medical professionals for your problem? If yes, what was the diagnosis?
+2. [text] Diagnosis (shown when Q1 = Yes)
+3. [yes_no] Have you tried other medications for this condition?
+4. [text] Medication name (shown when Q3 = Yes)
+5. [yes_no] Did it work? (shown when Q3 = Yes)
+6. [multiple_choice | PAIN_LOCATIONS_ALL] Location of lesion
+7. [text] Size of lesion
+
+CONDITION: diabetes
+1. [single_choice | DIABETES_CURRENT_CONDITIONS] Are you currently living with any of the following conditions?
+2. [single_choice | DIABETES_TYPE] Which type of diabetes?
+3. [text] What was your most recent A1c result?
+4. [date] What was the approximate date of your most recent A1c results?
+5. [single_choice | DIABETES_FURTHER_DIAGNOSED] Have you ever been diagnosed with any of the following?
+
+CONDITION: acne
+1. [multiple_choice | PAIN_LOCATIONS_ALL] Where is the location of your acne?
+2. [single_choice | ACNE_BUMPS_COUNT] How many bumps do you have?
+3. [single_choice | YES_NO_UNSPECIFIED] Has this caused scabbing or scaring?
+4. [single_choice | YES_NO_UNSPECIFIED] Do you clean this location regularly?
+5. [single_choice | ACNE_PUS_COUNT] How many of these bumps are full of pus or fluid?
+6. [single_choice | ACNE_PREVIOUS_TREATMENTS] What previous methods have you used to treat acne?
+
+CONDITION: laser_therapy_pain
+1. [multiple_choice | LASER_PAIN_LOCATIONS] Where is the pain located?
+2. [single_choice | LASER_PAIN_LEVEL] What level of pain are you experiencing?
+3. [multiple_choice | THERAPEUTIC_INTERVENTIONS] What prior therapeutic interventions have you tried?
+4. [text] Other prior therapeutic intervention (shown when "Other" selected in Q3)
+5. [multiple_choice | DIFFICULTY_MOVEMENTS_GT_5LB] Do you have difficulty attempting activities/movements with objects > 5lbs?
+6. [date] Date of accident
+7. [text] What activities/movements make the pain worse?
+8. [single_choice | SURGERY_HISTORY] Have you had, or will have, surgery on the affected area?
+9. [text] Date of surgery if applicable
+
+CONDITION: cold_compression
+1. [multiple_choice | CCT_PAIN_LOCATIONS] Where is the pain located?
+2. [single_choice | CCT_ORIENTATION] Orientation
+3. [single_choice | SURGERY_HISTORY] Have you had, or will have, surgery on the affected area?
+4. [text] Date of surgery if applicable
+
+====================================================================
+5) OPTIONAL NORMALIZATION NOTES BEFORE SEEDING
+====================================================================
+
+- HTML contains casing inconsistencies (example: "Right elbow" vs "Right Elbow").
+- HTML has repeated typo "lession"; keep DB question text user-friendly as "lesion".
+- If you prefer strict dedupe, normalize PAIN_LOCATIONS_ALL to a canonical title case list (as in models.py pain_locations).
+- If you later add a condition-level required flag for questions, mark conditional follow-up questions as required=False.

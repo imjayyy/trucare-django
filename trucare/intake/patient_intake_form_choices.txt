@@ -1,0 +1,77 @@
+
+Pain condition request?
+Have you consulted other medical professionals for your problem? If yes, what was the diagnosis?	 Yes  No
+Have you tried other medications for this condition?	 Yes  No
+Have you ever used Lidocaine for pain?	 Yes  No
+What type of pain are you experiencing?	
+Aching, burning, stabbing, cramping, sharp, dull
+One a scale of 1 to 10, rate severity of your pain	
+1
+Where is the pain located?
+Face
+Head
+Neck
+Right Shoulder
+Left Shoulder
+Right Arm
+Left Arm
+Right elbow
+Left elbow
+Right wrist
+Left Wrist
+Right hand
+Left hand
+Right fingers
+Left fingers
+Upper back
+Lower Back
+Chest
+Stomach
+Right hip
+Left Hip
+Right thigh
+Left thigh
+Right knee
+Left knee
+Right Leg
+Left Leg
+Right foot & ankle
+Left foot & ankle
+Right toes
+Left toes
+
+
+What prior therapeutic interventions have you tried?	
+Rest
+Exercise
+PT
+injections
+anti-inflammatories
+corticosteroids
+NSAIDs
+steroids
+opioids
+oxycodone
+non-prescription medications
+prescription medications
+muscle relaxants
+Other
+Which (if any) of the above therapeutic interventions afforded improvement of symptoms?	
+Rest
+Exercise
+PT
+injections
+anti-inflammatories
+corticosteroids
+NSAIDs
+steroids
+opioids
+oxycodone
+non-prescription medications
+prescription medications
+muscle relaxants
+Other
+Do you have a history of seizures, heart arrhythmias, or pacemaker use?	 Yes  No
+___________________
+
+

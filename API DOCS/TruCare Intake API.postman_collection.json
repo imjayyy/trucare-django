@@ -1,0 +1,657 @@
+{
+  "info": {
+    "_postman_id": "6d1f1a7b-9d7a-4c69-9e2d-1c8c8f1a0d21",
+    "name": "TruCare Intake API",
+    "description": "Postman collection generated from the TruCare OpenAPI schema.\n\nUse the Authentication folder first to store access and refresh tokens into your environment. The collection is organized by functional areas so it can be shared with frontend developers for integration testing.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{base_url}}/api/auth/login/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\":\"{{admin_username}}\",\"password\":\"{{admin_password}}\"}"
+            },
+            "description": "Authenticate an admin user and store access/refresh tokens into the active Postman environment.",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('Login succeeded', function () {",
+                    "    pm.response.to.have.status(200);",
+                    "});",
+                    "",
+                    "const data = pm.response.json();",
+                    "if (data.access) {",
+                    "    pm.environment.set('access_token', data.access);",
+                    "}",
+                    "if (data.refresh) {",
+                    "    pm.environment.set('refresh_token', data.refresh);",
+                    "}",
+                    "pm.test('Tokens stored', function () {",
+                    "    pm.expect(pm.environment.get('access_token')).to.be.a('string');",
+                    "    pm.expect(pm.environment.get('refresh_token')).to.be.a('string');",
+                    "});"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": "{{base_url}}/api/auth/refresh/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"refresh\":\"{{refresh_token}}\"}"
+            },
+            "description": "Exchange the stored refresh token for a new access token.",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test('Refresh succeeded', function () {",
+                    "    pm.response.to.have.status(200);",
+                    "});",
+                    "",
+                    "const data = pm.response.json();",
+                    "if (data.access) {",
+                    "    pm.environment.set('access_token', data.access);",
+                    "}",
+                    "pm.test('Access token updated', function () {",
+                    "    pm.expect(pm.environment.get('access_token')).to.be.a('string');",
+                    "});"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/auth/me/",
+            "description": "Fetch the authenticated user profile using the current bearer token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Intake",
+      "item": [
+        {
+          "name": "Get Intake Form Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/intake/form/",
+            "description": "Download the intake form schema used by the frontend form renderer."
+          }
+        },
+        {
+          "name": "Create Intake Submission",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/intake/form/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"patient_info\":{\"first_name\":\"Jane\",\"last_name\":\"Doe\",\"date_of_birth\":\"1990-01-01\",\"email\":\"jane@example.com\",\"phone_number\":\"5551234567\",\"address\":\"123 Main St\",\"state\":\"CA\"},\"insurances\":[{\"insurance_type\":\"RX\",\"primary_insured\":true,\"insurance_carrier\":\"Acme RX\",\"group_id\":\"GRP-100\",\"patient_id_rx\":\"PAT-200\",\"bin\":\"123456\",\"pcn\":\"ABC\"}],\"condition_answers\":[{\"question_id\":1,\"text_answer\":\"Lower back pain for 2 weeks\"}]}"
+            },
+            "description": "Create a new intake submission with patient information, insurance details, and condition answers."
+          }
+        },
+        {
+          "name": "Update Intake Submission",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/intake/form/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"patient_id\":{{patient_id}},\"patient_info\":{\"phone_number\":\"5550001212\",\"address\":\"456 Updated Ave\"},\"insurances\":[{\"insurance_type\":\"PIP\",\"primary_insured\":false,\"insurance_carrier\":\"Acme PIP\",\"policy_number\":\"POL-123\",\"claim_number\":\"CLM-99\",\"date_of_accident\":\"2026-06-01\"}]}"
+            },
+            "description": "Update an existing intake submission by patient id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Doctors",
+          "item": [
+            {
+              "name": "List Doctors",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/doctors/?page={{page}}&page_size={{page_size}}",
+                "description": "Return all doctor profiles."
+              }
+            },
+            {
+              "name": "Search Doctors",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/doctors/?search={{search_term}}&page={{page}}&page_size={{page_size}}",
+                "description": "Search doctor profiles by username, email, first name, last name, or NPI."
+              }
+            },
+            {
+              "name": "Create Doctor",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/doctors/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"username\":\"doctor_alex\",\"email\":\"alex@example.com\",\"password\":\"StrongPass123!\",\"first_name\":\"Alex\",\"last_name\":\"Rivera\",\"phone_number\":\"5551234567\",\"address\":\"100 Main St\",\"state\":\"CA\",\"postal_code\":\"94105\",\"npi\":\"1234567890\",\"licenses\":[{\"license_number\":\"A12345\",\"license_state\":\"CA\",\"expiration_date\":\"2028-12-31\"}]}"
+                },
+                "description": "Create a doctor account, profile, and optional licenses."
+              }
+            },
+            {
+              "name": "Get Doctor",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/doctors/{{doctor_id}}/",
+                "description": "Retrieve one doctor profile by id."
+              }
+            },
+            {
+              "name": "Update Doctor",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/doctors/{{doctor_id}}/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"first_name\":\"Alex\",\"last_name\":\"Rivera\",\"npi\":\"9999999999\",\"licenses\":[{\"license_number\":\"B88888\",\"license_state\":\"NY\",\"expiration_date\":\"2029-06-30\"}]}"
+                },
+                "description": "Partially or fully update doctor account, profile, and licenses."
+              }
+            },
+            {
+              "name": "Patch Doctor",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/doctors/{{doctor_id}}/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"npi\":\"9999999999\"}"
+                },
+                "description": "Partially update a doctor account, profile, and licenses."
+              }
+            },
+            {
+              "name": "Delete Doctor",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": "{{base_url}}/api/admin/doctors/{{doctor_id}}/",
+                "description": "Delete the doctor profile and linked user account."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Organizations",
+          "item": [
+            {
+              "name": "List Organizations",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/organizations/?page={{page}}&page_size={{page_size}}",
+                "description": "Return all client and agency accounts."
+              }
+            },
+            {
+              "name": "Search Organizations",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/organizations/?search={{search_term}}&organization_type={{organization_type_filter}}&page={{page}}&page_size={{page_size}}",
+                "description": "Search organizations by name, email, or type, and optionally filter by organization type."
+              }
+            },
+            {
+              "name": "Create Organization",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/organizations/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"username\":\"agency_acme\",\"email\":\"agency@example.com\",\"password\":\"StrongPass123!\",\"first_name\":\"Acme\",\"last_name\":\"Agency\",\"organization_type\":\"AGENCY\"}"
+                },
+                "description": "Create a client or agency account."
+              }
+            },
+            {
+              "name": "Get Organization",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/organizations/{{organization_id}}/",
+                "description": "Retrieve one client or agency account by id."
+              }
+            },
+            {
+              "name": "Update Organization",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/organizations/{{organization_id}}/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"first_name\":\"Acme\",\"last_name\":\"Agency\",\"organization_type\":\"CLIENT\"}"
+                },
+                "description": "Partially or fully update a client or agency account."
+              }
+            },
+            {
+              "name": "Delete Organization",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": "{{base_url}}/api/admin/organizations/{{organization_id}}/",
+                "description": "Delete a client or agency account and its profile."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Managers",
+          "item": [
+            {
+              "name": "List Managers",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/managers/?page={{page}}&page_size={{page_size}}",
+                "description": "Return all manager accounts."
+              }
+            },
+            {
+              "name": "Search Managers",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/managers/?search={{search_term}}&page={{page}}&page_size={{page_size}}",
+                "description": "Search manager accounts by username, email, first name, or last name."
+              }
+            },
+            {
+              "name": "Create Manager",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/managers/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"username\":\"manager_one\",\"email\":\"manager@example.com\",\"password\":\"StrongPass123!\",\"first_name\":\"Casey\",\"last_name\":\"Morgan\"}"
+                },
+                "description": "Create a manager account."
+              }
+            },
+            {
+              "name": "Get Manager",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/managers/{{manager_id}}/",
+                "description": "Retrieve one manager account by id."
+              }
+            },
+            {
+              "name": "Update Manager",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/managers/{{manager_id}}/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"first_name\":\"Casey\",\"last_name\":\"Morgan\"}"
+                },
+                "description": "Partially or fully update a manager account."
+              }
+            },
+            {
+              "name": "Delete Manager",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": "{{base_url}}/api/admin/managers/{{manager_id}}/",
+                "description": "Delete a manager account and profile."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Billers",
+          "item": [
+            {
+              "name": "List Billers",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/billers/?page={{page}}&page_size={{page_size}}",
+                "description": "Return all billing accounts."
+              }
+            },
+            {
+              "name": "Search Billers",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/billers/?search={{search_term}}&page={{page}}&page_size={{page_size}}",
+                "description": "Search billing accounts by username, email, first name, or last name."
+              }
+            },
+            {
+              "name": "Create Biller",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/billers/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"username\":\"billing_one\",\"email\":\"billing@example.com\",\"password\":\"StrongPass123!\",\"first_name\":\"Jordan\",\"last_name\":\"Lee\"}"
+                },
+                "description": "Create a billing account."
+              }
+            },
+            {
+              "name": "Get Biller",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/billers/{{biller_id}}/",
+                "description": "Retrieve one billing account by id."
+              }
+            },
+            {
+              "name": "Update Biller",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/billers/{{biller_id}}/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"first_name\":\"Jordan\",\"last_name\":\"Lee\"}"
+                },
+                "description": "Partially or fully update a billing account."
+              }
+            },
+            {
+              "name": "Delete Biller",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": "{{base_url}}/api/admin/billers/{{biller_id}}/",
+                "description": "Delete a billing account and profile."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Doctor Finance",
+          "item": [
+            {
+              "name": "List Doctor Finances",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/finances/doctors/?page={{page}}&page_size={{page_size}}",
+                "description": "Return doctor credit balances and consult cost settings."
+              }
+            },
+            {
+              "name": "Search Doctor Finances",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/finances/doctors/?search={{search_term}}&page={{page}}&page_size={{page_size}}",
+                "description": "Search doctor finance records by name, email, username, or NPI."
+              }
+            },
+            {
+              "name": "Create or Set Doctor Credits",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/finances/doctors/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"doctor_id\":{{doctor_profile_id}},\"credits\":25,\"consult_cost\":\"45.00\"}"
+                },
+                "description": "Create doctor finance settings if missing, or set credits and consult cost."
+              }
+            },
+            {
+              "name": "Get Doctor Finance",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/finances/doctors/{{doctor_finance_id}}/",
+                "description": "Retrieve one doctor finance record by id."
+              }
+            },
+            {
+              "name": "Update Doctor Finance",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/finances/doctors/{{doctor_finance_id}}/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"doctor_id\":{{doctor_profile_id}},\"credit_delta\":10,\"consult_cost\":\"50.00\"}"
+                },
+                "description": "Set exact credits, adjust credits, or change consult cost."
+              }
+            },
+            {
+              "name": "Delete Doctor Finance",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": "{{base_url}}/api/admin/finances/doctors/{{doctor_finance_id}}/",
+                "description": "Remove the stored doctor finance record."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Client Finance",
+          "item": [
+            {
+              "name": "List Client Finances",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/finances/clients/?page={{page}}&page_size={{page_size}}",
+                "description": "Return client credit balances and configured credit cost."
+              }
+            },
+            {
+              "name": "Search Client Finances",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/finances/clients/?search={{search_term}}&organization_type={{organization_type_filter}}&page={{page}}&page_size={{page_size}}",
+                "description": "Search client finance records by name, email, username, or organization type, and optionally filter by organization type."
+              }
+            },
+            {
+              "name": "Create or Set Client Credits",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/finances/clients/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"client_id\":{{client_profile_id}},\"credits\":100,\"credit_cost\":\"2.50\"}"
+                },
+                "description": "Create client finance settings if missing, or set credits and credit cost."
+              }
+            },
+            {
+              "name": "Get Client Finance",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/admin/finances/clients/{{client_finance_id}}/",
+                "description": "Retrieve one client finance record by id."
+              }
+            },
+            {
+              "name": "Update Client Finance",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/admin/finances/clients/{{client_finance_id}}/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"client_id\":{{client_profile_id}},\"credit_delta\":25,\"credit_cost\":\"3.00\"}"
+                },
+                "description": "Set exact credits, adjust credits, or change client credit cost."
+              }
+            },
+            {
+              "name": "Delete Client Finance",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": "{{base_url}}/api/admin/finances/clients/{{client_finance_id}}/",
+                "description": "Remove the stored client finance record."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

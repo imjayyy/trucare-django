@@ -1,0 +1,3349 @@
+openapi: 3.0.3
+info:
+  title: TruCare Intake API
+  version: 1.0.0
+  description: API for retrieving and submitting intake forms.
+paths:
+  /api/admin/billers/:
+    get:
+      operationId: admin_billers_list
+      description: Return all billing accounts. Admin-only endpoint.
+      summary: List billers
+      parameters:
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search by username, email, first name, or last name.
+      tags:
+      - Admin Staff
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleAccountRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: admin_billers_create
+      description: Create a billing account and profile. Admin-only endpoint.
+      summary: Create biller
+      tags:
+      - Admin Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingWrite'
+            examples:
+              CreateBillerPayload:
+                value:
+                  username: billing_one
+                  email: billing@example.com
+                  password: StrongPass123!
+                  first_name: Jordan
+                  last_name: Lee
+                summary: Create biller payload
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BillingWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BillingWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleAccountRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/billers/{biller_id}/:
+    get:
+      operationId: admin_billers_retrieve
+      description: Retrieve one billing account by id. Admin-only endpoint.
+      summary: Get biller
+      parameters:
+      - in: path
+        name: biller_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Staff
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleAccountRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    put:
+      operationId: admin_billers_update
+      description: Partially or fully update a billing account. Admin-only endpoint.
+      summary: Update biller
+      parameters:
+      - in: path
+        name: biller_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillingUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BillingUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BillingUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleAccountRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    patch:
+      operationId: admin_billers_partial_update
+      description: Partially update a billing account. Admin-only endpoint.
+      summary: Patch biller
+      parameters:
+      - in: path
+        name: biller_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBillingUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBillingUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBillingUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleAccountRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    delete:
+      operationId: admin_billers_destroy
+      description: Delete a billing account and profile. Admin-only endpoint.
+      summary: Delete biller
+      parameters:
+      - in: path
+        name: biller_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Staff
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/doctors/:
+    get:
+      operationId: admin_doctors_list
+      description: Return all doctor profiles. Admin-only endpoint.
+      summary: List doctors
+      tags:
+      - Admin Doctors
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DoctorRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: admin_doctors_create
+      description: Create a doctor user account, doctor profile, and optional licenses.
+        Admin-only endpoint.
+      summary: Create doctor
+      tags:
+      - Admin Doctors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorCreate'
+            examples:
+              CreateDoctorPayload:
+                value:
+                  username: doctor_alex
+                  email: alex@example.com
+                  password: StrongPass123!
+                  first_name: Alex
+                  last_name: Rivera
+                  phone_number: '5551234567'
+                  address: 100 Main St
+                  state: CA
+                  postal_code: '94105'
+                  npi: '1234567890'
+                  licenses:
+                  - license_number: A12345
+                    license_state: CA
+                    expiration_date: '2028-12-31'
+                summary: Create doctor payload
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DoctorCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DoctorCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/doctors/{doctor_id}/:
+    get:
+      operationId: admin_doctors_retrieve
+      description: Retrieve one doctor profile by id. Admin-only endpoint.
+      summary: Get doctor
+      parameters:
+      - in: path
+        name: doctor_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Doctors
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    put:
+      operationId: admin_doctors_update
+      description: Partially or fully update doctor account, profile, and licenses.
+        Admin-only endpoint.
+      summary: Update doctor
+      parameters:
+      - in: path
+        name: doctor_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Doctors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorUpdate'
+            examples:
+              UpdateDoctorPayload:
+                value:
+                  first_name: Alex
+                  last_name: Rivera
+                  npi: '9999999999'
+                  licenses:
+                  - license_number: B88888
+                    license_state: NY
+                    expiration_date: '2029-06-30'
+                summary: Update doctor payload
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DoctorUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DoctorUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    patch:
+      operationId: admin_doctors_partial_update
+      description: Partially update doctor account, profile, and licenses. Admin-only
+        endpoint.
+      summary: Patch doctor
+      parameters:
+      - in: path
+        name: doctor_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Doctors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDoctorUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDoctorUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDoctorUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    delete:
+      operationId: admin_doctors_destroy
+      description: Delete doctor profile and linked user account. Admin-only endpoint.
+      summary: Delete doctor
+      parameters:
+      - in: path
+        name: doctor_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Doctors
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/finances/clients/:
+    get:
+      operationId: admin_finances_clients_list
+      description: Return client credit balances and configured credit cost. Admin-only
+        endpoint.
+      summary: List client finances
+      parameters:
+      - in: query
+        name: organization_type
+        schema:
+          type: string
+        description: Filter by organization type, typically CLIENT.
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search by username, email, name, or organization type.
+      tags:
+      - Admin Finance
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientFinanceRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: admin_finances_clients_create
+      description: Create client finance settings if missing, or set/adjust credits
+        and credit cost.
+      summary: Create or set client credits
+      tags:
+      - Admin Finance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientFinanceWrite'
+            examples:
+              SetClientCredits:
+                value:
+                  client_id: 1
+                  credits: 100
+                  credit_cost: '2.50'
+                summary: Set client credits
+              AddClientCredits:
+                value:
+                  client_id: 1
+                  credit_delta: 25
+                summary: Add client credits
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ClientFinanceWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClientFinanceWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientFinanceRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/finances/clients/{finance_id}/:
+    get:
+      operationId: admin_finances_clients_retrieve
+      description: Retrieve one client finance record by id. Admin-only endpoint.
+      summary: Get client finance record
+      parameters:
+      - in: path
+        name: finance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Finance
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientFinanceRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    put:
+      operationId: admin_finances_clients_update
+      description: Set exact credits, adjust credits, or change client credit cost.
+      summary: Update client credits
+      parameters:
+      - in: path
+        name: finance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Finance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientFinanceWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ClientFinanceWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClientFinanceWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientFinanceRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    patch:
+      operationId: admin_finances_clients_partial_update
+      description: Partially update a client finance record.
+      summary: Patch client credits
+      parameters:
+      - in: path
+        name: finance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Finance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedClientFinanceWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedClientFinanceWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedClientFinanceWrite'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientFinanceRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    delete:
+      operationId: admin_finances_clients_destroy
+      description: Remove the stored client finance record.
+      summary: Delete client finance record
+      parameters:
+      - in: path
+        name: finance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Finance
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/finances/doctors/:
+    get:
+      operationId: admin_finances_doctors_list
+      description: Return doctor credit balances and consult cost settings. Admin-only
+        endpoint.
+      summary: List doctor finances
+      parameters:
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search by username, email, name, or NPI.
+      tags:
+      - Admin Finance
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DoctorConsultsRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: admin_finances_doctors_create
+      description: Create doctor finance settings if missing, or set/adjust credits
+        and consult cost.
+      summary: Create or set doctor credits
+      tags:
+      - Admin Finance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorConsultsWrite'
+            examples:
+              SetDoctorCredits:
+                value:
+                  doctor_id: 1
+                  credits: 25
+                  consult_cost: '45.00'
+                summary: Set doctor credits
+              AddDoctorCredits:
+                value:
+                  doctor_id: 1
+                  credit_delta: 10
+                summary: Add doctor credits
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DoctorConsultsWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DoctorConsultsWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorConsultsRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/finances/doctors/{finance_id}/:
+    get:
+      operationId: admin_finances_doctors_retrieve
+      description: Retrieve one doctor finance record by id. Admin-only endpoint.
+      summary: Get doctor finance record
+      parameters:
+      - in: path
+        name: finance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Finance
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorConsultsRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    put:
+      operationId: admin_finances_doctors_update
+      description: Set exact credits, adjust credits, or change consult cost for a
+        doctor.
+      summary: Update doctor credits
+      parameters:
+      - in: path
+        name: finance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Finance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorConsultsWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DoctorConsultsWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DoctorConsultsWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorConsultsRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    patch:
+      operationId: admin_finances_doctors_partial_update
+      description: Partially update a doctor finance record.
+      summary: Patch doctor credits
+      parameters:
+      - in: path
+        name: finance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Finance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDoctorConsultsWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDoctorConsultsWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDoctorConsultsWrite'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoctorConsultsRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    delete:
+      operationId: admin_finances_doctors_destroy
+      description: Remove the stored doctor finance record.
+      summary: Delete doctor finance record
+      parameters:
+      - in: path
+        name: finance_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Finance
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/managers/:
+    get:
+      operationId: admin_managers_list
+      description: Return all manager accounts. Admin-only endpoint.
+      summary: List managers
+      parameters:
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search by username, email, first name, or last name.
+      tags:
+      - Admin Staff
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleAccountRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: admin_managers_create
+      description: Create a manager account and profile. Admin-only endpoint.
+      summary: Create manager
+      tags:
+      - Admin Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManagerWrite'
+            examples:
+              CreateManagerPayload:
+                value:
+                  username: manager_one
+                  email: manager@example.com
+                  password: StrongPass123!
+                  first_name: Casey
+                  last_name: Morgan
+                summary: Create manager payload
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ManagerWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ManagerWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleAccountRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/managers/{manager_id}/:
+    get:
+      operationId: admin_managers_retrieve
+      description: Retrieve one manager account by id. Admin-only endpoint.
+      summary: Get manager
+      parameters:
+      - in: path
+        name: manager_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Staff
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleAccountRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    put:
+      operationId: admin_managers_update
+      description: Partially or fully update a manager account. Admin-only endpoint.
+      summary: Update manager
+      parameters:
+      - in: path
+        name: manager_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManagerUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ManagerUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ManagerUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleAccountRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    patch:
+      operationId: admin_managers_partial_update
+      description: Partially update a manager account. Admin-only endpoint.
+      summary: Patch manager
+      parameters:
+      - in: path
+        name: manager_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Staff
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedManagerUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedManagerUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedManagerUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleAccountRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    delete:
+      operationId: admin_managers_destroy
+      description: Delete a manager account and profile. Admin-only endpoint.
+      summary: Delete manager
+      parameters:
+      - in: path
+        name: manager_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Staff
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/organizations/:
+    get:
+      operationId: admin_organizations_list
+      description: Return all client and agency accounts. Admin-only endpoint.
+      summary: List organizations
+      parameters:
+      - in: query
+        name: organization_type
+        schema:
+          type: string
+        description: 'Filter by organization type: AGENCY or CLIENT.'
+      - in: query
+        name: search
+        schema:
+          type: string
+        description: Search by username, email, first name, last name, or organization
+          type.
+      tags:
+      - Admin Organizations
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: admin_organizations_create
+      description: Create a client or agency account and its profile. Admin-only endpoint.
+      summary: Create organization
+      tags:
+      - Admin Organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationWrite'
+            examples:
+              CreateAgencyPayload:
+                value:
+                  username: agency_acme
+                  email: agency@example.com
+                  password: StrongPass123!
+                  first_name: Acme
+                  last_name: Agency
+                  organization_type: AGENCY
+                summary: Create agency payload
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrganizationWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrganizationWrite'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/admin/organizations/{organization_id}/:
+    get:
+      operationId: admin_organizations_retrieve
+      description: Retrieve one client or agency account by id. Admin-only endpoint.
+      summary: Get organization
+      parameters:
+      - in: path
+        name: organization_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Organizations
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationRead'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    put:
+      operationId: admin_organizations_update
+      description: Partially or fully update a client or agency account. Admin-only
+        endpoint.
+      summary: Update organization
+      parameters:
+      - in: path
+        name: organization_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrganizationUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrganizationUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    patch:
+      operationId: admin_organizations_partial_update
+      description: Partially update a client or agency account. Admin-only endpoint.
+      summary: Patch organization
+      parameters:
+      - in: path
+        name: organization_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Organizations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrganizationUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrganizationUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrganizationUpdate'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationRead'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    delete:
+      operationId: admin_organizations_destroy
+      description: Delete a client or agency account and its profile. Admin-only endpoint.
+      summary: Delete organization
+      parameters:
+      - in: path
+        name: organization_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Admin Organizations
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/auth/login/:
+    post:
+      operationId: auth_login_create
+      description: Authenticate user and return JWT access and refresh tokens.
+      summary: Login with JWT
+      tags:
+      - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JWTLogin'
+            examples:
+              JWTLoginRequest:
+                value:
+                  username: manager01
+                  password: StrongPassword123!
+                summary: JWT login request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/JWTLogin'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/JWTLogin'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/auth/me/:
+    get:
+      operationId: auth_me_retrieve
+      description: Return the currently authenticated user and account profile details.
+      summary: Get current user
+      tags:
+      - Authentication
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/auth/refresh/:
+    post:
+      operationId: auth_refresh_create
+      description: Return a new access token using refresh token.
+      summary: Refresh JWT token
+      tags:
+      - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+            examples:
+              JWTRefreshRequest:
+                value:
+                  refresh: <refresh_token>
+                summary: JWT refresh request
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/intake/form/:
+    get:
+      operationId: intake_form_retrieve
+      description: Returns a React-friendly JSON schema to render the intake form
+        on the frontend.
+      summary: Get intake form schema
+      tags:
+      - Intake
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+              examples:
+                IntakeFormSchema:
+                  value:
+                    formKey: patient-intake
+                    version: 1
+                    sections:
+                    - id: patient_info
+                      title: Patient Information
+                      fields: []
+                    - id: insurance
+                      title: Insurance
+                      repeatable: true
+                      fields: []
+                  summary: Intake form schema
+          description: ''
+    post:
+      operationId: intake_form_create
+      description: Creates a patient intake record with patient information, insurance
+        entries, and condition answers.
+      summary: Create intake submission
+      tags:
+      - Intake
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntakeCreatePayload'
+            examples:
+              CreateIntakePayload:
+                value:
+                  patient_info:
+                    first_name: Jane
+                    last_name: Doe
+                    date_of_birth: '1990-01-01'
+                    email: jane@example.com
+                    phone_number: '5551234567'
+                    address: 123 Main St
+                    state: CA
+                  insurances:
+                  - insurance_type: RX
+                    primary_insured: true
+                    insurance_carrier: Acme RX
+                    group_id: GRP-100
+                    patient_id_rx: PAT-200
+                    bin: '123456'
+                    pcn: ABC
+                  condition_answers:
+                  - question_id: 1
+                    text_answer: Lower back pain for 2 weeks
+                summary: Create intake payload
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IntakeCreatePayload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IntakeCreatePayload'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntakeWriteResponse'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
+    put:
+      operationId: intake_form_update
+      description: Updates any part of an existing intake using patient_id. Supports
+        partial updates.
+      summary: Update intake submission
+      tags:
+      - Intake
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntakeUpdatePayload'
+            examples:
+              UpdateIntakePayload:
+                value:
+                  patient_id: 1
+                  patient_info:
+                    phone_number: '5550001212'
+                    address: 456 Updated Ave
+                  insurances:
+                  - insurance_type: PIP
+                    primary_insured: false
+                    insurance_carrier: Acme PIP
+                    policy_number: POL-123
+                    claim_number: CLM-99
+                    date_of_accident: '2026-06-01'
+                summary: Update intake payload
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/IntakeUpdatePayload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/IntakeUpdatePayload'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntakeWriteResponse'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+components:
+  schemas:
+    BillingUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+    BillingWrite:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Unique login username.
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          description: Account email.
+        password:
+          type: string
+          writeOnly: true
+          description: Minimum 8 characters.
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - password
+      - username
+    BlankEnum:
+      enum:
+      - ''
+    ClientFinanceRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        client_id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        credits:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        credit_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Cost per credit in USD
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - client_id
+      - created_at
+      - email
+      - first_name
+      - full_name
+      - id
+      - last_name
+      - updated_at
+      - username
+    ClientFinanceWrite:
+      type: object
+      properties:
+        client_id:
+          type: integer
+          description: AccountProfile id for a client organization.
+        credits:
+          type: integer
+          minimum: 0
+          description: Exact credit balance to set.
+        credit_delta:
+          type: integer
+          description: Positive or negative adjustment to apply.
+        credit_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Cost per credit in USD.
+      required:
+      - client_id
+    ConditionAnswerPayload:
+      type: object
+      properties:
+        question_id:
+          type: integer
+        text_answer:
+          type: string
+          nullable: true
+        number_answer:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+        boolean_answer:
+          type: boolean
+          nullable: true
+        date_answer:
+          type: string
+          format: date
+          nullable: true
+        selected_choice_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - question_id
+    DoctorConsultsRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        doctor_id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        credits:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        consult_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Cost per consult in USD
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - doctor_id
+      - email
+      - first_name
+      - full_name
+      - id
+      - last_name
+      - updated_at
+      - username
+    DoctorConsultsWrite:
+      type: object
+      properties:
+        doctor_id:
+          type: integer
+          description: DoctorProfile id.
+        credits:
+          type: integer
+          minimum: 0
+          description: Exact credit balance to set.
+        credit_delta:
+          type: integer
+          description: Positive or negative adjustment to apply.
+        consult_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Cost per consult in USD.
+      required:
+      - doctor_id
+    DoctorCreate:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Unique login username.
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          description: Doctor account email.
+        password:
+          type: string
+          writeOnly: true
+          description: Minimum 8 characters.
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        phone_number:
+          type: string
+          maxLength: 20
+        address:
+          type: string
+        state:
+          type: string
+          maxLength: 50
+        postal_code:
+          type: string
+          maxLength: 20
+        npi:
+          type: string
+          maxLength: 100
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/DoctorLicenseWrite'
+      required:
+      - email
+      - password
+      - username
+    DoctorLicenseRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        license_number:
+          type: string
+          maxLength: 50
+        license_state:
+          $ref: '#/components/schemas/LicenseStateEnum'
+        expiration_date:
+          type: string
+          format: date
+      required:
+      - expiration_date
+      - id
+      - license_number
+      - license_state
+    DoctorLicenseWrite:
+      type: object
+      properties:
+        license_number:
+          type: string
+          description: Medical license number.
+          maxLength: 50
+        license_state:
+          type: string
+          description: 2-letter state code.
+          maxLength: 50
+        expiration_date:
+          type: string
+          format: date
+          description: License expiration date in YYYY-MM-DD format.
+      required:
+      - expiration_date
+      - license_number
+      - license_state
+    DoctorRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+        last_name:
+          type: string
+          readOnly: true
+        account_email:
+          type: string
+          format: email
+          readOnly: true
+        phone_number:
+          type: string
+          maxLength: 20
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        address:
+          type: string
+        state:
+          oneOf:
+          - $ref: '#/components/schemas/StateEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        postal_code:
+          type: string
+          maxLength: 20
+        npi:
+          type: string
+          maxLength: 100
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/DoctorLicenseRead'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - account_email
+      - created_at
+      - first_name
+      - id
+      - last_name
+      - licenses
+      - updated_at
+      - user_id
+      - username
+    DoctorUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        phone_number:
+          type: string
+          maxLength: 20
+        address:
+          type: string
+        state:
+          type: string
+          maxLength: 50
+        postal_code:
+          type: string
+          maxLength: 20
+        npi:
+          type: string
+          maxLength: 100
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/DoctorLicenseWrite'
+    InsurancePayload:
+      type: object
+      properties:
+        insurance_type:
+          $ref: '#/components/schemas/InsuranceTypeEnum'
+        primary_insured:
+          type: boolean
+          default: false
+        insurance_carrier:
+          type: string
+          maxLength: 100
+        carrier_phone:
+          type: string
+          maxLength: 15
+        group_id:
+          type: string
+          maxLength: 50
+        patient_id_rx:
+          type: string
+          maxLength: 50
+        bin:
+          type: string
+          maxLength: 20
+        pcn:
+          type: string
+          maxLength: 20
+        adjuster_name:
+          type: string
+          maxLength: 100
+        adjuster_phone:
+          type: string
+          maxLength: 15
+        policy_number:
+          type: string
+          maxLength: 50
+        claim_number:
+          type: string
+          maxLength: 100
+        date_of_accident:
+          type: string
+          format: date
+          nullable: true
+        payer_name:
+          type: string
+          maxLength: 100
+        date_of_injury:
+          type: string
+          format: date
+          nullable: true
+        employer_name:
+          type: string
+          maxLength: 100
+      required:
+      - insurance_type
+    InsuranceTypeEnum:
+      enum:
+      - RX
+      - PIP
+      - WC
+      type: string
+      description: |-
+        * `RX` - RX
+        * `PIP` - PIP
+        * `WC` - WC
+    IntakeCreatePayload:
+      type: object
+      properties:
+        patient_info:
+          $ref: '#/components/schemas/PatientInfoPayload'
+        insurances:
+          type: array
+          items:
+            $ref: '#/components/schemas/InsurancePayload'
+        condition_answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConditionAnswerPayload'
+      required:
+      - patient_info
+    IntakeUpdatePayload:
+      type: object
+      properties:
+        patient_id:
+          type: integer
+        patient_info:
+          $ref: '#/components/schemas/PatientInfoPayload'
+        insurances:
+          type: array
+          items:
+            $ref: '#/components/schemas/InsurancePayload'
+        condition_answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConditionAnswerPayload'
+      required:
+      - patient_id
+    IntakeWriteResponse:
+      type: object
+      properties:
+        patient_id:
+          type: integer
+        message:
+          type: string
+      required:
+      - message
+      - patient_id
+    JWTLogin:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    LicenseStateEnum:
+      enum:
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      type: string
+      description: |-
+        * `AL` - Alabama
+        * `AK` - Alaska
+        * `AZ` - Arizona
+        * `AR` - Arkansas
+        * `CA` - California
+        * `CO` - Colorado
+        * `CT` - Connecticut
+        * `DE` - Delaware
+        * `FL` - Florida
+        * `GA` - Georgia
+        * `HI` - Hawaii
+        * `ID` - Idaho
+        * `IL` - Illinois
+        * `IN` - Indiana
+        * `IA` - Iowa
+        * `KS` - Kansas
+        * `KY` - Kentucky
+        * `LA` - Louisiana
+        * `ME` - Maine
+        * `MD` - Maryland
+        * `MA` - Massachusetts
+        * `MI` - Michigan
+        * `MN` - Minnesota
+        * `MS` - Mississippi
+        * `MO` - Missouri
+        * `MT` - Montana
+        * `NE` - Nebraska
+        * `NV` - Nevada
+        * `NH` - New Hampshire
+        * `NJ` - New Jersey
+        * `NM` - New Mexico
+        * `NY` - New York
+        * `NC` - North Carolina
+        * `ND` - North Dakota
+        * `OH` - Ohio
+        * `OK` - Oklahoma
+        * `OR` - Oregon
+        * `PA` - Pennsylvania
+        * `RI` - Rhode Island
+        * `SC` - South Carolina
+        * `SD` - South Dakota
+        * `TN` - Tennessee
+        * `TX` - Texas
+        * `UT` - Utah
+        * `VT` - Vermont
+        * `VA` - Virginia
+        * `WA` - Washington
+        * `WV` - West Virginia
+        * `WI` - Wisconsin
+        * `WY` - Wyoming
+    ManagerUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+    ManagerWrite:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Unique login username.
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          description: Account email.
+        password:
+          type: string
+          writeOnly: true
+          description: Minimum 8 characters.
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - password
+      - username
+    OrganizationRead:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        role:
+          type: string
+          readOnly: true
+        organization_type:
+          type: string
+          readOnly: true
+        profile_created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        profile_updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - organization_type
+      - profile_created_at
+      - profile_updated_at
+      - role
+      - user_id
+      - username
+    OrganizationTypeEnum:
+      enum:
+      - AGENCY
+      - CLIENT
+      type: string
+      description: |-
+        * `AGENCY` - AGENCY
+        * `CLIENT` - CLIENT
+    OrganizationUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        organization_type:
+          $ref: '#/components/schemas/OrganizationTypeEnum'
+    OrganizationWrite:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Unique login username.
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          description: Organization account email.
+        password:
+          type: string
+          writeOnly: true
+          description: Minimum 8 characters.
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        organization_type:
+          allOf:
+          - $ref: '#/components/schemas/OrganizationTypeEnum'
+          description: |-
+            Organization type: AGENCY or CLIENT.
+
+            * `AGENCY` - AGENCY
+            * `CLIENT` - CLIENT
+      required:
+      - email
+      - organization_type
+      - password
+      - username
+    PatchedBillingUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+    PatchedClientFinanceWrite:
+      type: object
+      properties:
+        client_id:
+          type: integer
+          description: AccountProfile id for a client organization.
+        credits:
+          type: integer
+          minimum: 0
+          description: Exact credit balance to set.
+        credit_delta:
+          type: integer
+          description: Positive or negative adjustment to apply.
+        credit_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Cost per credit in USD.
+    PatchedDoctorConsultsWrite:
+      type: object
+      properties:
+        doctor_id:
+          type: integer
+          description: DoctorProfile id.
+        credits:
+          type: integer
+          minimum: 0
+          description: Exact credit balance to set.
+        credit_delta:
+          type: integer
+          description: Positive or negative adjustment to apply.
+        consult_cost:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          description: Cost per consult in USD.
+    PatchedDoctorUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        phone_number:
+          type: string
+          maxLength: 20
+        address:
+          type: string
+        state:
+          type: string
+          maxLength: 50
+        postal_code:
+          type: string
+          maxLength: 20
+        npi:
+          type: string
+          maxLength: 100
+        licenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/DoctorLicenseWrite'
+    PatchedManagerUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+    PatchedOrganizationUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        organization_type:
+          $ref: '#/components/schemas/OrganizationTypeEnum'
+    PatientInfoPayload:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        date_of_birth:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+        phone_number:
+          type: string
+          maxLength: 15
+        address:
+          type: string
+        state:
+          type: string
+          maxLength: 20
+    RoleAccountRead:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        role:
+          type: string
+          readOnly: true
+        profile_created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        profile_updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - profile_created_at
+      - profile_updated_at
+      - role
+      - user_id
+      - username
+    StateEnum:
+      enum:
+      - AL
+      - AK
+      - AZ
+      - AR
+      - CA
+      - CO
+      - CT
+      - DE
+      - FL
+      - GA
+      - HI
+      - ID
+      - IL
+      - IN
+      - IA
+      - KS
+      - KY
+      - LA
+      - ME
+      - MD
+      - MA
+      - MI
+      - MN
+      - MS
+      - MO
+      - MT
+      - NE
+      - NV
+      - NH
+      - NJ
+      - NM
+      - NY
+      - NC
+      - ND
+      - OH
+      - OK
+      - OR
+      - PA
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VT
+      - VA
+      - WA
+      - WV
+      - WI
+      - WY
+      type: string
+      description: |-
+        * `AL` - Alabama
+        * `AK` - Alaska
+        * `AZ` - Arizona
+        * `AR` - Arkansas
+        * `CA` - California
+        * `CO` - Colorado
+        * `CT` - Connecticut
+        * `DE` - Delaware
+        * `FL` - Florida
+        * `GA` - Georgia
+        * `HI` - Hawaii
+        * `ID` - Idaho
+        * `IL` - Illinois
+        * `IN` - Indiana
+        * `IA` - Iowa
+        * `KS` - Kansas
+        * `KY` - Kentucky
+        * `LA` - Louisiana
+        * `ME` - Maine
+        * `MD` - Maryland
+        * `MA` - Massachusetts
+        * `MI` - Michigan
+        * `MN` - Minnesota
+        * `MS` - Mississippi
+        * `MO` - Missouri
+        * `MT` - Montana
+        * `NE` - Nebraska
+        * `NV` - Nevada
+        * `NH` - New Hampshire
+        * `NJ` - New Jersey
+        * `NM` - New Mexico
+        * `NY` - New York
+        * `NC` - North Carolina
+        * `ND` - North Dakota
+        * `OH` - Ohio
+        * `OK` - Oklahoma
+        * `OR` - Oregon
+        * `PA` - Pennsylvania
+        * `RI` - Rhode Island
+        * `SC` - South Carolina
+        * `SD` - South Dakota
+        * `TN` - Tennessee
+        * `TX` - Texas
+        * `UT` - Utah
+        * `VT` - Vermont
+        * `VA` - Virginia
+        * `WA` - Washington
+        * `WV` - West Virginia
+        * `WI` - Wisconsin
+        * `WY` - Wyoming
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        profile:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - profile
+      - username
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
