@@ -1,16 +1,8 @@
 from django.db import models
 
+from intake.models import Condition
 
-class PrescriptionCategory(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    order = models.PositiveIntegerField(default=1)
 
-    class Meta:
-        ordering = ["order"]
-
-    def __str__(self):
-        return self.name
-    
 
 class PrescribeAbleItem(models.Model):
 
@@ -18,37 +10,30 @@ class PrescribeAbleItem(models.Model):
     THERAPY = "therapy"
     DEVICE = "device"
     SUPPLEMENT = "supplement"
-
     ITEM_TYPES = [
         (MEDICATION, "Medication"),
         (THERAPY, "Therapy"),
         (DEVICE, "Device"),
         (SUPPLEMENT, "Supplement"),
     ]
-
     category = models.ForeignKey(
-        PrescriptionCategory,
+        Condition,
         on_delete=models.PROTECT,
-        related_name="items"
+        related_name="items",
     )
-
     item_type = models.CharField(
         max_length=20,
         choices=ITEM_TYPES
     )
-
     name = models.CharField(max_length=255)
-
     generic_name = models.CharField(
         max_length=255,
         blank=True
     )
-
     strength = models.CharField(
         max_length=100,
         blank=True
     )
-
     dosage_form = models.CharField(
         max_length=100,
         blank=True,
@@ -85,14 +70,43 @@ class PrescribeAbleItem(models.Model):
 
 class Script(models.Model):
     name = models.CharField(max_length=255)
-    prescribeable_item = models.ForeignKey(
-        PrescribeAbleItem,
-        on_delete=models.PROTECT,
-        related_name="scripts"
-    )
-    
-    class Meta:
-        unique_together = ("name", "prescribeable_item")
     
     def __str__(self):
         return self.name
+
+
+
+class ScriptItem(models.Model):
+    script = models.ForeignKey(
+        Script,
+        on_delete=models.CASCADE,
+        related_name="script_items"
+    )
+    prescribeable_item = models.ForeignKey(
+        PrescribeAbleItem,
+        on_delete=models.PROTECT,
+        related_name="script_items"
+    )
+
+    def __str__(self):
+        return f"{self.prescribeable_item.name} in {self.script.name}"
+
+class ScriptClientRelationship(models.Model):
+    script = models.ForeignKey(
+        Script,
+        on_delete=models.CASCADE,
+        related_name="client_relationships"
+    )
+    client = models.ForeignKey(
+        "accounts.AccountProfile",
+        on_delete=models.CASCADE,
+        related_name="script_relationships"
+    )
+
+    class Meta:
+        unique_together = ("script", "client")
+
+    def __str__(self):
+        return f"{self.client.user.username} has access to {self.script.name}"
+
+

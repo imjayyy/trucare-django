@@ -25,4 +25,5 @@ urlpatterns = [
     path('api/auth/', include('accounts.urls')),
     path('api/admin/', include('admin_apis.urls')),
     path('api/intake/', include('intake.urls')),
+    path('api/scriptbuilder/', include('scriptbuilder.urls')),
 ]

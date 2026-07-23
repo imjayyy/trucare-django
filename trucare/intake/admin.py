@@ -15,7 +15,7 @@ from .models import (
 )
 
 class ConditionQuestionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'question', 'condition', 'order')
+    list_display = ('id', 'question', 'condition', 'question_type', 'order')
     list_filter = ('condition',)
     search_fields = ('question',)
 

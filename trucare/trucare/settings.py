@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +26,34 @@ SECRET_KEY = 'django-insecure-5=*xc9ywo#3f1+z_s1f2o(ghp(#-c-)+^&y^7%@6en=2zd^x3d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+
+def _env_bool(name, default=False):
+    value = os.getenv(name)
+    if value is None:
+        return default
+
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_list(name, default=None):
+    value = os.getenv(name)
+    if value is None:
+        return default or []
+
+    return [item.strip() for item in value.split(',') if item.strip()]
+
+
+CORS_ALLOW_ALL_ORIGINS = _env_bool('CORS_ALLOW_ALL_ORIGINS', True)
+CORS_ALLOWED_ORIGINS = _env_list(
+    'CORS_ALLOWED_ORIGINS',
+    [
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+    ],
+)
+CORS_ALLOW_CREDENTIALS = _env_bool('CORS_ALLOW_CREDENTIALS', True)
 
 # Application definition
 
@@ -37,16 +64,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'drf_spectacular',
     'accounts',
     'admin_apis',
     'intake',
     'financials',
+    'scriptbuilder',
+    'prescription',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

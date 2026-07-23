@@ -2,7 +2,7 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import OpenApiExample, extend_schema, extend_schema_view
 from rest_framework import serializers, status
-from rest_framework.permissions import Http404, IsAuthenticated
+from rest_framework.permissions import BasePermission, Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -18,80 +18,20 @@ from .models import (
 )
 
 from accounts.models import AccountProfile
+from .payload_serializers import (
+	IntakeCreatePayloadSerializer,
+	IntakeUpdatePayloadSerializer,
+	IntakeWriteResponseSerializer,
+)
 
-class PatientInfoPayloadSerializer(serializers.Serializer):
-	first_name = serializers.CharField(max_length=30, required=False)
-	last_name = serializers.CharField(max_length=30, required=False)
-	date_of_birth = serializers.DateField(required=False)
-	email = serializers.EmailField(required=False)
-	phone_number = serializers.CharField(max_length=15, required=False, allow_blank=True)
-	address = serializers.CharField(required=False, allow_blank=True)
-	state = serializers.CharField(max_length=20, required=False, allow_blank=True)
+class IsAuthenticatedOrOptions(BasePermission):
+	"""Allow unauthenticated CORS preflight requests while protecting API methods."""
 
+	def has_permission(self, request, view):
+		if request.method == "OPTIONS":
+			return True
 
-class InsurancePayloadSerializer(serializers.Serializer):
-	insurance_type = serializers.ChoiceField(choices=[choice[0] for choice in Insurance.INSURANCE_TYPES])
-	primary_insured = serializers.BooleanField(required=False, default=False)
-	insurance_carrier = serializers.CharField(max_length=100, required=False, allow_blank=True)
-	carrier_phone = serializers.CharField(max_length=15, required=False, allow_blank=True)
-	group_id = serializers.CharField(max_length=50, required=False, allow_blank=True)
-	patient_id_rx = serializers.CharField(max_length=50, required=False, allow_blank=True)
-	bin = serializers.CharField(max_length=20, required=False, allow_blank=True)
-	pcn = serializers.CharField(max_length=20, required=False, allow_blank=True)
-	adjuster_name = serializers.CharField(max_length=100, required=False, allow_blank=True)
-	adjuster_phone = serializers.CharField(max_length=15, required=False, allow_blank=True)
-	policy_number = serializers.CharField(max_length=50, required=False, allow_blank=True)
-	claim_number = serializers.CharField(max_length=100, required=False, allow_blank=True)
-	date_of_accident = serializers.DateField(required=False, allow_null=True)
-	payer_name = serializers.CharField(max_length=100, required=False, allow_blank=True)
-	date_of_injury = serializers.DateField(required=False, allow_null=True)
-	employer_name = serializers.CharField(max_length=100, required=False, allow_blank=True)
-
-
-class ConditionAnswerPayloadSerializer(serializers.Serializer):
-	question_id = serializers.IntegerField()
-	text_answer = serializers.CharField(required=False, allow_blank=True, allow_null=True)
-	number_answer = serializers.DecimalField(
-		max_digits=10,
-		decimal_places=2,
-		required=False,
-		allow_null=True,
-	)
-	boolean_answer = serializers.BooleanField(required=False, allow_null=True)
-	date_answer = serializers.DateField(required=False, allow_null=True)
-	selected_choice_ids = serializers.ListField(
-		child=serializers.IntegerField(),
-		required=False,
-		allow_empty=True,
-	)
-
-
-class IntakeCreatePayloadSerializer(serializers.Serializer):
-	patient_info = PatientInfoPayloadSerializer(required=True)
-	insurances = InsurancePayloadSerializer(many=True, required=False)
-	condition_answers = ConditionAnswerPayloadSerializer(many=True, required=False)
-
-	def validate(self, attrs):
-		patient_info = attrs.get("patient_info", {})
-		required_fields = ["first_name", "last_name", "date_of_birth", "email"]
-		missing = [field for field in required_fields if not patient_info.get(field)]
-		if missing:
-			raise serializers.ValidationError(
-				{"patient_info": f"Missing required fields for create: {', '.join(missing)}"}
-			)
-		return attrs
-
-
-class IntakeUpdatePayloadSerializer(serializers.Serializer):
-	patient_id = serializers.IntegerField(required=True)
-	patient_info = PatientInfoPayloadSerializer(required=False)
-	insurances = InsurancePayloadSerializer(many=True, required=False)
-	condition_answers = ConditionAnswerPayloadSerializer(many=True, required=False)
-
-
-class IntakeWriteResponseSerializer(serializers.Serializer):
-	patient_id = serializers.IntegerField()
-	message = serializers.CharField()
+		return bool(request.user and request.user.is_authenticated)
 
 
 @extend_schema_view(
@@ -189,7 +129,7 @@ class IntakeWriteResponseSerializer(serializers.Serializer):
 	),
 )
 class IntakeFormAPIView(APIView):
-	permission_classes = [IsAuthenticated]
+	permission_classes = [IsAuthenticatedOrOptions]
 
 	def get(self, request):
 		form_schema = generate_intake_form_json(include_condition_questions=True)
@@ -203,14 +143,19 @@ class IntakeFormAPIView(APIView):
 		data_ = request.data.copy()
 		data_["patient_info"]["intake_agent"] = intake_agent.id
 		data_["patient_info"]["client"] = client
-		serializer = IntakeCreatePayloadSerializer(data=data_)
-		serializer.is_valid(raise_exception=True)
 
-		patient = self._save_intake_data(serializer.validated_data)
+
+		from .intake_form_submit_validator import IntakeFormSubmitValidator
+		try:
+			validated_intake = IntakeFormSubmitValidator(form_data=data_)
+			patient = validated_intake.validate()
+		except ValueError as e:
+			return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+		
 		return Response(
-			{"patient_id": patient.id, "message": "Intake created successfully."},
-			status=status.HTTP_201_CREATED,
-		)
+				{"patient_id": patient.id, "message": "Intake created successfully."},
+				status=status.HTTP_201_CREATED,
+			)
 
 	@transaction.atomic
 	def put(self, request):

@@ -83,6 +83,24 @@ class Patient_Info(models.Model):
         related_name="intake_agent_patients",
         help_text="The intake agent who created this patient record.",
     )
+    cordinator = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="cordinator_patients",
+        help_text="The cordinator who is assigned to this patient.",
+    )
+    doctor = models.ForeignKey(
+        "accounts.DoctorProfile",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="doctor_patients",
+        help_text="The doctor who is assigned to this patient.",
+    )
+
+    status = models.CharField(max_length=50)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
