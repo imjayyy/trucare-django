@@ -1,0 +1,4831 @@
+[
+{
+  "_id": {
+    "$oid": "61e6ec048567bfc3a89b4e48"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "0311-3512-03",
+  "DrugName": "Acetaminophen ",
+  "Quantity": "3",
+  "Sig": "2 tablets Acetaminophen to affected area up to 4 times daily as needed for pain when not using patches",
+  "Unit": "Tabs",
+  "DaysSupply": "5",
+  "FaxQuantity": "12",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61e6ec2a8567bfc3a89b4e49"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "1237-9635-64",
+  "DrugName": "Aspirin ",
+  "Quantity": "2",
+  "Sig": "2 tablets Aspirin to affected area up to 4 times daily as needed for pain when not using patches",
+  "Unit": "Tabs",
+  "DaysSupply": "5",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61e6ec508567bfc3a89b4e4a"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "9678-5544-632",
+  "DrugName": "NSAID ",
+  "Quantity": "2",
+  "Sig": "2 tablets NSAID to affected area up to 4 times daily as needed for pain when not using patches",
+  "Unit": "Tabs",
+  "DaysSupply": "5",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61e6ec698567bfc3a89b4e4b"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "NDC",
+  "DrugName": "Panadol",
+  "Quantity": "2",
+  "Sig": "Apply 2-3 grams Panadol to affected area up to 4 times daily as needed for pain when not using patches",
+  "Unit": "Tablets",
+  "DaysSupply": "5",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61e6ecb58567bfc3a89b4e4c"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "7263-382-21",
+  "DrugName": "Diazepam ",
+  "Quantity": "2",
+  "Sig": "Apply 2-3 grams Diazepam to affected area up to 4 times daily as needed for pain when not using patches",
+  "Unit": "Tubes",
+  "DaysSupply": "5",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61e6ecd98567bfc3a89b4e4d"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "17532-745-32",
+  "DrugName": "Liquid phenol ",
+  "Quantity": "2",
+  "Sig": "Apply 2-3 grams Liquid phenol to affected area up to 4 times daily as needed for pain when not using patches",
+  "Unit": "Tubes",
+  "DaysSupply": "5",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61ec7bbd9445f306efe71998"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "123",
+  "DrugName": "Test drug",
+  "Quantity": "30",
+  "Sig": "Take 1 tab daily",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61eca8131d99e5f5d5b6dbba"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "Test NDC A",
+  "DrugName": "AnsDrug",
+  "Quantity": "12",
+  "Sig": "2 tablets Acetaminophen to affected area up to 4 times daily as needed for pain when not using patches",
+  "Unit": "Tablets",
+  "DaysSupply": "5",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "61f0134f7546274e6ea7afdf"
+  },
+  "Category": "61e2bd6ef5e81ef20c582e04",
+  "NDC": "000",
+  "DrugName": "orla nsaids",
+  "Quantity": "100",
+  "Sig": "take 3 daily",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f0241b849c14cd6b140381"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "1245",
+  "DrugName": "New pain drug 1",
+  "Quantity": "100",
+  "Sig": "take 1 tab daily",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f0246b91e26694cfd7e40e"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "134",
+  "DrugName": " new muscle relaxer drug",
+  "Quantity": "100",
+  "Sig": "take 1 tab daily",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61f0248b849c14cd6b140382"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "554",
+  "DrugName": "New derm drug 1",
+  "Quantity": "1200",
+  "Sig": "Take 1 daily",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f046d88fa2aa26d904e508"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "123",
+  "DrugName": "New pain drug 1 (Client)",
+  "Quantity": "123",
+  "Sig": "Take 3 daily",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f04785ef72b6a52ca7e627"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "123-00 Client",
+  "DrugName": "pain drug 1",
+  "Quantity": "13221",
+  "Sig": "Take 3 daily",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f2ccf83664da89645f4bb1"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "NDC",
+  "DrugName": "Chemical X",
+  "Quantity": "2",
+  "Sig": "2 tablets Acetaminophen to affected area up to 4 times daily as needed for pain when not using patches",
+  "Unit": "Packs",
+  "DaysSupply": "5",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f3fb741303497a68799a10"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "000",
+  "DrugName": "Indomethacin 25mg",
+  "Quantity": "180",
+  "Sig": "Take 1-2 tablets by mouth 2 to 3 times per day",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f3fbc3898ba1f39beafcc0"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "123",
+  "DrugName": "ANother oal drug",
+  "Quantity": "20",
+  "Sig": "Take 2 daily",
+  "Unit": "Tablets",
+  "DaysSupply": "20",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f6f41fa6fa97604e77f0d1"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "(Pliaglis)Lidocaine 7%/Tetracaine 7% Cream",
+  "Quantity": "240",
+  "Sig": "Apply 1-2 grams topically to affected area(s) up to 4 times daily. Peel off after.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6f48047efb4e1132cd9e3"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "71085-0003-00",
+  "DrugName": "Diclofenac Sodium 3% Topical Gel",
+  "Quantity": "200",
+  "Sig": "Apply 1-2 grams to affected area(s) up to 4 times as needed for pain. (1gram = 1 dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6f4ad47efb4e1132cd9e4"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Diclofenac 1.5% Topical Solution",
+  "Quantity": "480",
+  "Sig": "Apply 2-4mL topically to affected area up to 4 times daily for pain.",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6f55c47efb4e1132cd9e5"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "72275-0702-77",
+  "DrugName": "Diclovix",
+  "Quantity": "2",
+  "Sig": "Apply 2.5ml of Diclofanac Solutions to the AA(s) 4 times daily as needed (20 drops = 1ml) & apply 1 patch up to twice daily as needed",
+  "Unit": "Packs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6f5b6a6fa97604e77f0d2"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Lidocaine 3% Topical Cream",
+  "Quantity": "340",
+  "Sig": "Apply 2-3 grams to affected area(s) up to 4 times as needed for pain.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6f5dfa007ea6e2be20b69"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Doxepin 5% Cream",
+  "Quantity": "180",
+  "Sig": "Apply 1-2 grams to affected area(s) up to 3 times daily as needed for pain. *Refill every other month",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6f815a6fa97604e77f0d3"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "55724-0211-21",
+  "DrugName": "Eucrisa 2%",
+  "Quantity": "60",
+  "Sig": "Apply a thin layer of EUCRISA twice daily to affected areas. (dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6f8b247efb4e1132cd9e6"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "HYDROCORTISONE ACETATE-PRAMOXINE HCL 2.35-1% 28.4GM CREAM",
+  "Quantity": "120",
+  "Sig": "Apply a thin layer topically to the affected skin area(s) 3 to 4 times daily. (1 gram=dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6f936a6fa97604e77f0d4"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Zonalon 5% Cream",
+  "Quantity": "120",
+  "Sig": "Apply to the affected area topically 4 times daily, allowing at least 3 to 4 hours between applications, for up to 8 days (1gram = dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6fa2747efb4e1132cd9e7"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Diclofenac Epolamine 1.3% Patch",
+  "Quantity": "60",
+  "Sig": "Apply one patch twice a day to pain area",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6fb25a007ea6e2be20b6a"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "59088-430-05",
+  "DrugName": "Lidocort 3-0.5% Cream",
+  "Quantity": "270",
+  "Sig": "Apply 2-3 gms to affected area(s) up to 3 times daily as needed for pain, when not using patches.(1 gram=dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f6fb60a6fa97604e77f0d5"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "000",
+  "DrugName": "Chlorzoxazone Tablets 250 mg",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth 3-4 times daily as needed for muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61f6fb8447efb4e1132cd9e8"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "000",
+  "DrugName": "Chlorzoxazone 375 mg Tablet",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth 3-4 times daily as needed for muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61f6fba847efb4e1132cd9e9"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "000",
+  "DrugName": "Cyclobenzaprine 7.5mg Tablet",
+  "Quantity": "90",
+  "Sig": "Take 1 tablet by mouth 3 times daily as needed for muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61f6fbcca007ea6e2be20b6b"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "000",
+  "DrugName": "Metaxalone 800mg Tablets",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth 3-4 times daily as needed for muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61f6fc52a6fa97604e77f0d6"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "000",
+  "DrugName": "Norgesic Forte Tablet",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth 3-4 times daily as needed for pain",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61f6fce847efb4e1132cd9ea"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "70868-0901-90",
+  "DrugName": "Methocarbamol 750 mg Tablets",
+  "Quantity": "180",
+  "Sig": "Take 1 tablet by mouth 3-4 times daily as needed for muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61f6fd1947efb4e1132cd9eb"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": " 73007-0013-03",
+  "DrugName": "Chlorzoxazone 500 mg Tablet",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every 6 hours as needed for pain/muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61f6fd55a007ea6e2be20b6c"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "000",
+  "DrugName": "Chlorzoxazone 750mg",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every 6 hours as needed for pain/muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61f6fe5347efb4e1132cd9ec"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "000",
+  "DrugName": "Tizanidine 4mg Tablet",
+  "Quantity": "90",
+  "Sig": "Take 1 tablet by mouth max 3 times daily as needed for muscle spasms. Treatment can be repeated at 6 to 8 hour intervals",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "61f7e34ca007ea6e2be20b6d"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Kamdoy skin Emulsion",
+  "Quantity": "120",
+  "Sig": "Apply 1mL (6sprays) topically to affected area(s). Allow to dry. May repeat up to 4 times daily.",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7e368a6fa97604e77f0d7"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Atopaderm Cream",
+  "Quantity": "300",
+  "Sig": "Apply 2-3 gms into palm and apply to affected area(s) 3 times daily. Massage gently into skin until completely absorbed. If skin is broken, cover with appropriate dressing.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f7e389a6fa97604e77f0d8"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Atopaderm Cream",
+  "Quantity": "300",
+  "Sig": "Apply 2-3 gms into palm and apply to affected area(s) 3 times daily. Massage gently into skin until completely absorbed. If skin is broken, cover with appropriate dressing.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7e3b8a6fa97604e77f0d9"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "68462-0501-66",
+  "DrugName": "Calcipotriene/Betamethasone 0.005%/0.064% Ointment",
+  "Quantity": "360",
+  "Sig": "Apply 1-3 grams to affected area(s) up to 4 times daily. *Refill every other month.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7e4dba007ea6e2be20b6e"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Hydrocortisone Butyrate Cream 0.1% Cream",
+  "Quantity": "270",
+  "Sig": "Apply 2-3 gms to affected area(s) 2-3 times daily (1 gram= dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7e508a6fa97604e77f0da"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Clobetasol 0.05% Topical Spray ",
+  "Quantity": "375",
+  "Sig": "Apply 2 to 3 grams (2 second spray = 1 gram) topically to affected area(s) 3-4 times daily *Refill every other month.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7e531a6fa97604e77f0db"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Diflorasone Ointment 0.05%",
+  "Quantity": "120",
+  "Sig": "Apply 1-2 grams to affected area twice daily. Do not exceed 60 grams in a week. *Refill every other month.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7e569a007ea6e2be20b6f"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Diflorasone Cream 0.05%",
+  "Quantity": "360",
+  "Sig": "Apply 2-3 gms to affected area(s) 3-4 times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7e5c8a007ea6e2be20b70"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "AMCINONIDE 0.1% CREAM",
+  "Quantity": "270",
+  "Sig": "Apply 2-3 gms to affected area(s) 2-3 times daily (1 gram= dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7e71447efb4e1132cd9ed"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "50222-0302-60",
+  "DrugName": "ENSTILAR",
+  "Quantity": "120",
+  "Sig": "Apply 2 to 3 grams (2 second spray = 1 gram) topically to affected area(s) once daily *Refill every other month.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7e7e8a6fa97604e77f0dc"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "60758-0561-60",
+  "DrugName": "TAZAROTENE 0.1% CRM",
+  "Quantity": "90",
+  "Sig": "Apply 2-3 gms to affected area(s) once daily (1 gram = dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7e8aa47efb4e1132cd9ee"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "68462-0534-65",
+  "DrugName": "TACROLIMUS 0.1%",
+  "Quantity": "180",
+  "Sig": "Apply 2-3 gms to affected area(s) twice times daily (1 gram = dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7eb09a6fa97604e77f0dd"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "51862-0376-60",
+  "DrugName": "Sorilux 0.005% Cream",
+  "Quantity": "180",
+  "Sig": "Apply 2-3 gms to affected area(s) twice daily (1 gram = Dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7eb77a007ea6e2be20b71"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "66993-0947-48",
+  "DrugName": "CLOCORTOLONE PIVALATE 0.1 % CRM",
+  "Quantity": "270",
+  "Sig": "Apply 2-3 gms to affected area(s) 3 times daily (1 gram = dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7ebc7a6fa97604e77f0de"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "45802-0846-01",
+  "DrugName": "ADAPALENE-BENZ PER 0.1-2.5% PMP GEL",
+  "Quantity": "180",
+  "Sig": "Apply 2-3 gms to affected area(s) once daily (1 gram= dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7ec2547efb4e1132cd9ef"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "00781-7172-50",
+  "DrugName": "AZELAIC ACID 15% GEL",
+  "Quantity": "180",
+  "Sig": "Apply 2-3 gms to affected area(s) twice daily (1 gram = Dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7ec4b47efb4e1132cd9f0"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Desoximetasone 0.05% Cream",
+  "Quantity": "360",
+  "Sig": "Apply 2-3 gms to affected area(s) 3-4 times daily (1 gram = dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61f7ec65a6fa97604e77f0df"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Synerderm Skin Emulsion",
+  "Quantity": "120",
+  "Sig": "Apply 2mL topically to affected skin area(s). Allow to dry. May repeat up to 4 times daily.",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7ec89a6fa97604e77f0e0"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Desoximetasone 0.05% Cream",
+  "Quantity": "360",
+  "Sig": "Apply 2-3 gms to affected area(s) 3-4 times daily (1 gram = dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7ecb3a007ea6e2be20b72"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Entty Spray",
+  "Quantity": "120",
+  "Sig": "Apply 1mL topically to affected skin area(s), allow to dry. May repeat up to 4 times daily",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7ed1ea6fa97604e77f0e1"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Fluocinonide 0.05% Cream",
+  "Quantity": "360",
+  "Sig": "Apply 2-4 grams to affected area twice daily. Do not exceed 60 grams in a week. ",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "61f7ed46a6fa97604e77f0e2"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "000",
+  "DrugName": "Sil-K Pad",
+  "Quantity": "8",
+  "Sig": "Cut pad to fit scar with 1/4 inch beyond the scar on all sides. Apply pad and leave on 8-12 hours per day then remove pad and replace with a new pad every 7 days.",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7ed6fa6fa97604e77f0e3"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "000",
+  "DrugName": "Cicatrace Pad",
+  "Quantity": "8",
+  "Sig": "Cut pad to fit affected area(s) so that edges of gel extend at least 1/4 inch beyond affected area. Peel off strip and place the sticky side of pad directly onto affected area. Replace with a new pad every 7 days.",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7ed8547efb4e1132cd9f1"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "000",
+  "DrugName": "Scarcin Gel",
+  "Quantity": "120",
+  "Sig": "Apply 1-2 grams to affected area(s) twice daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7eda2a6fa97604e77f0e4"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "000",
+  "DrugName": "Silivex Pad",
+  "Quantity": "8",
+  "Sig": "Cut pad to fit scar with 1/4 inch beyond the scar on all sides. Apply pad and leave on 8-12 hours per day then remove pad and replace with a new pad every 7 days.",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7edd0a007ea6e2be20b79"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "000",
+  "DrugName": "ScarSilk Gel",
+  "Quantity": "90",
+  "Sig": "Apply 1-2 grams to affected area(s) twice daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7edf547efb4e1132cd9f2"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "000",
+  "DrugName": "ScarSilk Pads",
+  "Quantity": "8",
+  "Sig": "Cut pad to fit scar with 1/4 inch beyond the scar on all sides. Apply pad and leave on 8-12 hours per day then remove pad and replace with a new pad every 7 days.",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7ef04a007ea6e2be20b7a"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "50222-0302-60",
+  "DrugName": "ENSTILAR ",
+  "Quantity": "120",
+  "Sig": "Apply 2-3 gms to affected area(s) once times daily (1 gm= 1 dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7ef4da6fa97604e77f0e5"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "60758-0561-60",
+  "DrugName": "TAZAROTENE 0.1% CRM",
+  "Quantity": "90",
+  "Sig": "Apply 2-3 gms to affected area(s) once times daily (1 gm= 1 dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7ef8aa6fa97604e77f0e6"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "68462-0534-65",
+  "DrugName": "TACROLIMUS 0.1%",
+  "Quantity": "180",
+  "Sig": "Apply 2-3 gms to affected area(s) twice daily (1 gm= 1 dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7efbe47efb4e1132cd9f3"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "66993-0947-48",
+  "DrugName": "CLOCORTOLONE PIVALATE 0.1 % CRM",
+  "Quantity": "270",
+  "Sig": "Apply 2-3 gms to affected area(s) 2-3 times daily (1 gm= 1 dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7effca007ea6e2be20b7b"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "00781-7172-50",
+  "DrugName": "AZELAIC ACID 15% GEL",
+  "Quantity": "120",
+  "Sig": "Apply 2-3 gms to affected area(s) twice daily (1 gm= 1 dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "61f7f032a007ea6e2be20b7c"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ac",
+  "NDC": "000",
+  "DrugName": "Omeprazole/Sodium Bicarbonate 40mg-1680mg Packets",
+  "Quantity": "30",
+  "Sig": "Take 1 packet by mouth once daily on an empty stomach at least one hour before a meal. Empty packet contents into a small cup containing 1-2 tablespoons of water. Do not use other liquids or food. Stir well and drink immediately. Refill cup with water and drink.",
+  "Unit": "Packs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Acid reflux"
+},
+{
+  "_id": {
+    "$oid": "61f7f08aa6fa97604e77f0e7"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ad",
+  "NDC": "000",
+  "DrugName": "Carbinoxamine Tablets 6mg",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth 3-4 times daily. Take on an empty stomach.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Allergy"
+},
+{
+  "_id": {
+    "$oid": "61f7f0dc47efb4e1132cd9f4"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984ae",
+  "NDC": "000",
+  "DrugName": "Benzonatate Capsules 150mg",
+  "Quantity": "90",
+  "Sig": "Take 1 capsule by mouth up to 3 times daily.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Cough"
+},
+{
+  "_id": {
+    "$oid": "61f7f1cba6fa97604e77f0e8"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984ae",
+  "NDC": "000",
+  "DrugName": "CLEMASTINE FUMARATE syrup (.5mg/5mL",
+  "Quantity": "1200",
+  "Sig": "Take 10-20ml by mouth twice daily ",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Cough"
+},
+{
+  "_id": {
+    "$oid": "61f7f1fb47efb4e1132cd9f5"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "000",
+  "DrugName": "Fenoprofen 200mg",
+  "Quantity": "180",
+  "Sig": "Take 2 capsules by mouth 3 times daily as needed for pain.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f7f210a6fa97604e77f0e9"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "000",
+  "DrugName": "Fenoprofen 400mg",
+  "Quantity": "60",
+  "Sig": "Take 1 capsule by mouth 3-4 times daily as needed for pain.",
+  "Unit": "Capsules",
+  "DaysSupply": "15",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f7f22747efb4e1132cd9f6"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "000",
+  "DrugName": "Ketoprofen 25mg",
+  "Quantity": "240",
+  "Sig": "Take 1-2 capsule by mouth every 6 hours as needed for pain.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f7f24147efb4e1132cd9f7"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "000",
+  "DrugName": "Mefenamic Acid 250mg",
+  "Quantity": "120",
+  "Sig": "Take 2 cap twice daily with food",
+  "Unit": "Capsules",
+  "DaysSupply": "15",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f7f36047efb4e1132cd9f8"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "42211-204-29",
+  "DrugName": "Diclofenac Potassium Tablets 35mg ",
+  "Quantity": "240",
+  "Sig": "Take 1-2 Tablets by mouth every 6 hours as needed for pain.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f7f3a647efb4e1132cd9f9"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "000",
+  "DrugName": "Diclofenac Potassium Tablets 50mg",
+  "Quantity": "100",
+  "Sig": "Take 1 Tablets by mouth every 6-8 hours as needed for pain.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f7f3e2a6fa97604e77f0ea"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "000",
+  "DrugName": "Naproxen CR 375mg Tablet",
+  "Quantity": "60",
+  "Sig": "Take 2 tablets by mouth daily as needed for pain.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f7f407a007ea6e2be20b7d"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "000",
+  "DrugName": "Ketoprofen ER 200mg",
+  "Quantity": "30",
+  "Sig": "Take 1 tablet by mouth daily as needed for pain.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f7f43fa6fa97604e77f0eb"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "000",
+  "DrugName": "Meloxicam 5MG Capsule",
+  "Quantity": "180",
+  "Sig": "Take 2 capsules by mouth 3 times daily as needed for pain.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61f7f492a6fa97604e77f0ec"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "00049-3190-28",
+  "DrugName": "Voriconazole 200mg x 1ml vial",
+  "Quantity": "60",
+  "Sig": "Empty 1 vial into footbath up to 2 times daily and soak for 10 minutes.",
+  "Unit": "Bottles",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "61f7f4baa007ea6e2be20b7e"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "000",
+  "DrugName": "Oxiconazole Nitrate 1% Cream",
+  "Quantity": "180",
+  "Sig": "Apply 2-3 grams to affected area(s) twice daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "61f7f4d747efb4e1132cd9fa"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "000",
+  "DrugName": "Ketoconazole 2% cream",
+  "Quantity": "240",
+  "Sig": "Apply 2-3 gms to affected area(s) 3 times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "61f7f4e7a6fa97604e77f0ed"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "000",
+  "DrugName": "Ketoconazole 2% Form",
+  "Quantity": "300",
+  "Sig": "Apply foam directly onto affected area(s) and rub in 4 times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "61f7f4fca6fa97604e77f0ee"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "00",
+  "DrugName": "Econazole Nitrate Cream 1%",
+  "Quantity": "270",
+  "Sig": "Apply 2-3 gms to affected area(s) 3 times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "61f7f57e47efb4e1132cd9fb"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "000",
+  "DrugName": "Ecoza (econazole nitrate) topical foam 1% 70gms",
+  "Quantity": "270",
+  "Sig": "Apply 2-3 gms to affected area(s) 3 times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "61f7f5ab47efb4e1132cd9fc"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "000",
+  "DrugName": "Naftafine 2% Cream",
+  "Quantity": "180",
+  "Sig": "Apply 2-3 gms to affected area(s) 2 times daily (1 gram= dime size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "61f7f70ca007ea6e2be20b7f"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "000",
+  "DrugName": "Butalbital/Acetaminophen 50mg/300mg Tablets",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every 4 hours as needed for headaches.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "61f7f745a6fa97604e77f0ef"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "000",
+  "DrugName": "Rizatriptan Benzoate 5mg ",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every 4 hours as needed for headaches.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "61f7f76da6fa97604e77f0f0"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "000",
+  "DrugName": "Sumatriptan Succinate/ Naproxen Sodium 85/500mg",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every 4 hours as needed for headaches.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "61f7f796a007ea6e2be20b80"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "000",
+  "DrugName": "Ergotamine/Caffeine Tablets 1 mg/100mg",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every 4 hours as needed for headaches.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "61f7f7b147efb4e1132cd9fd"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "000",
+  "DrugName": "NURTEC 75 MG TABLETS",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every day hours as needed for headaches. Take 1 tablet by mouth every other day as needed for migraines",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "61f7f7c7a007ea6e2be20b81"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "000",
+  "DrugName": "UBRELVY 100MG TABLET",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every 4 hours as needed for headaches.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "61faec9ab678ff31b54d5144"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "59088-479-05",
+  "DrugName": "Circatrix (Capsicum Oleoresin) 0.05% topical cream",
+  "Quantity": "57",
+  "Sig": "Apply a thin layer to the affected area not more than 4 times daily. For first use, apply to small area to test for sensitivity or skin reaction. Gently massage into the skin until fully absorbed. Wash hands with soap and water thoroughly after each application to avoid spreading to the eyes or other sensitive mucous membranes",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61faecbbf682e19066959961"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "50488-1015-05",
+  "DrugName": "Methyl Salic 25% topical cream",
+  "Quantity": "120",
+  "Sig": "Apply externally to the affected area 3 to 4 times daily. For first use, apply to small area to test for sensitivity or skin reaction. Gently massage into the skin until fully absorbed. Wash hands with soap and water thoroughly after each application to avoid spreading to the eyes or other sensitive mucous membranes",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61faece1b678ff31b54d5145"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "50488-1075-6",
+  "DrugName": "Capsaicin 0.075% topical cream",
+  "Quantity": "120",
+  "Sig": "Apply a thin layer to the affected area not more than 4 times daily. For first use, apply to small area to test for sensitivity or skin reaction. Gently massage into the skin until fully absorbed. Wash hands with soap and water thoroughly after each application to avoid spreading to the eyes or other sensitive mucous membranes",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61faecfcb678ff31b54d5146"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "15370-180-60",
+  "DrugName": "Lofena (Diclofenac Potassium) 25 mg tablet, film coated",
+  "Quantity": "180",
+  "Sig": "Take one to two tablets by mouth three times daily, not to exceed three doses per day",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "61fc32551f7b33b73b1b7c36"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Lidocaine/Prilocaine 2.5/2.5%",
+  "Quantity": "240",
+  "Sig": "Apply 2 grams to affected area 3-4 times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "61fc34de02f39a272f413d1f"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ac",
+  "NDC": "000",
+  "DrugName": "Omeprazole 20mg",
+  "Quantity": "60",
+  "Sig": "Take 1-2 capsules daily",
+  "Unit": "Caps",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Acid reflux"
+},
+{
+  "_id": {
+    "$oid": "61fc357302f39a272f413d20"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "000",
+  "DrugName": "Meloxicam 7.5mg",
+  "Quantity": "60",
+  "Sig": "Take 1-2 tablets daily as needed for pain",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6202993277e77dff84f737ff"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "59088-448-07",
+  "DrugName": "Camphotrol (Camphor 4% and Menthol 10%) Gel",
+  "Quantity": "85",
+  "Sig": "Using the roll-on applicator massage a liberal amount of gel directly on the affected area, not more than 3 to 4 times daily. For adults and children above age 12 only.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "620299a1234a24fd441351b9"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": " 69420-7025-1",
+  "DrugName": "Capsaicin patch 0.025% ",
+  "Quantity": "20",
+  "Sig": "Apply 1 patch to the affected area of intact skin up to 3 times a day. Do not leave patch on for more than 8 hours at a time. For adults and children above the age of 18 only. ",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "62029a0577e77dff84f73800"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "73352-886-60 ",
+  "DrugName": "Calcipotriene 0.005% 69 gram topical foam aerosol",
+  "Quantity": "60",
+  "Sig": "Dispense a small amount of calcipotriene foam into the palm of your hand and apply a thin layer externally to the affected area and gently rub the foam into the affected area until it disappears into the skin.  3 to 4 times daily. For the scalp, apply calcipotriene foam to your scalp when your hair is dry. Part your hair and apply directly on the affected area. Wash hands with soap and water thoroughly after each application to avoid spreading to the eyes, face or other sensitive mucous membranes.  ",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6220ce0949ef0cd8cee9919b"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000 (300g)",
+  "DrugName": "Diclofenac 3% Topical Gel",
+  "Quantity": "300",
+  "Sig": "Apply 1-2 grams to affected area(s) up to 4 times as needed for pain.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227896f7b18c08a9addd73b"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Calcipotriene/Betamethasone0.005%/0.064%Ointment",
+  "Quantity": "300",
+  "Sig": "Apply1-3gramstoaffectedarea(s)upto4timesdaily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "622789ab8229341ac76f816e"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Augmented Betamethasone Lotion",
+  "Quantity": "240",
+  "Sig": "Apply 2-4 grams topically to affected area(s) 3 times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "622789f67b18c08a9addd73c"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Calcipotriene 0.005% Foam",
+  "Quantity": "120",
+  "Sig": "Apply thin layer of foam to the affected area(s) twice daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278a3d49ef0cd8cee991bc"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Diflorasone0.05%Ointment",
+  "Quantity": "180",
+  "Sig": "Apply 1-2 grams to affected area twice daily. Do not exceed 50 grams in a week. Use 2 weeks on / 1week off.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278a7b7b18c08a9addd73d"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Flurandrenolide 0.05% Lotion",
+  "Quantity": "240",
+  "Sig": "Apply 2-3 ml to affected area(s) up to 3 times daily",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278aaf7b18c08a9addd73e"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Triamcinolone Acetonide Spray 0.147mg/gm",
+  "Quantity": "400",
+  "Sig": "Apply 2-3 grams topically to affected area(s) up to 4 times daily (2second spray= 1gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278ae18229341ac76f816f"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Desonide 0.05% Cream",
+  "Quantity": "240",
+  "Sig": "Apply 2-4 grams topically to affected area(s) 3 times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278b1349ef0cd8cee991bd"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Desoximetasone 0.05% Ointment",
+  "Quantity": "300",
+  "Sig": "Apply 2-4 grams topically to affected area(s) 3 times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278b578229341ac76f8170"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Fluocinolone 0.01% Solution",
+  "Quantity": "240",
+  "Sig": "Apply 2-4 mls topically to affected area(s) 3 times daily",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278bcc8229341ac76f8171"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "KamDoy Rx Skin Emulsion",
+  "Quantity": "120",
+  "Sig": "Apply a small amount (1ml) in sufficient quantity to cover the affected skin area to be protected and allow to dry 4 times daily",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278c1049ef0cd8cee991bf"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Bensal HP",
+  "Quantity": "240",
+  "Sig": "Apply 1-2 grams to affected area(s)upto4timesdaily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278c458229341ac76f8172"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Synerderm Skin Emulsion",
+  "Quantity": "120",
+  "Sig": "Apply 1 ml to affected area(s) and allow to dry .May repeat up to 4 times daily.",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278c838229341ac76f8173"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Atopaderm Cream",
+  "Quantity": "200",
+  "Sig": "Apply 2-3 grams to affected area 3 times daily. Massage gently until completely absorbed. If skin is broken ,cover with appropriate dressing",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278cc97b18c08a9addd73f"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Hylaguard Cream",
+  "Quantity": "450",
+  "Sig": "Apply 2-3 grams to affected area 4 times daily. Massage gently until completely absorbed. If skin is broken, cover with appropriate dressing",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62278d0449ef0cd8cee991c0"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ad",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Dexchlorpheniramine Maleate Solution",
+  "Quantity": "120",
+  "Sig": "Take 2 to 3 teaspoons twice daily for allergies",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Allergy"
+},
+{
+  "_id": {
+    "$oid": "62278d2c7b18c08a9addd740"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ad",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Carbinoxamine Maleate 6 Mg",
+  "Quantity": "120",
+  "Sig": "1 tablet every 6-8 hours ,not to exceed 24mg/day",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Allergy"
+},
+{
+  "_id": {
+    "$oid": "62278d7c49ef0cd8cee991c1"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Norgesic Forte Tablet",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth 3-4 times daily as needed for pain.",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "62278dae8229341ac76f8174"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Orphenadrine Citrate/Aspirin/Caffeine Tablets (50gm/770mg/60mg)",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth 3-4 times daily as needed for pain",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "6227ed007b18c08a9addd748"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Chlorzoxazone 500mgTablet",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every 6-8 hours as needed",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "6227ed3d8229341ac76f818d"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Chlorzoxazone Tablets 250 mg",
+  "Quantity": "240",
+  "Sig": "Take1-2 tablets by mouth 3-4 times daily as needed for muscle spasms",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "6227ed6d7b18c08a9addd749"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Cyclobenzaprine 7.5mg Tablets",
+  "Quantity": "90",
+  "Sig": "Take 1 tablet by mouth 2-3 times daily for muscle spasms",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "6227eda649ef0cd8cee991ca"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Ozobax Oral Solution",
+  "Quantity": "946",
+  "Sig": "Take 5-20ml (1-4teaspoons) by mouth up to 4 times daily as needed for muscle spasms",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "6227edd37b18c08a9addd74a"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Metaxalone 800mg",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet every 6-8 hours as needed for pain",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "6227edfa7b18c08a9addd74b"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Tizanidine 4mg Capsules",
+  "Quantity": "120",
+  "Sig": "Take 1 capsule by mouth up to 3-4 times daily.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "6227ee3c8229341ac76f818e"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Chlorzoxazone 375mg Tablets",
+  "Quantity": "180",
+  "Sig": "Take up to 2 tablet by mouth 3 times daily as needed for muscle spasms",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "6227ee5b8229341ac76f818f"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Methocarbamol Tabs 750mg",
+  "Quantity": "180",
+  "Sig": "Take 1 capsule by mouth 3-4 times daily as needed for pain.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "6227ee8049ef0cd8cee991cb"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Diclofenac 25mg Tablets",
+  "Quantity": "150",
+  "Sig": "Take 1 tablet 4-5 times daily as needed for pain",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227eea449ef0cd8cee991cc"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Fenoprofen 200mg Capsules",
+  "Quantity": "180",
+  "Sig": "Take 1-2 capsules by mouth every 6 hours as needed for pain",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227eec58229341ac76f8190"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Ketoprofen 25mg Capsules",
+  "Quantity": "240",
+  "Sig": "Take 1-2 capsule by mouth every 6 hours as needed for pain.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227eef87b18c08a9addd74c"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Naproxen Suspension 125mg/5m",
+  "Quantity": "1000",
+  "Sig": "Take 10-20ml by mouth twice daily as needed for pain",
+  "Unit": "mls",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227ef1f7b18c08a9addd74d"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Naproxen-Esomeprazole 500mg/20mg Tablets",
+  "Quantity": "60",
+  "Sig": "Take 1 tablet twice daily",
+  "Unit": "Tablets",
+  "DaysSupply": "60",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227ef4549ef0cd8cee991cd"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Naproxen-Esomeprazole 375mg/20mg Tablets",
+  "Quantity": "60",
+  "Sig": "Take 1 tablet twice daily",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227ef6e8229341ac76f8191"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Fenoprofen 400mg Capsules",
+  "Quantity": "120",
+  "Sig": "Take 1 capsule by mouth 3-4 times daily as needed for pain.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227efb87b18c08a9addd74e"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Meloxicam 5MG Capsule",
+  "Quantity": "90",
+  "Sig": "Take 2-3 capsules daily as needed for pain",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227efe47b18c08a9addd74f"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Diclofenac Capsule 35mg (Zorvolex)",
+  "Quantity": "90",
+  "Sig": "Take 1 capsule orally up to 3 times daily as needed for pain",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227f01a8229341ac76f8192"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Nabumetone500mgTablet",
+  "Quantity": "60",
+  "Sig": "Take 1-2 tablets daily. Do not exceed 2000mg in 24 hours",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227f05849ef0cd8cee991ce"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Mefenamic Acid 250mg Capsule",
+  "Quantity": "30",
+  "Sig": "Two (2) capsules initially, then one (1) capsules every 6 hours. DNE 7 day therapy",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6227f0847b18c08a9addd750"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Halucort External Gel",
+  "Quantity": "180",
+  "Sig": "Apply 1-2 grams to affected area(s)2-3 times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "6227f0ba8229341ac76f8193"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Scarcin Gel",
+  "Quantity": "120",
+  "Sig": "Clean and dry the affected area(s). Apply thin layer (1-2grams) to affected area(s) twice daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "6227f11249ef0cd8cee991cf"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ac",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Omeprazole/Sodium Bicarb 40mg / 1680mg",
+  "Quantity": "30",
+  "Sig": "Empty packet contents into a small cup containing 1-2 tablespoons of water. Stir well and drink immediately. Refill cup with water and drink.1 time daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Acid reflux"
+},
+{
+  "_id": {
+    "$oid": "6227f14e49ef0cd8cee991d0"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Dermalid",
+  "Quantity": "1 Kit",
+  "Sig": "Apply 2-3grams to affected area(s) up to 4 times daily as need for pain",
+  "Unit": "Packs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f1887b18c08a9addd751"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Lidotral 3.88%Cream (Lidocaine)",
+  "Quantity": "255",
+  "Sig": "Apply 2-3 grams to affected area up to 3 times daily as needed, when not using patches",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f1b549ef0cd8cee991d1"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Zonalon 5%Cream",
+  "Quantity": "180",
+  "Sig": "Apply 1-3 grams to affected area twice daily. Do not exceed 60 grams in a week.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f1e249ef0cd8cee991d2"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Doxepin 5% Cream",
+  "Quantity": "180",
+  "Sig": "Apply 1-3 grams to affected area twice daily. Do not exceed 60 grams in a week",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f20d7b18c08a9addd752"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Lidocaine 5% Patch",
+  "Quantity": "60",
+  "Sig": "Apply 1-2 patches topically to affected area(s).12 hours on and12 hours off",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f23549ef0cd8cee991d3"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "64380-789-33",
+  "DrugName": "Lidocaine Ointment USP, 5%",
+  "Quantity": "150",
+  "Sig": "Apply 1-2 grams to affected area(s) up to 3 times daily as need for pain (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "25",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f2598229341ac76f8194"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Lidocaine 4% Solution",
+  "Quantity": "250",
+  "Sig": "Apply 2-4 ml to affected area(s) 3 times daily",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f28549ef0cd8cee991d4"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Fluovix 0.1% Therapy Pack",
+  "Quantity": "1",
+  "Sig": "Apply 2-3grams to affected area(s) 1-2times daily",
+  "Unit": "Packs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f2d349ef0cd8cee991d5"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Diflorasone 0.05% Ointment",
+  "Quantity": "180",
+  "Sig": "Apply 1-2 grams to affected area twice daily. Do not exceed 50 grams in a week. Use 2weeks on / 1week off",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f3017b18c08a9addd753"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Flurandrenolide 0.05% Ointment",
+  "Quantity": "240",
+  "Sig": "Apply 2-4 grams to affected area(s) 3 times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f9388229341ac76f8195"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Flurandrenolide 0.05% Lotion",
+  "Quantity": "240",
+  "Sig": "Apply 2-3 ml to affected area(s) up to 3 times daily.",
+  "Unit": "mls",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f97249ef0cd8cee991d6"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Triamcinolone Acetonide Spray 0.147mg/gm",
+  "Quantity": "400",
+  "Sig": "Apply 2-3 grams topically to affected area(s) up to 4 times daily (2 second spray= 1gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f9b78229341ac76f8196"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "DermacinRX Lexitral Pharmap",
+  "Quantity": "1 pack",
+  "Sig": "Apply 40 drops (approx.2ml) to affected area up to 4 times a day.",
+  "Unit": "Packs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227f9da49ef0cd8cee991d7"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Diclofenac Epolamine 1.3%Patch",
+  "Quantity": "60",
+  "Sig": "Apply 1 patch to the most painful area twice daily",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227fa0a7b18c08a9addd754"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Diclofenac 3% Topica lGel",
+  "Quantity": "300",
+  "Sig": "Apply 2-4 grams to affected area(s)up to 4 times as needed for pain.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6227fa337b18c08a9addd755"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Naftifine HCL 2% Cream",
+  "Quantity": "60",
+  "Sig": "Apply 2-3 grams to affected area(s) daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6227fa5b8229341ac76f8197"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Oxiconazole 1% Cream",
+  "Quantity": "270",
+  "Sig": "Apply 2-3 grams to affected area(s) up to 3 times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6227fa8849ef0cd8cee991d8"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Ketoconazole 2% Cream",
+  "Quantity": "240",
+  "Sig": "Apply 2-3 grams to affected area(s) up to 3 times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6227fab68229341ac76f8198"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Ketoconazole 2% Foam",
+  "Quantity": "300",
+  "Sig": "Apply 3-4 grams of foam directly to affected area(s) and rub in up to 3 times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6227fae18229341ac76f8199"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Econazole 1%",
+  "Quantity": "255",
+  "Sig": "Clean and dry the affected area(s).Apply thin layer(1-2grams) to affected area(s) twice daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6227fb117b18c08a9addd756"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Naftifine gel 1%",
+  "Quantity": "60",
+  "Sig": "Apply 2-3 grams to affected area(s) twice daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6227fb6b49ef0cd8cee991d9"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Dihydroergotamine Mesylate",
+  "Quantity": "1 Kit",
+  "Sig": "1 spray in each nasal, repeat after 15 to 30mins for a total o f4 sprays. Do not exceed 6 sprays in 24 hours or 8 sprays per week",
+  "Unit": "Packs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6227fbc549ef0cd8cee991da"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Ergotamin Caffeine tablets",
+  "Quantity": "30",
+  "Sig": "Take 2 tablet po at first side of attack; may take 1 tablet every 30 mins as needed. Do not exceed 6 tablets per attack or 10 tablets per week.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6227fc188229341ac76f819a"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Naproxen/Sumatriptan 500mg/85mg Tablets",
+  "Quantity": "9",
+  "Sig": "Take 1 tablet at onset of migraine; may repeat once after 2 hours. Do not exceed 2 tablets in 24 hours",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6227fc758229341ac76f819b"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ad",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Clemastine Fumarate Syrup",
+  "Quantity": "120",
+  "Sig": "Take 2 teaspoons full (10ml) orally every 12 hours",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Allergy"
+},
+{
+  "_id": {
+    "$oid": "6227fdff8229341ac76f81a4"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "Medcillary(000)",
+  "DrugName": "Nuvazil II - Silicone Sheets - 4ct",
+  "Quantity": "1 pack",
+  "Sig": "Cut Sheet to size of affected area. Replace sheet weekly or when no longer securing to skin",
+  "Unit": "Packs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "6238a1ddbf3f2d417136dc5f"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Eucrisa 2%",
+  "Quantity": "60",
+  "Sig": "Apply a thin layer of EUCRISA twice daily to affected areas. (dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "60",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62686b071fbbcc56ba48da0c"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Calcipotriene 0.005%",
+  "Quantity": "240",
+  "Sig": "Apply 2-4 grams to affected area twice daily. (1 dime size= 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "626882af9c8f06f0bbc9e38b"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "000",
+  "DrugName": "Crotan Lotion",
+  "Quantity": "237",
+  "Sig": "Apply 3-4 grams to affected area(s) twice daily. Thoroughly massage lotion into affected area until completely absorbed.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6271971c1fbbcc56ba48da79"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": " Calcipotriene 0.005%",
+  "Quantity": "240",
+  "Sig": "Apply 2-4 grams to affected area twice daily. (1 dime size= 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6285326109cbfe84d20641e0"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ad",
+  "NDC": "000",
+  "DrugName": "CLEMASTINE FUMARATE syrup (.67mg/5mL)",
+  "Quantity": "1200",
+  "Sig": "Take 10-20ml by mouth twice daily ",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Allergy"
+},
+{
+  "_id": {
+    "$oid": "6285354ac601d48898b404b6"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984ae",
+  "NDC": "000",
+  "DrugName": "CLEMASTINE FUMARATE syrup (.67mg/5mL)",
+  "Quantity": "1200",
+  "Sig": "Take 10-20ml by mouth twice daily ",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Cough"
+},
+{
+  "_id": {
+    "$oid": "6297c7c01328fd88e4e878f4"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-1370-02",
+  "DrugName": "MUPIROCIN CREAM 2% 30gm",
+  "Quantity": "180gm",
+  "Sig": "Apply 2 to 3 grams to the affected area three times daily to treat bacterial infection",
+  "Unit": "Tubes",
+  "DaysSupply": "",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6297c82b1328fd88e4e878f5"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "68462-0564-35",
+  "DrugName": "MUPIROCIN CREAM 2% 30GM",
+  "Quantity": "180gm",
+  "Sig": "Apply 2 to 3 grams to the affected area three times daily to treat bacterial infection",
+  "Unit": "Tubes",
+  "DaysSupply": "",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6297c87576fa474d4ce73963"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "43538-0940-60",
+  "DrugName": "NEO-SYNALAR 0.5%-0.025% CREAM",
+  "Quantity": "240gm",
+  "Sig": "Apply a thin film (1 to 2 grams) to the affected area and gently rub in 2 to 4 times a day.",
+  "Unit": "Tubes",
+  "DaysSupply": "",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6297ca1876fa474d4ce73964"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "62559-0391-20",
+  "DrugName": "Vancomycin 250mg Capsule",
+  "Quantity": "180",
+  "Sig": "FILL FOOT SOAKING DEVICE WITH WARM WATER THEN EMPTY THE CONTENTS OF 6 VANCOMYCIN CAPSULES INTO CONTAINER. PLACE AFFECTED AREAS INTO WATER AND SOAK FOR 10-15 MINUTES DAILY.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6297caa01328fd88e4e878f7"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "70436-0029-80",
+  "DrugName": "Voriconazole  200mg Vial QD #30 (Thirty)",
+  "Quantity": "30",
+  "Sig": "For each treatment empty (1) 200 mg vial into soaking device and allow medication to fully dissolve in water. Place affected areas into water and soak for 10-15 minutes. Adminster one time per day.",
+  "Unit": "Bottles",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6297caea76fa474d4ce73965"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-1359-03",
+  "DrugName": "Oxiconazole Nitrate 1% CREAM 180 GM",
+  "Quantity": "180gm",
+  "Sig": "Apply 1 to 2 gm to affected area(s) three to four times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6297cb2ccccd1a393e040be5"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-1362-03",
+  "DrugName": "METRONIDAZOLE GEL 1% 60 GM UOU",
+  "Quantity": "240gm",
+  "Sig": "Apply 2 to 4 grams to the affected area two times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6297cb741328fd88e4e878f8"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-1368-03",
+  "DrugName": "NAFTIFINE HCL CREAM 1% 60GM",
+  "Quantity": "180gm",
+  "Sig": "Apply a thin layer to and around the affected area once daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6297cbf7cccd1a393e040be6"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-4215-03",
+  "DrugName": "NAFTIFINE HCL CREAM 2% 60GM",
+  "Quantity": "180gm",
+  "Sig": "Apply a thin layer to and around the affected area once daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6297cdc476fa474d4ce73967"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "68682-0306-01",
+  "DrugName": "Butalbital/Acetaminophen 50mg/300mg Tablets",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every 6 hours as needed.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6297ce3c76fa474d4ce73968"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "24201-0463-08",
+  "DrugName": "Dihydroergotamine 4mg/ml Solution",
+  "Quantity": "8",
+  "Sig": "Use one spray (0.5 mg) in each nostril. Fifteen minutes later, use an additional one spray (0.5 mg) in each nostril, for a total dosage of four sprays (2 mg).",
+  "Unit": "Bottles",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6297ce7bcccd1a393e040be8"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "42543-0098-01",
+  "DrugName": "Butalbital/ASA/Caffeine 50mg/325mg/40mg Tablets",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth every 6 hours as needed.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6297cee61328fd88e4e878f9"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "24470-0917-10",
+  "DrugName": "    Ergotamine/Caffeine 1/100mg  ",
+  "Quantity": "100",
+  "Sig": "Take 2 tablets at the first sign of headache, followed by 1 tablet every half hour until the headache is relieved. Do not take more than 6 tablets per headache.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6297cf75cccd1a393e040be9"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "69420-1001-01",
+  "DrugName": "Cyclobenzaprine 7.5 mg Tablet - QTY 90 Tabs",
+  "Quantity": "90",
+  "Sig": "Take I tablet by mouth up to 3 times daily as needed for muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6297cfc61328fd88e4e878fa"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "00591-3330-01",
+  "DrugName": "ALT Cyclobenzaprine 7.5MG 100 tabs",
+  "Quantity": "100",
+  "Sig": "Take 1 tablet by mouth up to 3 times daily as needed for muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6297d0361328fd88e4e878fc"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "50991-0999-60",
+  "DrugName": " Norgesic Forte ",
+  "Quantity": "120",
+  "Sig": "Take 1/2 to 1 tablet by mouth 3-4 times daily for pain.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6297d07ccccd1a393e040bea"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "47781-0153-01",
+  "DrugName": "Naproxen Sodium Controlled-Release Tablets  375mg Tablet -  QTY 60 Tabs",
+  "Quantity": "60",
+  "Sig": "Take two tablets by mouth once daily for pain. Take with food.",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6297d0fd1328fd88e4e878fd"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "69499-0330-60",
+  "DrugName": "Chlorzoxazone 250 mg Tablets",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth  three or four times daily for muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6297d1581328fd88e4e878fe"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "69336-0124-10",
+  "DrugName": "Fenoprofen 200mg capsule",
+  "Quantity": "360",
+  "Sig": "Take 1-3 capsules by mouth 3-4 times daily for pain. Take with food.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6297d19e76fa474d4ce73969"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "69784-0500-01",
+  "DrugName": "NAPROXEN DR 500MG TAB 100CT",
+  "Quantity": "60",
+  "Sig": "Take 1 tablet by mouth two times a day for pain. Take with food.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6297d2d076fa474d4ce7396a"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ac",
+  "NDC": "27241-0032-03",
+  "DrugName": "Omeprazole and Sodium Bicarbonate 40mg/1100mg -QTY:30 Capsules",
+  "Quantity": "30",
+  "Sig": "Take 1 capsule by mouth daily",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Acid reflux"
+},
+{
+  "_id": {
+    "$oid": "6297d3371328fd88e4e87900"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ac",
+  "NDC": "68682-0991-30",
+  "DrugName": "Omeprazole and Sodium Bicarbonate Powder for Oral suspension 40mg/1680 mg  -QTY: 30 packets",
+  "Quantity": "30",
+  "Sig": "Take 1 dose packet by mouth daily",
+  "Unit": "Packs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Acid reflux"
+},
+{
+  "_id": {
+    "$oid": "6297d404cccd1a393e040bec"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "51672-1352-03",
+  "DrugName": "Desoximetasone 0.05% OINT",
+  "Quantity": "240gm",
+  "Sig": "Sig: apply a thin layer (1-2gm) to affected area(s) 3-4 times daily for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6297d4ba1328fd88e4e87901"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "16729-0421-01",
+  "DrugName": "Tacrolimus 0.03% Ointment",
+  "Quantity": "360",
+  "Sig": "Sig: Apply a thin layer (2-4 gm) to affected area(s) 2 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6297d54776fa474d4ce7396c"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "51862-0376-60",
+  "DrugName": "Sorilux 0.005% foam",
+  "Quantity": "120",
+  "Sig": "Sig: Apply a thin layer (1-2 gm) to affected area(s) 2 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6297d6a976fa474d4ce7396d"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "51672-4079-08",
+  "DrugName": "DESONIDE 0.05% LOTION 118 ML",
+  "Quantity": "118",
+  "Sig": "Apply a thin layer (1-2 gm) to affected area(s) 2 to 3 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "ml -- or -- 1000 mls",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6297d75a76fa474d4ce7396e"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "68462-0310-65",
+  "DrugName": "CALCIPOTRIENE  0.005% OINT 60GM",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-4gm) to affected area(s) 1 to 2 times a day ",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6297d7becccd1a393e040bed"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "73352-0886-60",
+  "DrugName": "CALCIPOTRIENE FOAM 0.005% 60 GM UOU",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-4 gm) of foam to affected area(s) 2 times a day ",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "62980f811328fd88e4e87906"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "71800-0009-60",
+  "DrugName": "Diflorasone Ointment 0.05% QTY 240gm",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (1-2gm) ro affected area(s) 3-4 times a day for swelling (1-dime size = 1gm)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "62981005cccd1a393e040bef"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "21922-0024-11",
+  "DrugName": "TRIAMCINOLONE ACETONIDE OINT 0.05% 430 GM UOU",
+  "Quantity": "430",
+  "Sig": "Apply a thin layer (2-4gm) to affected area(s) 2 to 4 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "62981042cccd1a393e040bf0"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "52565-0073-51",
+  "DrugName": "HALOBETASOL PROPIONATE OINT 0.05% 50GM",
+  "Quantity": "250",
+  "Sig": "Apply a thin layer (2-4 gm) to affected area(s) 1 to 2 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6298108bcccd1a393e040bf1"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "52565-0087-04",
+  "DrugName": " Hydrocortisone Butyrate Lotion 0.1% ",
+  "Quantity": "118ML",
+  "Sig": "Apply a thin layer (1-2 gm) to affected area(s) 2 times a day for swelling",
+  "Unit": "ml -- or -- 1000 mls",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629810da76fa474d4ce73972"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "24470-0919-12",
+  "DrugName": "Flurandrenolide 0.05% Cream",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-3 gm) to affected area(s) 2 to 3 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629811fccccd1a393e040bf2"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "51672-1389-03",
+  "DrugName": "AZELAIC ACID TOPICAL GEL 15% 50GM ",
+  "Quantity": "250",
+  "Sig": "Apply a thin layer (2-4 gm) to affected area(s) 2 times a day for acne treatment",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6298b002cccd1a393e040bf3"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-4164-03",
+  "DrugName": "METRONIDAZOLE GEL 1% 60 GM UOU",
+  "Quantity": "240",
+  "Sig": "Apply 2 to 4 grams to the affected area two times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6298b0d01328fd88e4e87927"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "65162-0914-46",
+  "DrugName": "TOBRAMYCIN NEBU SOLN 300 MG/5ML 5 ML X 56 UD",
+  "Quantity": "280",
+  "Sig": "For each treatment empty 2 nebules (600mg) into soaking device and allow medication to fully dissolve in water. Place affected areas into water and soak for 10-15 minutes. Administer one time a day.",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6298b11dcccd1a393e040bf4"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-1370-02",
+  "DrugName": "MUPIROCIN CREAM 2% 30GM",
+  "Quantity": "180",
+  "Sig": "Apply 2 to 3 grams to the affected area three times daily for bacterial infection.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6298b212cccd1a393e040bf5"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-1368-03",
+  "DrugName": "NAFTIFINE HCL CREAM 2% 60GM",
+  "Quantity": "180",
+  "Sig": "Apply a thin layer to and around the affected area once daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6298b24476fa474d4ce73973"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "66993-0960-45",
+  "DrugName": "METRONIDAZOLE 0.75% CREAM 45GM",
+  "Quantity": "225",
+  "Sig": "Apply 2 to 4 grams to the affected area two times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6298b27e76fa474d4ce73974"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-4215-09",
+  "DrugName": "METRONIDAZOLE 1% GEL 55GM PUMP",
+  "Quantity": "220",
+  "Sig": "Apply 2 to 4 grams to the affected area two times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6298b2b3cccd1a393e040bf6"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "21922-0020-12",
+  "DrugName": "Tavaborole Soln 5% 10 ML UoU",
+  "Quantity": "10",
+  "Sig": "Apply to affected toenails once daily.",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6298b2f9cccd1a393e040bf7"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "00378-7007-01",
+  "DrugName": "Ketoconazole Foam 2% 100 GM UoU",
+  "Quantity": "300",
+  "Sig": "Apply 2-4gm to the affected area(s) two times a day.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6298b361cccd1a393e040bf8"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "69238-1657-06",
+  "DrugName": "Tavaborole Soln 5% 10 ML UoU",
+  "Quantity": "10",
+  "Sig": "Apply to affected toenails once daily.",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6298b39e76fa474d4ce73975"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "72763-0201-10",
+  "DrugName": "Tavaborole Soln 5% 10 ML UoU",
+  "Quantity": "10",
+  "Sig": "Apply to affected toenails once daily.",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "6298b49a76fa474d4ce73976"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "71800-0901-01",
+  "DrugName": "Sumatriptan-Naproxen Sodium Tab 85-500 MG 9 EA",
+  "Quantity": "63",
+  "Sig": "Take 1 tablet when needed for migraine. Maximum of 2 tablets in a 24 hour period taken at least 2 hours apart.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6298b4e01328fd88e4e87928"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "70154-0111-16",
+  "DrugName": "Butalbital-Acetaminophen-Caffeine Soln 50-325-40 MG/15ML 473 ML",
+  "Quantity": "473",
+  "Sig": "15 to 30 mL orally every 4 hours as needed not to exceed 90 mL per day",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6298b5db76fa474d4ce73977"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "74157-0999-60",
+  "DrugName": "Orphenadrine/ASA/Caffeine 50mg/770mg/60mg",
+  "Quantity": "120",
+  "Sig": "Take 1/2 to 1 tablet by mouth 3-4 times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6298b62776fa474d4ce73978"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "69336-0127-10",
+  "DrugName": "Ketoprofen 25mg capsules (100ct) ",
+  "Quantity": "240",
+  "Sig": "Take 1 to 2 capsules by mouth 3-4 times daily for pain.  Take with food.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6298b65e1328fd88e4e87929"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "68180-0188-06",
+  "DrugName": "Meloxicam Cap 5 MG 30 EA",
+  "Quantity": "60",
+  "Sig": "Take 1-2 capsule by mouth once daily",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6298b6bbcccd1a393e040bf9"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "69528-0301-16",
+  "DrugName": "Baclofen Oral Soln 5 MG/5ML 473 ML",
+  "Quantity": "473ml",
+  "Sig": "Take 5 ml there times a day as needed.",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6298b81476fa474d4ce73979"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "00713-0664-60",
+  "DrugName": "Fluocinonide E Cream USP 0.05% ",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-4gm) to affected area(s) 1 to 2 times a day for swelling",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6298b87bcccd1a393e040bfa"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "00378-8056-60",
+  "DrugName": "Halcinonide Cream 0.1% 60 GM UoU",
+  "Quantity": "240",
+  "Sig": "Apply 1-3 gm (1 gm = dime size) to the affected area(s) 2-3 times a day.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6298b8ab76fa474d4ce7397a"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "51672-1296-03",
+  "DrugName": "Diflorasone Diacetate Cream 0.05% 60 GM UoU",
+  "Quantity": "240",
+  "Sig": "Apply 1-3 gm (1 gm = dime size) to the affected area(s) 1-3 times a day.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6298b95acccd1a393e040bfb"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "74157-0901-90",
+  "DrugName": "Triamcinolone 0.05% Oint 430gm ",
+  "Quantity": "430",
+  "Sig": "Apply a thin layer (2-4gm) to affected area(s) 2 to 4 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6298b9be1328fd88e4e8792a"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "71800-0009-60",
+  "DrugName": "Diflorasone Ointment 0.05% QTY 240gm",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (1-2gm) ro affected area(s) 3-4 times a day for swelling (1-dime size = 1gm)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6298ba1e76fa474d4ce7397b"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "00378-8056-60",
+  "DrugName": "Halcinonide Cream 0.1% 60 GM UoU",
+  "Quantity": "240",
+  "Sig": "Apply 1-3 gm (1 gm = dime size) to the affected area(s) 2-3 times a day.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6298ba7376fa474d4ce7397c"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "00093-3727-55",
+  "DrugName": "Diclofenac Epolamine Patch 1.3% 30 EA UD",
+  "Quantity": "60",
+  "Sig": "Apply 1 patch to the most painful area twice a day.",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6298bab21328fd88e4e8792b"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "59762-0707-02",
+  "DrugName": "Diclofenac Epolamine Patch 1.3% 30 EA UoU",
+  "Quantity": "60",
+  "Sig": "Apply 1 patch to the most painful area twice a day.",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6298bb0a76fa474d4ce7397d"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "51672-1296-03",
+  "DrugName": "Diflorasone Diacetate Cream 0.05% 60 GM UoU",
+  "Quantity": "240",
+  "Sig": "Apply 1-3 gm (1 gm = dime size) to the affected area(s) 1-3 times a day.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6298dc0ecccd1a393e040c3e"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "55111-0289-60",
+  "DrugName": "NAPROXEN ESOMEPRAZOLE DR 375MG/20 MG 60 TB",
+  "Quantity": "60",
+  "Sig": "Take 1 tablet by mouth two times a day before a meal with a full glass of water for pain.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6298dc3f1328fd88e4e8795d"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "55111-0701-60",
+  "DrugName": "NAPROXEN ESOMEPRAZOLE DR 500MG/20 MG 60 TB",
+  "Quantity": "60",
+  "Sig": "Take 1 tablet by mouth two times a day before a meal with a full glass of water for pain.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6298dc9c1328fd88e4e8795e"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "69420-1375-01",
+  "DrugName": "NAPROXEN SODIUM TAB ER 24HR 375 MG (BASE EQUIV) 100 ",
+  "Quantity": "120",
+  "Sig": "Take 1 to 2 tablets by mouth two times a day for pain.  Take with food.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "6298dcf31328fd88e4e8795f"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "68682-0110-01",
+  "DrugName": "PIMECROLIMUS CREAM 1% 30 g(ELIDEL)",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-4 gm) to affected area(s) 2 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6298dd8e1328fd88e4e87960"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "00781-7165-95",
+  "DrugName": "CALCIP 0.005% BETAMETH DIPROPIONATE 0.064% ",
+  "Quantity": "100",
+  "Sig": "Apply a thin layer to affected area(s) 1 time a day for skin condition",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6298df2c1328fd88e4e87964"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "21922-0003-01",
+  "DrugName": "FLUOCINOLONE ACETONIDE TOPICAL SOL USP SOL 0.0001 60ML",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (1-2 gm) to affected area(s) 3 to 4 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6298df9dcccd1a393e040c40"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "00781-7165-35",
+  "DrugName": "CALCIP 0.005% BETAMETH DIPROPIONATE 0.064% 60GM",
+  "Quantity": "180",
+  "Sig": "Apply a thin layer to affected area(s) 1 time a day for skin condition.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "6298dfd81328fd88e4e87965"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "00713-0664-60",
+  "DrugName": "FLUOCINONIDE E CREAM USP 0.05% 60GM",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-4gm) to affected area(s) 1 to 2 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a3da11328fd88e4e879b3"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-1359-02",
+  "DrugName": "OXICONAZOLE 1% CREAM 30GM",
+  "Quantity": "180",
+  "Sig": "Apply 2 to 3 grams to the affected area three to four times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "629a3de276fa474d4ce73992"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "51672-1359-08",
+  "DrugName": "OXICONAZOLE 1% CREAM 90GM",
+  "Quantity": "180",
+  "Sig": "Appy 2 to 3 grams to the affected area three to four times daily",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "629a3e8e76fa474d4ce73993"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "00378-7007-50",
+  "DrugName": "KETOCONAZOLE FOAM 2% 50 GM UOU",
+  "Quantity": "250",
+  "Sig": "Hold container upright and dispense foam into the cap of the can. Scoop up foam with fingers and apply to the affected area(s) until the foam disappears. Administer two times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "629a3edb1328fd88e4e879b5"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "00574-2061-01",
+  "DrugName": "CICLOPIROX OLAMINE GEL 0.77% 100GM",
+  "Quantity": "300",
+  "Sig": "Apply 2 to 4 grams to and around the affected area(s) two times a day.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "629a3f2d1328fd88e4e879b6"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984af",
+  "NDC": "66993-0936-61",
+  "DrugName": "METRONIDAZOLE TOPICAL GEL 1% 60GM",
+  "Quantity": "240",
+  "Sig": "Apply 2 to 4 grams to the affected area(s) two times daily.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Topical anti-fungal"
+},
+{
+  "_id": {
+    "$oid": "629a419fcccd1a393e040c8d"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "76385-0124-50",
+  "DrugName": "METHCARBAMOL 750MG TABLETS ",
+  "Quantity": "90",
+  "Sig": "TAKE 1 TABLET BY MOUTH 3 TIMES DAILY.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "629a423476fa474d4ce73994"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "69420-1001-01",
+  "DrugName": "Cyclobenzaprine 7.5 mg Tablet - QTY 90 Tabs",
+  "Quantity": "90",
+  "Sig": "Take I tablet by mouth up to 3 times daily as needed for muscle spasms",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "629a426b76fa474d4ce73995"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "00591-3330-01",
+  "DrugName": "ALT Cyclobenzaprine 7.5MG 100 tabs",
+  "Quantity": "100",
+  "Sig": "Take 1 tablet by mouth up to 3 times daily as needed for muscle spasms.",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "629a42991328fd88e4e879b7"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "69499-0330-60",
+  "DrugName": "Chlorzoxazone 250 mg Tablets",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth  three or four times daily for muscle spasms.",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "629a42dacccd1a393e040c8e"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "76385-0124-50",
+  "DrugName": "METHCARBAMOL 750MG TABLETS ",
+  "Quantity": "90",
+  "Sig": "TAKE 1 TABLET BY MOUTH 3 TIMES DAILY.",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "629a430c76fa474d4ce73996"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "69499-0330-60",
+  "DrugName": "Chlorzoxazone 250 mg Tablets",
+  "Quantity": "120",
+  "Sig": "Take 1 tablet by mouth  three or four times daily for muscle spasms.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "629a43e01328fd88e4e879b8"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "67877-0626-90",
+  "DrugName": "IBUPROFEN-FAMOTIDIN 800-26.6MG 90 TB",
+  "Quantity": "90",
+  "Sig": "Take 1 tablet by mouth three times a day before a meal with a full glass of water for pain.",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "629a442c1328fd88e4e879b9"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "75987-0010-03",
+  "DrugName": "DUEXIS 800-26.6 MG TABLET 90 TB",
+  "Quantity": "90",
+  "Sig": "Take 1 tablet by mouth three times a day before a meal with a full glass of water for pain.",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "629a44be76fa474d4ce73997"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "70954-0151-10",
+  "DrugName": "NAPROXEN 125MG/5ML SUSPENSION 500ML",
+  "Quantity": "1000",
+  "Sig": "Take 4 teaspoonful (20ml) two times a day with food for pain.",
+  "Unit": "ml -- or -- 1000 mls",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "629a45111328fd88e4e879bb"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "74157-0007-60",
+  "DrugName": "DICLOFENAC POTASSIUM 25MG TABLETS ",
+  "Quantity": "180",
+  "Sig": "Take 1-2 tablets by mouth three times a day with food for pain.",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "629a455f76fa474d4ce73998"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "15370-0180-60",
+  "DrugName": "LOFENA 25MG TABLETS",
+  "Quantity": "180",
+  "Sig": "Take 1-2 tablets by mouth three times a day with food for pain.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "629a464e1328fd88e4e879bc"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "68682-0111-02",
+  "DrugName": "PIMECROLIMUS CREAM 1% 60G (ELIDEL)",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-4 gm) to affected area(s) 2 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a47b91328fd88e4e879bd"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "24470-0920-60",
+  "DrugName": "DESONIDE 0.05% GEL 60GM",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-3 gm) to affected area(s) 2-3 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a4846cccd1a393e040c91"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "51672-1280-03",
+  "DrugName": "DESONIDE 0.05% CREAM 60GM",
+  "Quantity": "Apply a thin layer (2-3 gm) to affected area(s) 2-3 times a day for skin condition (1 dime size = 1 gram)",
+  "Sig": "240",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a48a9cccd1a393e040c92"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "51672-1281-03",
+  "DrugName": "DESONIDE 0.05% OINT 60GM",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-3 gm) to affected area(s) 2-3 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a494a1328fd88e4e879be"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "74157-0901-90",
+  "DrugName": "Triamcinolone 0.05% Oint 430gm ",
+  "Quantity": "430",
+  "Sig": "Apply a thin layer (2-4gm) to affected area(s) 2 to 4 times a day for for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a49d4cccd1a393e040c93"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "71800-0009-60",
+  "DrugName": "Diflorasone Ointment 0.05% QTY 240gm",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (1-2gm) ro affected area(s) 3-4 times a day for skin condition (1-dime size = 1gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a4a2e76fa474d4ce73999"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "52565-0073-51",
+  "DrugName": "HALOBETASOL PROPIONATE OINT 0.05%  50GM",
+  "Quantity": "250",
+  "Sig": "Apply a thin layer (2-4 gm) to affected area(s) 1 to 2 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a4aa11328fd88e4e879bf"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "24470-0919-12",
+  "DrugName": "FLURANDRENOLIDE CREAM",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-3 gm) to affected area(s) 2 to 3 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a4b2b1328fd88e4e879c0"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "52565-0017-60",
+  "DrugName": "FLURANDRENOLIDE OINTMENT 0.05% 60G TUBE",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-3 gm) to affected area(s) 2 to 3 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a4b941328fd88e4e879c1"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "70512-0032-04",
+  "DrugName": "HYDROCORTISONE BUTYRATE LOTION 0.1% 118 ML UOU",
+  "Quantity": "118ML",
+  "Sig": "Apply a thin layer (1-2 gm) to affected area(s) 2 times a day for skin condition",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a4bedcccd1a393e040c94"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "64980-0429-01",
+  "DrugName": "TRIAMCINOLONE 0.147MG/G SPRAY 100grams",
+  "Quantity": "200",
+  "Sig": "APPLY 1-2 SPRAYS TO AFFECTED AREA(S) 3-4 TIMES DAILY FOR SKIN CONDITION. (1 SPRAY=1GM)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a4c361328fd88e4e879c2"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "52565-0039-60",
+  "DrugName": "CLOBETASOL 0.05% OINTMENT 60GM",
+  "Quantity": "240",
+  "Sig": "APPLY A THIN LAYER (1-2 GRAMS) TO THE AFFECTED AREA(S) 3-4 TIMES DAILY. ( 1 DIME SIZE = 1 GRAM)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a4c7476fa474d4ce7399a"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984aa",
+  "NDC": "00682-0051-10",
+  "DrugName": "CROTAN 10% LOTION 227ML",
+  "Quantity": "237ML",
+  "Sig": "Massage a thin layer gently into the affected area(s) 2-3 times daily to relieve itchy skin.",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Dermatitis/Eczema/Psoriasis"
+},
+{
+  "_id": {
+    "$oid": "629a4e231328fd88e4e879c3"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "51672-4079-08",
+  "DrugName": "DESONIDE 0.05% LOTION 118 ML",
+  "Quantity": "118ML",
+  "Sig": "Apply a thin layer (1-2 gm) to affected area(s) 2 to 3 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a4e7b1328fd88e4e879c4"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "21922-0003-01",
+  "DrugName": "FLUOCINOLONE ACETONIDE TOPICAL SOL USP SOL 0.0001 60ML",
+  "Quantity": "240 ML",
+  "Sig": "Apply a thin layer (1-2 gm) to affected area(s) 3 to 4 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a4ee1cccd1a393e040c95"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "51672-1280-03",
+  "DrugName": "DESONIDE 0.05% CREAM 60GM",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-3 gm) to affected area(s) 2-3 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a4f81cccd1a393e040c96"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "24470-0920-60",
+  "DrugName": "DESONIDE 0.05% GEL 60GM",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-3 gm) to affected area(s) 2-3 times a day for skin condition (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a4fce1328fd88e4e879c5"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "00378-8056-60",
+  "DrugName": "Halcinonide Cream 0.1% 60 GM UoU",
+  "Quantity": "250",
+  "Sig": "Apply 1-3 gm (1 gm = dime size) to the affected area(s) 2-3 times a day for swelling",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a501176fa474d4ce7399b"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "51672-1352-03",
+  "DrugName": "Desoximetasone 0.05% OINT",
+  "Quantity": "240",
+  "Sig": "Sig: apply a thin layer (1-2gm) to affected area(s) 3-4 times daily for swelling (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a51b476fa474d4ce7399e"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "51672-5298-08",
+  "DrugName": "FLURANDRENOLIDE 0.05% LOT 120GM",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-3 gm) to affected area(s) 2 to 3 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a51e476fa474d4ce7399f"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "24470-0921-12",
+  "DrugName": "FLURANDRENOLIDE 0.05% LOT 120ML",
+  "Quantity": "240 ML",
+  "Sig": "Apply a thin layer (2-3 gm) to affected area(s) 2 to 3 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a524dcccd1a393e040c97"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "52565-0017-60",
+  "DrugName": "FLURANDRENOLIDE OINTMENT 0.05% 60G TUBE",
+  "Quantity": "240",
+  "Sig": "Apply a thin layer (2-3 gm) to affected area(s) 2 to 3 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a529176fa474d4ce739a0"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "50742-0304-50",
+  "DrugName": "CLOBETASOL FOAM 0.05% ",
+  "Quantity": "250",
+  "Sig": "Apply a cupful (2-4 gm) of foam to affected area(s) 2 times a day for swelling",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a5338cccd1a393e040c98"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "52565-0039-60",
+  "DrugName": "CLOBETASOL 0.05% OINTMENT 60GM",
+  "Quantity": "240",
+  "Sig": "APPLY A THIN LAYER (1-2 GRAMS) TO THE AFFECTED AREA(S) 3-4 TIMES DAILY. ( 1 DIME SIZE = 1 GRAM)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a53741328fd88e4e879c6"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "64980-0429-01",
+  "DrugName": "TRIAMCINOLONE 0.147MG/G SPRAY 100grams",
+  "Quantity": "200",
+  "Sig": "APPLY 1-2 SPRAYS TO AFFECTED AREA(S) 3-4 TIMES DAILY FOR SWELLING (1 SPRAY=1GM)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a53aa76fa474d4ce739a1"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "00115-1468-45",
+  "DrugName": "LIDOCAINE/PRILOCAINE 2.5%/2.5% 30GM ",
+  "Quantity": "240",
+  "Sig": "Apply 1-2gm to affected area(s) 3-4 times daily for pain (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629a53d81328fd88e4e879c7"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "52565-0008-14",
+  "DrugName": "Lidocaine 5% Topical Ointment",
+  "Quantity": "150",
+  "Sig": "Apply 1-2gm to affected area(s) up to 3 times daily for pain (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "629e0d8676fa474d4ce739d7"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "45802-0129-32",
+  "DrugName": "HALOBETASOL PROPIONATE CREAM 0.05%  50GM",
+  "Quantity": "250",
+  "Sig": "Apply a thin layer (2-4 gm) to affected area(s) 1 to 2 times a day for swelling (1 dime size = 1 gram)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "62cc833520ed3736e8aa8650"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "74157-095-60",
+  "DrugName": "Diclofenac Potassium 25mg Capsules",
+  "Quantity": "120",
+  "Sig": "Take 1 capsule by mouth 4 times daily as needed for pain.",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "62da335c4da3274528f8b62d"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "71511070116",
+  "DrugName": "Naprosyn",
+  "Quantity": "25 MG/5ML ",
+  "Sig": "25 MG/5ML Oral Suspension ",
+  "Unit": "ml",
+  "DaysSupply": "",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "62df1cc14da3274528f8b63d"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "000",
+  "DrugName": "Metaxalone 400mg",
+  "Quantity": "240",
+  "Sig": "Take 2 tablets by mouth every 3-4 as needed.",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "634d706bdada76f3db17c2bb"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "(WMC) 000",
+  "DrugName": "Diclofenac Sodium 1.5% Topical Sol 150ml",
+  "Quantity": "150ml",
+  "Sig": "Apply 2.5ml's to affected area three times daily as needed (20 drops =1ml)",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "634d70a7dada76f3db17c2bc"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "(WMC) 000",
+  "DrugName": "Diclofenac Sodium 1.5% Topical Sol 300ml",
+  "Quantity": "300ml",
+  "Sig": "Apply 2.5 ml's to affected area four times daily as needed (20 drops=1ml)",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "634d70d03b84c3401bf237a9"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "(WMC) 000",
+  "DrugName": "Diclofenac 3% Gel",
+  "Quantity": "200",
+  "Sig": "Apply 1-2 grams to affected area(s) 3-4 times daily. 1 gram=1 dime size",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "634d70ed3b84c3401bf237aa"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "64380-789-33",
+  "DrugName": "Lidocaine 5% Ointment",
+  "Quantity": "150",
+  "Sig": "Apply 1-2 grams to affected area(s) 3-4 times daily .  1 gram = 1 dime size",
+  "Unit": "Grams",
+  "DaysSupply": "14",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "634d710bc6009cadfa4af6fb"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "(WMC) 000",
+  "DrugName": "Cyclobenzaprine HCL 7.5mg Tabs ",
+  "Quantity": "90",
+  "Sig": "1 tablet by mouth three times daily as needed for muscle spasms",
+  "Unit": "Tablets",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "634d7136c6009cadfa4af6fc"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984a9",
+  "NDC": "(WMC) 000",
+  "DrugName": "Cyclobenzaprine ER 15mg Capsule",
+  "Quantity": "30",
+  "Sig": "Take 1 capsule by mouth once daily as needed for muscle spasms",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Muscle relaxer"
+},
+{
+  "_id": {
+    "$oid": "634d7161c6009cadfa4af6fd"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "(WMC) 000",
+  "DrugName": "Naproxen 125mg/5ml Suspension",
+  "Quantity": "946mls",
+  "Sig": "Take 10-20ml's by mouth twice daily as needed for pain",
+  "Unit": "mls",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "634d717ddada76f3db17c2bd"
+  },
+  "Category": "61e2b8c4c4e8359fb9c984b3",
+  "NDC": "(WMC) 000",
+  "DrugName": "Celecoxib 200mg Caps",
+  "Quantity": "60",
+  "Sig": "Take 1 capsule by mouth twice daily",
+  "Unit": "Capsules",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Oral NSAIDs"
+},
+{
+  "_id": {
+    "$oid": "634d7199dada76f3db17c2be"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "(WMC) 000",
+  "DrugName": "Juvazin Topical Gel",
+  "Quantity": "60",
+  "Sig": "Apply 1 gram as thin coat to affected area twice daily.  Allow to dry.  1 gram = 1 dime size",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "636d2178800e4a3aa41e059d"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Lidothol Patch Lidocaine 4.5%/ Menthol 5%",
+  "Quantity": "30",
+  "Sig": "Apply 1-3 patches once daily. Keep patch(s) in place for up to 12 hours daily, followed by a 12-hour patch-free period per 24 hours",
+  "Unit": "Pads",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "636d22075a234cf5e7dfe3f2"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "53225-1026-01",
+  "DrugName": "Lidothol Gel  Lidocaine 4.5% | Menthol 5%",
+  "Quantity": "198",
+  "Sig": " Apply 2-4g, up to 4x daily (max 8g in 24 hours)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "636d232b800e4a3aa41e05a0"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Diclofenac Sodium 1.5% Solution",
+  "Quantity": "150",
+  "Sig": "Apply 40 drops to the affected area 4 times daily as needed",
+  "Unit": "ml",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "636d246d800e4a3aa41e05a1"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "000",
+  "DrugName": "Juvazin Scar Care Gel",
+  "Quantity": "180",
+  "Sig": "Apply to clean, dry skin of affected area(s) once or twice daily. Allow the area to dry, as directed.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "643033e6e6732b4a5237faac"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Diclona Gel",
+  "Quantity": "198",
+  "Sig": "Apply 1-2 grams to affected area 3-4 times daily as needed for pain. 1 gram =1 dime size ",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6470ca9f928c11742fb58d59"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "test drug",
+  "Quantity": "100",
+  "Sig": "Take 1 tablet by mouth every 4 hours as needed for headaches.",
+  "Unit": "Tabs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "6476316df24859099e5c6754"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "64380-0901-90",
+  "DrugName": "Triamcinolone Acetonide 0.05% Ointment ",
+  "Quantity": "430gm ",
+  "Sig": "Apply 4gm to irritated skin areas 4 times daily as needed. (1gm = 1 pea size)",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "647dea542087af6495dd8332"
+  },
+  "Category": "6478fb7891ddc0ef78a7a775",
+  "NDC": "LMN",
+  "DrugName": "Triad 3TL LMN",
+  "Quantity": "1",
+  "Sig": "Lumber (Lower back) , Knee (right and/or left Knee) Wrist (right and/or left wrist) Ankle (right and/or left ankle)",
+  "Unit": "Units",
+  "DaysSupply": "1",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Laser Therapy Pain Treatment"
+},
+{
+  "_id": {
+    "$oid": "647dea772087af6495dd8333"
+  },
+  "Category": "6478fb7891ddc0ef78a7a775",
+  "NDC": "LMN",
+  "DrugName": "PainAway ",
+  "Quantity": "1",
+  "Sig": "At home daily treatment: 5-mintues/treatment, every 4-hours, 60-days (Follow-up in 30-days with patient to monitor their reduction in pain and inflammation",
+  "Unit": "Units",
+  "DaysSupply": "1",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Laser Therapy Pain Treatment"
+},
+{
+  "_id": {
+    "$oid": "647f3c747515267f94f99de9"
+  },
+  "Category": "6478fb7891ddc0ef78a7a775",
+  "NDC": "000",
+  "DrugName": "PainAway (Shoulder/Neck/Elbow)",
+  "Quantity": "1",
+  "Sig": "At home daily treatment: 5-mintues/treatment, every 4-hours, 60-days (Follow-up in 30-days with patient to monitor their reduction in pain and inflammation)\t\t\t\t",
+  "Unit": "Units",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Laser Therapy Pain Treatment"
+},
+{
+  "_id": {
+    "$oid": "647f3ccd6d0fe055a02cfecd"
+  },
+  "Category": "6478fb7891ddc0ef78a7a775",
+  "NDC": "000",
+  "DrugName": "Triad 3LT (Back/Knee/Wrist/Ankle)",
+  "Quantity": "1",
+  "Sig": "10-minutes per Treatment (Every 2-4 Hours): 8 - weeks",
+  "Unit": "Units",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Laser Therapy Pain Treatment"
+},
+{
+  "_id": {
+    "$oid": "64d44e4d181ddd0b74a28c0e"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "000",
+  "DrugName": "Fluocinonide 0.1% Cream",
+  "Quantity": "30",
+  "Sig": "Apply a thin layer as needed to affected area 2 times daily for 2 weeks on then 2 weeks off.",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "65411ce1d9eb8ce1707cf4f9"
+  },
+  "Category": "6478fb7891ddc0ef78a7a775",
+  "NDC": "000",
+  "DrugName": "OnLux Laser Therapy",
+  "Quantity": "1",
+  "Sig": "15 min. per day. Daily for 90 days, then as needed",
+  "Unit": "Units",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Laser Therapy Pain Treatment"
+},
+{
+  "_id": {
+    "$oid": "66b99e8afe3d52e028933847"
+  },
+  "Category": "6478fb7891ddc0ef78a7a775",
+  "NDC": "LMN",
+  "DrugName": "Onlux",
+  "Quantity": "1",
+  "Sig": "Lumber (Lower back) , Knee (right and/or left Knee) Wrist (right and/or left wrist) Ankle (right and/or left ankle)",
+  "Unit": "Units",
+  "DaysSupply": "1",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Laser Therapy Pain Treatment"
+},
+{
+  "_id": {
+    "$oid": "66e3057a6559f7b10b4e49d1"
+  },
+  "Category": "61e2b8c0c4e8359fb9c984a8",
+  "NDC": "000",
+  "DrugName": "Diclofenac 2%",
+  "Quantity": "112",
+  "Sig": "2 pumps(40mg) to affected area twice daily for pain",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Pain condition"
+},
+{
+  "_id": {
+    "$oid": "673bc2cfb68c0826c40984a0"
+  },
+  "Category": "673a8a85d47c84964c55d564",
+  "NDC": "000",
+  "DrugName": "ARS Gel pack cold & compression CCT",
+  "Quantity": "1",
+  "Sig": "Use daily for 30min. Wait 30min before use again.",
+  "Unit": "Packs",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "ColdCompression Therapy"
+},
+{
+  "_id": {
+    "$oid": "6a05eb13bab3d202641de35d"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "000",
+  "DrugName": "Bacitracin Zinc Onit 500u/gm",
+  "Quantity": "425gm ",
+  "Sig": "Apply thin layer to effected area 1-3x daily as needed",
+  "Unit": "Bottles",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "6a05eb76b1e1ae5eec9b2631"
+  },
+  "Category": "61e2b8c2c4e8359fb9c984ab",
+  "NDC": "000",
+  "DrugName": "Muprocin Calcium 2%",
+  "Quantity": "30gm",
+  "Sig": "Apply thin layer to effected area 1-3x daily as needed",
+  "Unit": "Grams",
+  "DaysSupply": "30",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Scar/wound/actinic keratosis"
+},
+{
+  "_id": {
+    "$oid": "6a05ec59b1e1ae5eec9b2632"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "000",
+  "DrugName": "Eletriptan Hydrobromide 40mg",
+  "Quantity": "12",
+  "Sig": "1 tablet at onset of headache repeat in 2 hours if needed. Do not exceed dosage of 2 tablets per 24 hours",
+  "Unit": "Tablets",
+  "DaysSupply": "6",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6a05ecca1d4a4a44bcace318"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "000",
+  "DrugName": "Rizatriptan Benzoate 10mg",
+  "Quantity": "18",
+  "Sig": "1 tablet at onset of headache repeat in 2 hours if needed. Do not exceed dosage of 3 tablets per 24 hours",
+  "Unit": "Tablets",
+  "DaysSupply": "6",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+},
+{
+  "_id": {
+    "$oid": "6a05ee31bab3d202641de35f"
+  },
+  "Category": "61e2b8c3c4e8359fb9c984b0",
+  "NDC": "000",
+  "DrugName": "Sumatriptan Succinate 50mg",
+  "Quantity": "27",
+  "Sig": "1 tablet at onset of headache repeat in 2 hours if needed. Do not exceed dosage of 2 tablets per 24 hours",
+  "Unit": "Tablets",
+  "DaysSupply": "13.5",
+  "FaxQuantity": "",
+  "FaxUnit": "",
+  "Category Name": "Migraine and Headache"
+}]
