@@ -1,6 +1,7 @@
 
 from rest_framework import serializers
-from .models import Health_Record, Medical_History, Patient_Info, Insurance, ConditionQuestion, Choice, ChoiceSet, PatientAnswer, PatientAnswerChoice, PatientCondition, Patient_Family_History
+from .models import HealthRecord, MedicalHistory, PatientInfo, Insurance, ConditionQuestion, Choice, ChoiceSet, PatientAnswer, PatientAnswerChoice, PatientCondition, PatientFamilyHistory, PatientIntake
+
 
 class PatientInfoPayloadSerializer(serializers.Serializer):
 	first_name = serializers.CharField(max_length=30, required=False)
@@ -80,24 +81,21 @@ class IntakeWriteResponseSerializer(serializers.Serializer):
 
 class FamilyHistoryPayloadSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Patient_Family_History
+        model = PatientFamilyHistory
         fields = "__all__"
 
 class HealthRecordPayloadSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Health_Record
+        model = HealthRecord
         fields = "__all__"
 
 
-class Medical_HistoryPayloadSerializer(serializers.ModelSerializer):
+class MedicalHistoryPayloadSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Medical_History
+        model = MedicalHistory
         fields = "__all__"
 
-class PatientInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Patient_Info
-        fields = "__all__"
+
 
 class InsuranceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -108,3 +106,33 @@ class ConditionAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = PatientAnswer
         fields = "__all__"
+class PatientInfoSerializer(serializers.ModelSerializer):
+	# patient_intake = serializers.SerializerMethodField()
+
+	# def get_patient_intake(self, obj):
+	# 	intake = PatientIntake.objects.filter(patient=obj).first()
+	# 	return PatientIntakeSerializer(intake).data
+	
+	class Meta:
+		model = PatientInfo
+		fields = "__all__"
+			
+class PatientIntakeSerializer(serializers.ModelSerializer):
+	# patient_info = PatientInfoSerializer(required=True)
+
+	class Meta:
+		model = PatientIntake
+		fields = "__all__"
+
+
+class PatientConditionSerializer(serializers.ModelSerializer):
+	condition_name = serializers.CharField(source="condition.name", read_only=True)
+	
+	class Meta:
+		model = PatientCondition
+		fields = "__all__"
+
+class PatientAnswerChoiceSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = PatientAnswerChoice
+		fields = "__all__"

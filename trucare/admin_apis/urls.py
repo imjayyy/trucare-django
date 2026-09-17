@@ -16,6 +16,10 @@ from .registration_views import (
     OrganizationDetailAPIView,
     OrganizationListCreateAPIView,
 )
+from .pharmacy_views import (
+    PharmacyListCreateAPIView,
+    PharmacyDetailAPIView,
+)
 
 
 urlpatterns = [
@@ -31,4 +35,6 @@ urlpatterns = [
     path("organizations/<int:organization_id>/", OrganizationDetailAPIView.as_view(), name="admin-organization-detail"),
     path("doctors/", DoctorListCreateAPIView.as_view(), name="admin-doctor-list-create"),
     path("doctors/<int:doctor_id>/", DoctorDetailAPIView.as_view(), name="admin-doctor-detail"),
+    path("pharmacies/", PharmacyListCreateAPIView.as_view(), name="admin-pharmacy-list-create"),
+    path("pharmacies/<int:pharmacy_id>/", PharmacyDetailAPIView.as_view(), name="admin-pharmacy-detail"),
 ]

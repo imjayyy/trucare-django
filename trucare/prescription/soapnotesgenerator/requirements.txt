@@ -1,0 +1,2 @@
+# SOAP Notes Generation Requirements
+requests>=2.28.0

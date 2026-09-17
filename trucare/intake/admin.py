@@ -4,14 +4,15 @@ from .models import (
 	ChoiceSet,
 	Condition,
 	ConditionQuestion,
-	Health_Record,
+	HealthRecord,
 	Insurance,
-	Medical_History,
-	Patient_Info,
+	MedicalHistory,
+	PatientInfo,
 	PatientAnswer,
 	PatientAnswerChoice,
 	PatientCondition,
-	Patient_Family_History,
+	PatientFamilyHistory,
+	PatientIntake,
 )
 
 class ConditionQuestionAdmin(admin.ModelAdmin):
@@ -24,15 +25,21 @@ class ChoiceAdmin(admin.ModelAdmin):
     list_filter = ('choice_set',)
     search_fields = ('text',)
 
-admin.site.register(Patient_Info)
+class PatientConditionAdmin(admin.ModelAdmin):
+	list_display = ('id', 'patient', 'condition', 'requested')
+	list_filter = ('condition', 'requested')
+	search_fields = ('patient__first_name', 'patient__last_name', 'condition__name', 'patient__id')
+
+admin.site.register(PatientInfo)
+admin.site.register(PatientIntake)
 admin.site.register(Insurance)
-admin.site.register(Medical_History)
-admin.site.register(Health_Record)
-admin.site.register(Patient_Family_History)
+admin.site.register(MedicalHistory)
+admin.site.register(HealthRecord)
+admin.site.register(PatientFamilyHistory)
 admin.site.register(ChoiceSet)
 admin.site.register(Choice, ChoiceAdmin)
 admin.site.register(Condition)
-admin.site.register(PatientCondition)
+admin.site.register(PatientCondition, PatientConditionAdmin)
 admin.site.register(ConditionQuestion, ConditionQuestionAdmin)
 admin.site.register(PatientAnswer)
 admin.site.register(PatientAnswerChoice)

@@ -3,10 +3,17 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import AccountProfile
+from .models import AccountProfile, DoctorLicense, DoctorProfile
 
 
 User = get_user_model()
+
+
+class DoctorLicenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorLicense
+        fields = ["license_number", "state"]
+
 
 
 class AccountProfileSerializer(serializers.ModelSerializer):
@@ -27,6 +34,13 @@ class UserSerializer(serializers.ModelSerializer):
             return None
         return AccountProfileSerializer(obj.account_profile).data
 
+
+
+class DoctorProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = DoctorProfile
+        fields = "__all__"
 
 class RegisterSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)
@@ -142,3 +156,4 @@ class JWTRefreshSerializer(TokenRefreshSerializer):
 
         data["access"] = str(access_token)
         return data
+

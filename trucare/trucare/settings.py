@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 import os
 
@@ -152,6 +153,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -165,6 +168,18 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'trucare.pagination.StandardPagination',
     'PAGE_SIZE': 10,
+}
+
+SIMPLE_JWT = {
+    # Set your desired access token expiration time here
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1), 
+    
+    # It is highly recommended to also configure your refresh token lifetime
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    
+    # Optional security practices
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
 }
 
 SPECTACULAR_SETTINGS = {

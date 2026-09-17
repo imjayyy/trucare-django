@@ -65,7 +65,7 @@ Patient_Insurance_Choices = [
     ('PIP_Insurance', 'PIP Insurance')
 ]
 
-class Patient_Info(models.Model):
+class PatientInfo(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     date_of_birth = models.DateField()
@@ -73,7 +73,20 @@ class Patient_Info(models.Model):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     state = models.CharField(choices=states, max_length=20, blank=True, null=True)
-    
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+""" Patient Insurance Information """
+
+class PatientIntake(models.Model):
+    patient = models.ForeignKey(PatientInfo, on_delete=models.CASCADE, related_name='intake')
+    height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     client = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     intake_agent = models.ForeignKey(
         User,
@@ -100,16 +113,26 @@ class Patient_Info(models.Model):
         help_text="The doctor who is assigned to this patient.",
     )
 
-    status = models.CharField(max_length=50)
+    allocated_pharmacy = models.ForeignKey(
+        "accounts.AccountProfile",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="allocated_patients",
+        help_text="The pharmacy allocated to this patient.",
+    )
 
+    status = models.CharField(max_length=50, null=True, blank=True, help_text="The status of the patient intake record.")
+
+    billing_status = models.CharField(max_length=50, null=True, blank=True, help_text="The billing status of the patient intake record.")
+    billing_notes = models.CharField(max_length=255, blank=True, null=True, help_text="Billing notes for this patient.")
+    
+    cordinator_disposition = models.CharField(max_length=255, blank=True, null=True, help_text="The disposition of the cordinator for this patient.")
+    internal_notes = models.CharField(max_length=255, blank=True, null=True, help_text="Internal notes for this patient.")
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
-
-""" Patient Insurance Information """
 
 class Insurance(models.Model):
 
@@ -120,7 +143,7 @@ class Insurance(models.Model):
     ]
 
     patient = models.ForeignKey(
-        Patient_Info,
+        PatientInfo,
         on_delete=models.CASCADE,
         related_name="insurances"
     )
@@ -182,12 +205,15 @@ class Insurance(models.Model):
         if errors:
             raise ValidationError(errors)
 
-
+    def save(self, *args, **kwargs):
+        # Force validation before every save database commit
+        self.full_clean() 
+        super().save(*args, **kwargs)
 
 """ Patient Insurance Information """
 
-class Medical_History(models.Model):
-    patient = models.ForeignKey(Patient_Info, on_delete=models.CASCADE, related_name='medical_histories')
+class MedicalHistory(models.Model):
+    patient = models.ForeignKey(PatientInfo, on_delete=models.CASCADE, related_name='medical_histories')
     condition = models.CharField(max_length=100)
     diagnosis_date = models.DateField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
@@ -198,8 +224,8 @@ class Medical_History(models.Model):
         return f"{self.condition} for {self.patient.first_name} {self.patient.last_name}"
     
 
-class Health_Record(models.Model):
-    patient = models.ForeignKey(Patient_Info, on_delete=models.CASCADE, related_name='health_records')
+class HealthRecord(models.Model):
+    patient = models.ForeignKey(PatientInfo, on_delete=models.CASCADE, related_name='HealthRecords')
     record_type = models.CharField(max_length=100, choices=[
         ('Medical Conditions', 'Medical Conditions'),
         ('Allergies', 'Allergies'),
@@ -216,10 +242,10 @@ class Health_Record(models.Model):
     def __str__(self):
         return f"{self.record_type} for {self.patient.first_name} {self.patient.last_name}"
     
-class Patient_Family_History(models.Model):
+class PatientFamilyHistory(models.Model):
     """Model to store family medical history for a patient.
     """
-    patient = models.ForeignKey(Patient_Info, on_delete=models.CASCADE, related_name='family_histories')
+    patient = models.ForeignKey(PatientInfo, on_delete=models.CASCADE, related_name='family_histories')
     asthama = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
     bleeding_tendency = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
     cancer = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
@@ -276,7 +302,7 @@ class Condition(models.Model):
 
 class PatientCondition(models.Model):
     patient = models.ForeignKey(
-        Patient_Info,
+        PatientIntake,
         on_delete=models.CASCADE,
         related_name="requested_conditions"
     )
@@ -288,7 +314,9 @@ class PatientCondition(models.Model):
     )
 
     requested = models.BooleanField(default=False)
-
+    denied_by_doctor = models.BooleanField(default=False)
+    denied_reason = models.TextField(blank=True, null=True)
+    
     class Meta:
         unique_together = ("patient", "condition")
 
@@ -345,7 +373,7 @@ class ConditionQuestion(models.Model):
 
 class PatientAnswer(models.Model):
     patient = models.ForeignKey(
-        Patient_Info,
+        PatientIntake,
         on_delete=models.CASCADE,
         related_name="answers"
     )

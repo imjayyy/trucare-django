@@ -1,15 +1,25 @@
 from drf_spectacular.utils import OpenApiExample, OpenApiParameter, OpenApiResponse, extend_schema, extend_schema_view
-from rest_framework import mixins, permissions, viewsets
+from rest_framework import mixins, permissions, status, viewsets
+from rest_framework.decorators import action
+from intake.models import Condition, PatientIntake
+from django.shortcuts import get_object_or_404
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.response import Response
 
 from accounts.models import AccountProfile
+from intake.models import Condition, PatientIntake
+from rest_framework.views import APIView
 
-from .models import PrescribeAbleItem, Script, ScriptClientRelationship
+from .models import PrescribeAbleItem, Script, ScriptClientRelationship, ScriptIntakeRelationship, ScriptItem
 from .serializers import (
+	ConditionSerializer,
 	OrganizationProfileSearchSerializer,
 	PrescribeAbleItemSerializer,
+	ScriptCategoryItemsSerializer,
 	ScriptAssignmentReadSerializer,
 	ScriptAssignmentWriteSerializer,
+	ScriptItemReadSerializer,
+	ScriptItemWriteSerializer,
 	ScriptSerializer,
 )
 
@@ -31,6 +41,12 @@ from .serializers import (
 				description="Order results by one of: name, category__name, item_type, active.",
 				required=False,
 				type=str,
+			),
+			OpenApiParameter(
+				name="category_id",
+				description="Optional condition category ID filter.",
+				required=False,
+				type=int,
 			),
 			OpenApiParameter(name="page", description="Page number.", required=False, type=int),
 			OpenApiParameter(name="page_size", description="Items per page (max 100).", required=False, type=int),
@@ -139,6 +155,13 @@ class PrescribeAbleItemViewSet(viewsets.ModelViewSet):
 	ordering = ["category__name", "name"]
 	filter_backends = [SearchFilter, OrderingFilter]
 
+	def get_queryset(self):
+		queryset = super().get_queryset()
+		category_id = self.request.query_params.get("category_id")
+		if category_id:
+			queryset = queryset.filter(category_id=category_id)
+		return queryset
+
 
 @extend_schema_view(
 	list=extend_schema(
@@ -232,6 +255,121 @@ class ScriptViewSet(viewsets.ModelViewSet):
 	filter_backends = [SearchFilter, OrderingFilter]
 	search_fields = ["name"]
 	ordering_fields = ["id", "name"]
+	ordering = ["name"]
+
+	@extend_schema(
+		summary="List script drugs grouped by category",
+		description="Retrieve all drugs/prescribeable items assigned to a script, grouped by condition category.",
+		tags=["Script Builder"],
+		responses={
+			200: ScriptCategoryItemsSerializer(many=True),
+			401: OpenApiResponse(description="Authentication credentials were not provided or are invalid."),
+			403: OpenApiResponse(description="You do not have permission to perform this action."),
+			404: OpenApiResponse(description="Script not found."),
+			500: OpenApiResponse(description="Internal server error."),
+		},
+		examples=[
+			OpenApiExample(
+				"Category Grouped Script Items",
+				response_only=True,
+				value=[
+					{
+						"category_id": 18,
+						"category_name": "Pain",
+						"items": [
+							{
+								"id": 5,
+								"script": 2,
+								"script_name": "Pain Starter Script",
+								"prescribeable_item": 31,
+								"prescribeable_item_name": "Diclofenac Sodium 3% Topical Gel",
+								"category": 18,
+								"category_name": "Pain",
+								"item_type": "medication",
+								"generic_name": "Diclofenac Sodium",
+								"strength": "3%",
+								"dosage_form": "Gel",
+								"usual_sig": "Apply 1-2 grams to affected area(s) up to 4 times daily as needed for pain.",
+								"quantity": "200",
+								"refills": 0,
+								"duration": "30 days",
+								"description": "NDC: 71085-0003-00",
+								"active": True,
+							}
+						],
+					}
+				],
+			),
+		],
+	)
+	@action(detail=True, methods=["get"], url_path="drugs-by-category")
+	def drugs_by_category(self, request, *args, **kwargs):
+		script = self.get_object()
+		script_items = (
+			ScriptItem.objects.select_related("script", "prescribeable_item__category")
+			.filter(script=script)
+			.order_by("prescribeable_item__category__name", "prescribeable_item__name")
+		)
+		grouped = {}
+		for script_item in script_items:
+			category = script_item.prescribeable_item.category
+			if category.id not in grouped:
+				grouped[category.id] = {
+					"category_id": category.id,
+					"category_name": category.name,
+					"items": [],
+				}
+			grouped[category.id]["items"].append(script_item)
+
+		response_payload = []
+		for data in grouped.values():
+			response_payload.append(
+				{
+					"category_id": data["category_id"],
+					"category_name": data["category_name"],
+					"items": ScriptItemReadSerializer(data["items"], many=True).data,
+				}
+			)
+
+		return Response(response_payload, status=status.HTTP_200_OK)
+
+
+@extend_schema_view(
+	list=extend_schema(
+		summary="List all categories",
+		description="Retrieve all condition categories available for prescribeable item grouping.",
+		tags=["Script Builder"],
+		parameters=[
+			OpenApiParameter(name="search", description="Search category by name, code, or ICD code.", required=False, type=str),
+			OpenApiParameter(name="ordering", description="Order by name, code, or id.", required=False, type=str),
+		],
+		responses={
+			200: ConditionSerializer(many=True),
+			401: OpenApiResponse(description="Authentication credentials were not provided or are invalid."),
+			403: OpenApiResponse(description="You do not have permission to perform this action."),
+			500: OpenApiResponse(description="Internal server error."),
+		},
+	),
+	retrieve=extend_schema(
+		summary="Retrieve category",
+		description="Retrieve a single condition category by ID.",
+		tags=["Script Builder"],
+		responses={
+			200: ConditionSerializer,
+			401: OpenApiResponse(description="Authentication credentials were not provided or are invalid."),
+			403: OpenApiResponse(description="You do not have permission to perform this action."),
+			404: OpenApiResponse(description="Category not found."),
+			500: OpenApiResponse(description="Internal server error."),
+		},
+	),
+)
+class ConditionViewSet(viewsets.ReadOnlyModelViewSet):
+	queryset = Condition.objects.all()
+	serializer_class = ConditionSerializer
+	permission_classes = [permissions.IsAuthenticated]
+	filter_backends = [SearchFilter, OrderingFilter]
+	search_fields = ["name", "code", "icd_code"]
+	ordering_fields = ["id", "name", "code"]
 	ordering = ["name"]
 
 
@@ -363,4 +501,353 @@ class ScriptAssignmentViewSet(
 		return ScriptAssignmentReadSerializer
 
 
+@extend_schema_view(
+	list=extend_schema(
+		summary="List script item assignments",
+		description="List drugs/prescribeable items assigned to scripts.",
+		tags=["Script Builder"],
+		parameters=[
+			OpenApiParameter(name="search", description="Search by script name, drug name, or category name.", required=False, type=str),
+			OpenApiParameter(name="ordering", description="Order by id, script name, category name, or drug name.", required=False, type=str),
+			OpenApiParameter(name="script", description="Optional script ID filter.", required=False, type=int),
+			OpenApiParameter(name="category_id", description="Optional category ID filter.", required=False, type=int),
+			OpenApiParameter(name="page", description="Page number.", required=False, type=int),
+			OpenApiParameter(name="page_size", description="Items per page (max 100).", required=False, type=int),
+		],
+		responses={
+			200: ScriptItemReadSerializer(many=True),
+			401: OpenApiResponse(description="Authentication credentials were not provided or are invalid."),
+			403: OpenApiResponse(description="You do not have permission to perform this action."),
+			500: OpenApiResponse(description="Internal server error."),
+		},
+	),
+	create=extend_schema(
+		summary="Assign drug to script",
+		description="Create a ScriptItem assignment that links a prescribeable item to a script.",
+		tags=["Script Builder"],
+		request=ScriptItemWriteSerializer,
+		responses={
+			201: ScriptItemReadSerializer,
+			400: OpenApiResponse(description="Validation error in request body."),
+			401: OpenApiResponse(description="Authentication credentials were not provided or are invalid."),
+			403: OpenApiResponse(description="You do not have permission to perform this action."),
+			500: OpenApiResponse(description="Internal server error."),
+		},
+		examples=[
+			OpenApiExample(
+				"Assign Drug",
+				request_only=True,
+				value={"script": 2, "prescribeable_item": 31},
+			)
+		],
+	),
+	retrieve=extend_schema(
+		summary="Retrieve script item assignment",
+		description="Retrieve a single script-to-drug assignment by ID.",
+		tags=["Script Builder"],
+		responses={
+			200: ScriptItemReadSerializer,
+			401: OpenApiResponse(description="Authentication credentials were not provided or are invalid."),
+			403: OpenApiResponse(description="You do not have permission to perform this action."),
+			404: OpenApiResponse(description="Script item assignment not found."),
+			500: OpenApiResponse(description="Internal server error."),
+		},
+	),
+	destroy=extend_schema(
+		summary="Delete script item assignment",
+		description="Delete an existing script-to-drug assignment.",
+		tags=["Script Builder"],
+		responses={
+			204: OpenApiResponse(description="Deleted successfully."),
+			401: OpenApiResponse(description="Authentication credentials were not provided or are invalid."),
+			403: OpenApiResponse(description="You do not have permission to perform this action."),
+			404: OpenApiResponse(description="Script item assignment not found."),
+			500: OpenApiResponse(description="Internal server error."),
+		},
+	),
+)
+class ScriptItemAssignmentViewSet(
+	mixins.ListModelMixin,
+	mixins.CreateModelMixin,
+	mixins.RetrieveModelMixin,
+	mixins.DestroyModelMixin,
+	viewsets.GenericViewSet,
+):
+	queryset = ScriptItem.objects.select_related("script", "prescribeable_item__category").all()
+	permission_classes = [permissions.IsAuthenticated]
+	filter_backends = [SearchFilter, OrderingFilter]
+	search_fields = ["script__name", "prescribeable_item__name", "prescribeable_item__category__name"]
+	ordering_fields = ["id", "script__name", "prescribeable_item__category__name", "prescribeable_item__name"]
+	ordering = ["-id"]
 
+	def get_queryset(self):
+		queryset = super().get_queryset()
+		script_id = self.request.query_params.get("script")
+		category_id = self.request.query_params.get("category_id")
+		if script_id:
+			queryset = queryset.filter(script_id=script_id)
+		if category_id:
+			queryset = queryset.filter(prescribeable_item__category_id=category_id)
+		return queryset
+
+	def get_serializer_class(self):
+		if self.action == "create":
+			return ScriptItemWriteSerializer
+		return ScriptItemReadSerializer
+
+	def create(self, request, *args, **kwargs):
+		write_serializer = self.get_serializer(data=request.data, many=True)
+		write_serializer.is_valid(raise_exception=True)
+		script_items = write_serializer.save()
+		read_serializer = ScriptItemReadSerializer(script_items, context=self.get_serializer_context(), many=True)
+		headers = self.get_success_headers(read_serializer.data)
+		return Response(read_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+
+
+def get_drugs_of_script_by_category(script_id):
+	script_items = (
+		ScriptItem.objects.select_related("script", "prescribeable_item__category")
+		.filter(script_id=script_id)
+		.order_by("prescribeable_item__category__name", "prescribeable_item__name")
+	)
+	grouped = {}
+	for script_item in script_items:
+		category = script_item.prescribeable_item.category
+		if category.id not in grouped:
+			grouped[category.id] = {
+				"category_id": category.id,
+				"category_name": category.name,
+				"items": [],
+			}
+		grouped[category.id]["items"].append(script_item)
+
+	response_payload = []
+	for data in grouped.values():
+		response_payload.append(
+			{
+				"category_id": data["category_id"],
+				"category_name": data["category_name"],
+				"items": ScriptItemReadSerializer(data["items"], many=True).data,
+			}
+		)
+
+	return response_payload
+
+
+class ScriptItemsByCategoryView(APIView):
+	permission_classes = [permissions.IsAuthenticated]
+
+	@extend_schema(
+		summary="List script drugs grouped by category",
+		description="Retrieve all drugs/prescribeable items assigned to a script, grouped by condition category.",
+		tags=["Script Builder"],
+		responses={
+			200: ScriptCategoryItemsSerializer(many=True),
+			401: OpenApiResponse(description="Authentication credentials were not provided or are invalid."),
+			403: OpenApiResponse(description="You do not have permission to perform this action."),
+			404: OpenApiResponse(description="Script not found."),
+			500: OpenApiResponse(description="Internal server error."),
+		},
+		examples=[
+			OpenApiExample(
+				"Category Grouped Script Items",
+				response_only=True,
+				value=[	
+					{
+						"category_id": 18,
+						"category_name": "Pain",
+						"items": [
+							{
+								"id": 5,
+								"script": 2,
+								"script_name": "Pain Starter Script",
+								"prescribeable_item": 31,
+								"prescribeable_item_name": "Diclofenac Sodium 3% Topical Gel",
+								"category": 18,
+								"category_name": "Pain",
+								"item_type": "medication",
+								"generic_name": "Diclofenac Sodium",
+								"strength": "3%",
+								"dosage_form": "Gel",
+								"usual_sig": "Apply 1-2 grams to affected area(s) up to 4 times daily as needed for pain.",
+								"quantity": "200",
+								"refills": 0,
+								"duration": "30 days",
+								"description": "NDC: 71085-0003-00",
+								"active": True,
+							}
+						],
+					}
+				],
+			),
+		],
+	)
+	def get(self, request):
+		script_id = self.request.query_params.get("script_id")
+		if not script_id:
+			return Response({"detail": "script_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+		script = get_object_or_404(Script, id=script_id)
+		grouped_items = get_drugs_of_script_by_category(script.id)
+		return Response(grouped_items, status=status.HTTP_200_OK)
+
+class ScriptForIntakeView(APIView):
+	permission_classes = [permissions.IsAuthenticated]
+
+	@extend_schema(
+		summary="List script drugs grouped by category",
+		description="Retrieve all drugs/prescribeable items assigned to a script, grouped by condition category.",
+		tags=["Script Builder"],
+		responses={
+			200: ScriptCategoryItemsSerializer(many=True),
+			401: OpenApiResponse(description="Authentication credentials were not provided or are invalid."),
+			403: OpenApiResponse(description="You do not have permission to perform this action."),
+			404: OpenApiResponse(description="Script not found."),
+			500: OpenApiResponse(description="Internal server error."),
+		},
+		examples=[
+			OpenApiExample(
+				"Category Grouped Script Items",
+				response_only=True,
+				value=[	
+					{
+						"category_id": 18,
+						"category_name": "Pain",
+						"items": [
+							{
+								"id": 5,
+								"script": 2,
+								"script_name": "Pain Starter Script",
+								"prescribeable_item": 31,
+								"prescribeable_item_name": "Diclofenac Sodium 3% Topical Gel",
+								"category": 18,
+								"category_name": "Pain",
+								"item_type": "medication",
+								"generic_name": "Diclofenac Sodium",
+								"strength": "3%",
+								"dosage_form": "Gel",
+								"usual_sig": "Apply 1-2 grams to affected area(s) up to 4 times daily as needed for pain.",
+								"quantity": "200",
+								"refills": 0,
+								"duration": "30 days",
+								"description": "NDC: 71085-0003-00",
+								"active": True,
+							}
+						],
+					}
+				],
+			),
+		],
+	)
+	def get(self, request):
+		intake_id = self.request.query_params.get("intake_id")
+		if not intake_id:
+			return Response({"detail": "intake_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+		script = ScriptIntakeRelationship.objects.filter(intake=intake_id).select_related("script").first()
+		if not script:
+			client = get_object_or_404(PatientIntake, id=intake_id).client
+			if not client:
+				return Response({"detail": "Client not found for the given intake_id."}, status=status.HTTP_404_NOT_FOUND)
+			account_profile = get_object_or_404(AccountProfile, user=client) if client else None
+			script = ScriptClientRelationship.objects.filter(client=account_profile).select_related("script").first()
+		else:
+			return Response({"detail": "Script not found for the given intake_id."}, status=status.HTTP_404_NOT_FOUND)
+
+
+		# script_data = ScriptSerializer(script.script).data if script else None
+		script_data = get_drugs_of_script_by_category(script.script.id) if script else None
+
+		return Response({"script": script_data}, status=status.HTTP_200_OK)
+
+
+
+
+class ScriptInfoOrganizationView(APIView):
+
+	permission_classes = [permissions.IsAuthenticated]
+
+	def get(self, request):
+		user = request.user
+		profile = get_object_or_404(AccountProfile, user=user)
+
+		if profile.role != "ORGANIZATION":
+			return Response({"detail": "You do not have permission to view this information."}, status=status.HTTP_403_FORBIDDEN)
+
+		organization_scripts = ScriptClientRelationship.objects.filter(client=profile).select_related("script")
+		script = organization_scripts.first().script if organization_scripts.exists() else None
+
+		drugs = get_drugs_of_script_by_category(script.id)
+		script_name = script.name if script else None
+		return Response({"script_name": script_name, "drugs": drugs}, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+class AssignScriptToIntakeView(APIView):
+	permission_classes = [permissions.IsAuthenticated]
+
+	def post(self, request):
+		user = request.user
+		profile = get_object_or_404(AccountProfile, user=user)
+		if profile is None:
+			return Response({"detail": "Account profile not found for the user."}, status=status.HTTP_404_NOT_FOUND)
+		if profile.role != "ADMIN":
+			return Response({"detail": "You do not have permission to assign scripts to intake."}, status=status.HTTP_403_FORBIDDEN)
+		intake_id = request.data.get("intake_id")
+		script_id = request.data.get("script_id")
+		
+
+		if not intake_id or not script_id:
+			return Response({"detail": "intake_id and script_id are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+		intake = get_object_or_404(PatientIntake, id=intake_id)
+		script = get_object_or_404(Script, id=script_id)
+
+		relationship = ScriptIntakeRelationship.objects.filter(intake=intake).first()
+		if relationship:
+			relationship.script = script
+			relationship.save()
+
+		if not relationship:
+			relationship, created = ScriptIntakeRelationship.objects.get_or_create(			
+				intake=intake, script=script
+			)
+		else:
+			created = False
+
+		if created:
+			message = "Script assigned to intake successfully."
+		else:
+			message = "Script was already assigned to this intake."
+		return Response(
+			{
+				"message": message,
+			},
+			status=status.HTTP_200_OK
+		)
+
+	def get(self, request):
+		intake_id = request.query_params.get("intake_id")
+		if not intake_id:
+			return Response({"detail": "intake_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+		script = None
+		intake = get_object_or_404(PatientIntake, id=intake_id)
+		
+		relationships = ScriptIntakeRelationship.objects.filter(intake=intake).select_related("script").first()
+		if relationships:
+			script = relationships.script
+		else:
+			client = AccountProfile.objects.filter(id=intake.client.id).first()			
+			script = ScriptClientRelationship.objects.filter(client=client).select_related("script").first().script
+			print(script)
+		if script is not None:
+			script = ScriptSerializer(script).data
+
+		return Response({"script": script}, status=status.HTTP_200_OK)

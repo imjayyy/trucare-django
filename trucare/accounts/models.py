@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import FileExtensionValidator
 from intake.models import states
 
 
@@ -13,6 +14,7 @@ class AccountProfile(models.Model):
 	ROLE_INTAKE_AGENT = "INTAKE_AGENT"
 	ROLE_BILLING = "BILLING"
 	ROLE_DOCTOR = "DOCTOR"
+	ROLE_PHARMACY = "PHARMACY"
 
 	ROLE_CHOICES = [
 		(ROLE_ADMIN, "Admin"),
@@ -21,6 +23,8 @@ class AccountProfile(models.Model):
 		(ROLE_INTAKE_AGENT, "Intake Agent"),
 		(ROLE_BILLING, "Billing"),
 		(ROLE_DOCTOR, "Doctor"),
+		(ROLE_PHARMACY, "Pharmacy"),
+		
 	]
 
 	ORG_AGENCY = "AGENCY"
@@ -73,6 +77,12 @@ class DoctorProfile(models.Model):
 		blank=True
 	)
 	postal_code = models.CharField(max_length=20, blank=True)
+	signature = models.ImageField(
+		upload_to='doctor_signatures/',
+		blank=True,
+		null=True,
+		validators=[FileExtensionValidator(allowed_extensions=['png'])],
+	)
 	
 	npi = models.CharField(max_length=100, blank=True)
 
@@ -101,4 +111,29 @@ class DoctorLicense(models.Model):
 	def __str__(self):
 		return f"{self.doctor.user.username} - {self.license_number} ({self.license_state})"
 
-	
+class PharmacyProfile(models.Model):
+	user = models.OneToOneField(
+		User,
+		on_delete=models.CASCADE,
+		related_name="pharmacy_profile",
+	)
+	phone_number = models.CharField(max_length=20, blank=True)
+	email = models.EmailField(blank=True)
+	address = models.TextField(blank=True)
+	state = models.CharField(
+		max_length=50,
+		choices=states,
+		blank=True
+	)
+	postal_code = models.CharField(max_length=20, blank=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return f"{self.user.username} ({self.user.first_name} {self.user.last_name})"
+
+	# def save(self, *args, **kwargs):
+	# 	if self.user.account_profile.role
+	# 	if not self.state:
+	# 		self.state = "N/A"
+	# 	super().save(*args, **kwargs)

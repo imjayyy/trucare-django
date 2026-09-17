@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import FileExtensionValidator
 from django.db import transaction
 from django.db.models import Q
 from drf_spectacular.types import OpenApiTypes
@@ -73,6 +74,11 @@ class DoctorCreateSerializer(serializers.Serializer):
 	address = serializers.CharField(required=False, allow_blank=True)
 	state = serializers.CharField(max_length=50, required=False, allow_blank=True)
 	postal_code = serializers.CharField(max_length=20, required=False, allow_blank=True)
+	signature = serializers.ImageField(
+		required=False,
+		allow_null=True,
+		validators=[FileExtensionValidator(allowed_extensions=['png'])],
+	)
 	npi = serializers.CharField(max_length=100, required=False, allow_blank=True)
 	licenses = DoctorLicenseWriteSerializer(many=True, required=False, allow_empty=True)
 
@@ -93,7 +99,7 @@ class DoctorCreateSerializer(serializers.Serializer):
 		user_data = _build_user_fields(validated_data, ["username", "email", "first_name", "last_name"])
 		profile_data = _build_user_fields(
 			validated_data,
-			["phone_number", "address", "state", "postal_code", "npi"],
+			["phone_number", "address", "state", "postal_code", "signature", "npi"],
 		)
 
 		user = User.objects.create_user(password=password, **user_data)
@@ -109,6 +115,7 @@ class DoctorCreateSerializer(serializers.Serializer):
 			address=profile_data.get("address", ""),
 			state=profile_data.get("state", ""),
 			postal_code=profile_data.get("postal_code", ""),
+			signature=profile_data.get("signature"),
 			npi=profile_data.get("npi", ""),
 		)
 
@@ -128,6 +135,11 @@ class DoctorUpdateSerializer(serializers.Serializer):
 	address = serializers.CharField(required=False, allow_blank=True)
 	state = serializers.CharField(max_length=50, required=False, allow_blank=True)
 	postal_code = serializers.CharField(max_length=20, required=False, allow_blank=True)
+	signature = serializers.ImageField(
+		required=False,
+		allow_null=True,
+		validators=[FileExtensionValidator(allowed_extensions=['png'])],
+	)
 	npi = serializers.CharField(max_length=100, required=False, allow_blank=True)
 	licenses = DoctorLicenseWriteSerializer(many=True, required=False, allow_empty=True)
 
@@ -147,7 +159,7 @@ class DoctorUpdateSerializer(serializers.Serializer):
 	def update(self, doctor, validated_data):
 		licenses_data = validated_data.pop("licenses", None)
 		user_data = _build_user_fields(validated_data, ["username", "email", "first_name", "last_name"])
-		profile_data = _build_user_fields(validated_data, ["phone_number", "address", "state", "postal_code", "npi"])
+		profile_data = _build_user_fields(validated_data, ["phone_number", "address", "state", "postal_code", "signature", "npi"])
 
 		user = doctor.user
 		for field, value in user_data.items():
@@ -183,7 +195,11 @@ class OrganizationReadSerializer(serializers.ModelSerializer):
 	organization_type = serializers.CharField(source="account_profile.organization_type", read_only=True)
 	profile_created_at = serializers.DateTimeField(source="account_profile.created_at", read_only=True)
 	profile_updated_at = serializers.DateTimeField(source="account_profile.updated_at", read_only=True)
-
+	organization_id = serializers.IntegerField(
+			source="account_profile.id",
+			read_only=True,
+		)
+	
 	class Meta:
 		model = User
 		fields = [
@@ -196,6 +212,7 @@ class OrganizationReadSerializer(serializers.ModelSerializer):
 			"organization_type",
 			"profile_created_at",
 			"profile_updated_at",
+			"organization_id"
 		]
 
 
@@ -302,6 +319,7 @@ class DoctorReadSerializer(serializers.ModelSerializer):
 			"address",
 			"state",
 			"postal_code",
+			"signature",
 			"npi",
 			"licenses",
 			"created_at",
