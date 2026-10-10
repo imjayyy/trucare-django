@@ -11,6 +11,8 @@ from .views import (
     IntakeStatusUpdateView,
     IntakeGetStatusView,
     IntakeConditionsView,
+    UploadAndFetchIntakeAudio,
+    RefillIntake,
 )
 
 
@@ -25,4 +27,6 @@ urlpatterns = [
     path("status-update/", IntakeStatusUpdateView.as_view(), name="intake-status-update"),
     path("get-status-by-role/", IntakeGetStatusView.as_view(), name="intake-get-status"),
     path("conditions/", IntakeConditionsView.as_view(), name="intake-conditions"),
+    path("audio/", UploadAndFetchIntakeAudio.as_view(), name="intake-audio"),
+    path("refill/", RefillIntake.as_view(), name="intake-refill"),
 ]

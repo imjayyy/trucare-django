@@ -187,3 +187,5 @@ class ScriptAssignmentWriteSerializer(serializers.ModelSerializer):
         if value.role != AccountProfile.ROLE_ORGANIZATION:
             raise serializers.ValidationError("Selected profile must have role ORGANIZATION.")
         return value
+
+   

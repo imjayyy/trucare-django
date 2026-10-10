@@ -1,3 +1,6 @@
+from accounts.models import DoctorLicense, DoctorProfile
+from accounts.serializers import DoctorProfileSerializer
+
 from .models import (
     PatientAnswerChoice,
     PatientIntake,
@@ -28,7 +31,7 @@ class GetIntakeInfo():
 
     def get_intake_info(self):
         try:
-            self.patient_intake = PatientIntake.objects.get(id=self.intake_id)
+            self.patient_intake = PatientIntake.objects.select_related('doctor').get(id=self.intake_id)
             self.patient_info = self.patient_intake.patient
         except PatientIntake.DoesNotExist:
             return None
@@ -94,8 +97,17 @@ class GetIntakeInfo():
                     }
                     for choice in answer_choices
                 ]
-
+            
             condition_answers_data.append(data_dict)
 
         return condition_answers_data
-    
+
+    def get_doctor_info(self):
+        doctor = self.patient_intake.doctor if hasattr(self.patient_intake, 'doctor') else None
+        licenses = DoctorLicense.objects.filter(doctor=doctor) if doctor else []
+        doctor_serialized = DoctorProfileSerializer(doctor).data
+        state = self.patient_intake.state if hasattr(self.patient_intake, 'state') else None
+        return {
+            "doctor": doctor_serialized,
+            "licenses": licenses,
+        }

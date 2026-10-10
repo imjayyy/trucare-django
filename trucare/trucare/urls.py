@@ -15,9 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from accounts.views import DashboardAPIView
 from django.views.static import serve
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
@@ -30,14 +30,17 @@ urlpatterns = [
     path('api/intake/', include('intake.urls')),
     path('api/scriptbuilder/', include('scriptbuilder.urls')),
     path('api/prescription/', include('prescription.urls')),
+    path("api/dashboard/", DashboardAPIView.as_view(), name="auth-dashboard"),
+
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += [
-        path(
-            'doctor_signatures/<path:path>',
-            serve,
-            {'document_root': settings.BASE_DIR},
-        ),
-    ]
+urlpatterns += [
+    path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
+]
+urlpatterns += [
+    path(
+        'doctor_signatures/<path:path>',
+        serve,
+        {'document_root': settings.BASE_DIR},
+    ),
+]

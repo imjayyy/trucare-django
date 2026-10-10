@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PrescribeAbleItem, Script, ScriptItem, ScriptClientRelationship, LetterOfMedicalNecessity
+from .models import PrescribeAbleItem, Script, ScriptIntakeRelationship, ScriptItem, ScriptClientRelationship, LetterOfMedicalNecessity
 
 
 
@@ -24,4 +24,5 @@ admin.site.register(PrescribeAbleItem, PrescribeAbleItemAdmin)
 admin.site.register(Script)
 admin.site.register(ScriptItem, ScriptItemAdmin)
 admin.site.register(ScriptClientRelationship)   
+admin.site.register(ScriptIntakeRelationship)
 admin.site.register(LetterOfMedicalNecessity, LetterOfMedicalNecessityAdmin)

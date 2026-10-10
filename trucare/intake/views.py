@@ -1,12 +1,20 @@
+import os
+
 from django.db import transaction
 from django.db.models import Q
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import serializers, status
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ValidationError
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import BasePermission, Http404, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from intake.intake_form_submit_validator import RefillIntakeFunction
+from financials.models import ClientCredit, ClientCreditRecord
+
 
 from .get_intake import GetIntakeInfo
 from trucare.pagination import StandardPagination
@@ -150,6 +158,47 @@ class IsAuthenticatedOrOptions(BasePermission):
 		],
 	),
 )
+
+
+class RefillIntake(APIView):
+	permission_classes = [IsAuthenticated]
+
+	@transaction.atomic
+	def post(self, request):
+		intake_id = request.data.get("intake_id")
+		if not intake_id:
+			return Response({"detail": "Intake ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+		
+		user = request.user
+		account_profile = AccountProfile.objects.filter(user=user).first()
+		role = account_profile.role
+		print(role)
+		if role == 'INTAKE_AGENT':
+			client_instance = AccountProfile.objects.filter(user=account_profile.parent_organization).first()
+			client = account_profile.parent_organization.id
+			
+		if role == 'ORGANIZATION':
+			client_instance = account_profile
+			client = account_profile.id
+		else:
+			return Response({"detail": "You do not have permission to refill this intake."}, status=status.HTTP_403_FORBIDDEN)
+
+		credits = ClientCredit.objects.filter(client=client_instance.id).first()
+		if credits is None or credits.credits <= 0:
+			return Response({"detail": "Insufficient credits."}, status=status.HTTP_400_BAD_REQUEST)
+		
+		intake = PatientIntake.objects.filter(id=intake_id, client=client).first()
+		if not intake:
+			return Response({"detail": "You do not have permission to refill this intake."}, status=status.HTTP_404_NOT_FOUND)
+		
+		refill_intake_instance = RefillIntakeFunction(intake_id=intake_id).create()
+		patient_id = refill_intake_instance.patient.id
+		intake_id = refill_intake_instance.id
+
+		return Response({"detail": "Refill Intake Created.", "intake_id": intake_id, "patient_id": patient_id}, status=status.HTTP_200_OK)
+
+
+
 class IntakeFormAPIView(APIView):
 	permission_classes = [IsAuthenticatedOrOptions]
 
@@ -157,19 +206,30 @@ class IntakeFormAPIView(APIView):
 		form_schema = generate_intake_form_json(include_condition_questions=True)
 		return Response(form_schema, status=status.HTTP_200_OK)
 
+		
 	@transaction.atomic
-	def post(self, request):
+	def _create_intake(self, request):
+		# Extract the intake agent from the request
+		# 
 		intake_agent = request.user
 		account_profile = AccountProfile.objects.filter(user=intake_agent).first()
+		print(account_profile.role, "account profile role")
 		if not account_profile:
 			return Response({"detail": "Account profile not found."}, status=status.HTTP_400_BAD_REQUEST)
 		if account_profile.role != "ORGANIZATION" and account_profile.role != "INTAKE_AGENT":
 			return Response({"detail": "You do not have permission to create an intake."}, status=status.HTTP_403_FORBIDDEN)
 
 		if account_profile.role == "ORGANIZATION":
+			client_instance = account_profile
 			client = intake_agent.id
 		elif account_profile.role == "INTAKE_AGENT":
+			print("parent organization id:", account_profile.parent_organization.id)
+			client_instance = AccountProfile.objects.filter(user=account_profile.parent_organization).first()
 			client = account_profile.parent_organization.id
+		credits = ClientCredit.objects.filter(client=client_instance.id).first()
+		if credits is None or credits.credits <= 0:
+			return Response({"detail": "Insufficient credits."}, status=status.HTTP_400_BAD_REQUEST)
+
 		data_ = request.data.copy()
 		data_["patient_intake"]["intake_agent"] = intake_agent.id
 		data_["patient_intake"]["client"] = client
@@ -177,41 +237,72 @@ class IntakeFormAPIView(APIView):
 
 		from .intake_form_submit_validator import IntakeFormSubmitValidator
 
-		try:
-			validated_intake = IntakeFormSubmitValidator(form_data=data_)
-			patient = validated_intake.validate()
-
-		except ValueError as e:
-			return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+		validated_intake = IntakeFormSubmitValidator(form_data=data_)
+		patient = validated_intake.validate()
+		
 		
 		return Response(
 				{"patient_id": patient["patient_info"].id if patient.get("patient_info") else None, 
-	 			"intake_id": patient["patient_intake"].id if patient.get("patient_intake") else None,
-	 			"message": "Intake created successfully."},
+				"intake_id": patient["patient_intake"].id if patient.get("patient_intake") else None,
+				"message": "Intake created successfully."},
 				status=status.HTTP_201_CREATED,
+			)
+		
+	def post(self, request):
+		try:
+			return self._create_intake(request)
+		except ValueError as e:
+			return Response(e.args[0],
+				status=status.HTTP_400_BAD_REQUEST
+			)
+		except ValidationError as e:
+			return Response(e.args[0],
+				status=status.HTTP_400_BAD_REQUEST
 			)
 
 	@transaction.atomic
 	def put(self, request):
-		intake_agent = request.user
-		account_profile = AccountProfile.objects.filter(user=intake_agent).first()
-		
-		client = account_profile.parent_organization
+		account_profile = AccountProfile.objects.filter(user=request.user).first()
+		if not account_profile:
+			return Response({"detail": "Account profile not found."}, status=status.HTTP_403_FORBIDDEN)
 
-		if account_profile.role != "ADMIN":
-			try:
-				get_object_or_404(PatientInfo, id=request.data.get("patient_id"), intake_agent=intake_agent, client=client)
-			except Http404:
-				return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)	
+		# serializer = IntakeUpdatePayloadSerializer(data=request.data)
+		# serializer.is_valid(raise_exception=True)
+		# patient_id = serializer.validated_data["patient_id"]
+		intake_id = request.data.get("intake_id")
+		intake_id = request.data.get("intake_id") or request.query_params.get("intake_id")
+		if not intake_id:
+			return Response({"detail": "Intake ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+		print(f"Intake ID: {intake_id}")
+		intake_query = PatientIntake.objects.filter(pk=intake_id)
+		if account_profile.role == "INTAKE_AGENT":
+			intake_query = intake_query.filter(client=account_profile.parent_organization)
+		elif account_profile.role == "ORGANIZATION":
+			intake_query = intake_query.filter(client=account_profile.user)
+		elif account_profile.role == "DOCTOR":
+			account_profile = DoctorProfile.objects.filter(user=request.user).first()
+			print(account_profile)
+			intake_query = intake_query.filter(doctor=account_profile)
+		elif account_profile.role == "MANAGER":
+			intake_query = intake_query.filter(manager=account_profile)
+		elif account_profile.role != "ADMIN":
+			return Response({"detail": "You do not have permission to update this intake."}, status=status.HTTP_403_FORBIDDEN)
+		if not intake_query.exists():
+			print(intake_query.query)
+			return Response({"detail": "Patient or intake not found."}, status=status.HTTP_404_NOT_FOUND)
 
-		serializer = IntakeUpdatePayloadSerializer(data=request.data)
-		serializer.is_valid(raise_exception=True)
-        
-		patient_id = serializer.validated_data["patient_id"]
-		patient = get_object_or_404(PatientInfo, id=patient_id)
-		patient = self._save_intake_data(serializer.validated_data, patient=patient)
+		from .intake_form_submit_validator import IntakeFormUpdateValidator
+		try:
+			patient_id = intake_query.first().patient.id
+			updated = IntakeFormUpdateValidator(
+				form_data=request.data,
+				patient_id=patient_id,
+				intake_id=intake_id,
+			).validate()
+		except ValueError as error:
+			return Response({"detail": str(error)}, status=status.HTTP_400_BAD_REQUEST)
 		return Response(
-			{"patient_id": patient.id, "message": "Intake updated successfully."},
+			{"patient_id": updated["patient_info"].id, "message": "Intake updated successfully."},
 			status=status.HTTP_200_OK,
 		)
 
@@ -274,20 +365,47 @@ class IntakeFormAPIView(APIView):
 
 class IntakeListItemSerializer(serializers.Serializer):
 	id = serializers.IntegerField()
-	patient_id = serializers.IntegerField(source="id")
-	intake_id = serializers.SerializerMethodField()
-	first_name = serializers.CharField()
-	last_name = serializers.CharField()
-	state = serializers.CharField(allow_null=True, required=False)
-	status = serializers.SerializerMethodField()
+	patient_id = serializers.SerializerMethodField()
+	intake_id = serializers.IntegerField(source="id")
+	first_name = serializers.SerializerMethodField()
+	last_name = serializers.SerializerMethodField()
+	state = serializers.SerializerMethodField(allow_null=True, required=False)
+	status = serializers.CharField()
 	manager = serializers.SerializerMethodField()
-	agent = serializers.SerializerMethodField()
+	client = serializers.SerializerMethodField()
 	doctor = serializers.SerializerMethodField()
-	insurance_bin = serializers.SerializerMethodField()
-	insurance_pcn = serializers.SerializerMethodField()
-	insurance_group = serializers.SerializerMethodField()
-	insurance_type = serializers.SerializerMethodField()
+	# insurance_bin = serializers.SerializerMethodField()
+	# insurance_pcn = serializers.SerializerMethodField()
+	# insurance_group = serializers.SerializerMethodField()
+	# insurance_type = serializers.SerializerMethodField()
+	insurance_info = serializers.SerializerMethodField()
+	audio_file = serializers.SerializerMethodField()
 
+	def get_intake_id(self, obj):
+		return self.id
+
+	def get_patient_id(self, obj):
+		return obj.patient.id
+	
+	def get_first_name(self, obj):
+		return obj.patient.first_name
+
+	def get_last_name(self, obj):
+		return obj.patient.last_name
+
+	def get_state(self, obj):
+		return obj.patient.state if obj.patient else None
+	
+	def get_audio_file(self, obj):
+		intake = self.context.get("intake_map", {}).get(obj.id)
+		return intake.audio_file.url if intake and intake.audio_file else None
+
+	def get_insurance_info(self, obj):
+		insurance_list = Insurance.objects.filter(patient_id=obj.patient.id)
+		insurance_info = [insurance.get_info() for insurance in insurance_list if insurance]
+		return insurance_info if insurance_info else []
+		
+	
 	def get_intake_id(self, obj):
 		intake = self.context.get("intake_map", {}).get(obj.id)
 		if intake:
@@ -299,22 +417,14 @@ class IntakeListItemSerializer(serializers.Serializer):
 		return intake.status if intake else None
 
 	def get_manager(self, obj):
-		intake = self.context.get("intake_map", {}).get(obj.id)
-		if intake and intake.client:
-			return intake.client.get_full_name() or intake.client.username
-		return None
+		return obj.cordinator.first_name + " " + obj.cordinator.last_name if obj.cordinator else None
 
-	def get_agent(self, obj):
-		intake = self.context.get("intake_map", {}).get(obj.id)
-		if intake and intake.intake_agent:
-			return intake.intake_agent.get_full_name() or intake.intake_agent.username
-		return None
+	def get_client(self, obj):
+		return obj.client.first_name + " " + obj.client.last_name
 
+	
 	def get_doctor(self, obj):
-		intake = self.context.get("intake_map", {}).get(obj.id)
-		if intake and intake.doctor and intake.doctor.user:
-			return intake.doctor.user.get_full_name() or intake.doctor.user.username
-		return None
+		return obj.doctor.user.first_name + " " + obj.doctor.user.last_name if obj.doctor else None
 
 	def get_insurance_bin(self, obj):
 		for insurance in self.context.get("insurance_map", {}).get(obj.id, []):
@@ -410,6 +520,7 @@ class IntakeSearchAPIView(APIView):
 			return Response({"detail": "Intake not found."}, status=status.HTTP_404_NOT_FOUND)
 
 		return Response([{
+			"intake_id" : intake.id,
 			"patient_id": intake.patient.id,
 			"first_name": intake.patient.first_name,
 			"last_name": intake.patient.last_name,
@@ -536,8 +647,9 @@ class IntakeAssignDoctorAPIView(APIView):
 		patient_id = serializer.validated_data["patient_id"]
 		doctor_id = serializer.validated_data["doctor_id"]
 
-		patient = get_object_or_404(PatientInfo, id=patient_id)
-		intake = PatientIntake.objects.filter(patient=patient).first()
+		# patient = get_object_or_404(PatientInfo, id=patient_id)
+		intake = PatientIntake.objects.filter(id=patient_id).first()
+		patient = intake.patient
 		if not intake:
 			return Response({"detail": "Intake not found."}, status=status.HTTP_404_NOT_FOUND)
 		if intake.status != "CLAIMED":
@@ -719,25 +831,26 @@ class IntakeListView(GenericAPIView):
 		queryset = self._build_queryset(request)
 		page = self.paginate_queryset(queryset)
 		if page is not None:
-			serializer = self.get_serializer(page, many=True, context=self._build_context(page))
+			serializer = IntakeListItemSerializer(page, many=True )
 			return self.get_paginated_response(serializer.data)
 
-		serializer = self.get_serializer(queryset, many=True, context=self._build_context(queryset))
+		serializer = IntakeListItemSerializer(queryset, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 
 	def _build_context(self, queryset):
 		
 		intake_map = {
 			intake.patient_id: intake
-			for intake in PatientIntake.objects.filter(patient__in=queryset).select_related("client", "intake_agent", "doctor__user")
+			for intake in PatientIntake.objects.filter(id__in=queryset).select_related("client", "intake_agent", "doctor__user", "patient")
 		}
 		insurance_map = {}
-		for insurance in Insurance.objects.filter(patient__in=queryset):
+
+		for insurance in Insurance.objects.filter(patient__in=queryset.values_list('patient_id', flat=True)):
 			insurance_map.setdefault(insurance.patient_id, []).append(insurance)
 		return {"intake_map": intake_map, "insurance_map": insurance_map}
 
 	def _build_queryset(self, request):
-		queryset = PatientInfo.objects.all().order_by("-created_at")
+		queryset = PatientIntake.objects.all().order_by("-created_at").select_related('patient')
 		allocate_rx = request.query_params.get("allocate_rx", False)
 		show_claimed_only = request.query_params.get("show_claimed_only", False)
 		completed_consults = request.query_params.get("completed_consults", False)
@@ -746,99 +859,98 @@ class IntakeListView(GenericAPIView):
 		user = self.request.user
 		account_profile = AccountProfile.objects.filter(user=user).first()
 		if account_profile and (account_profile.role == "MANAGER" or account_profile.role == "COORDINATOR"):
-			queryset = queryset.filter(intake__cordinator=user)
+			queryset = queryset.filter(cordinator=user)
 			if show_claimed_only:
-				queryset = queryset.filter(intake__status="CLAIMED")
+				queryset = queryset.filter(status="CLAIMED")
 		if account_profile and account_profile.role == "DOCTOR":
-			queryset = queryset.filter(intake__doctor__user=user)
+			queryset = queryset.filter(doctor__user=user)
 			if completed_consults:
-				queryset = queryset.filter(intake__status__in=["DELIVERED", "APPROVED_BY_DOCTOR", ])
+				print('completed_consults filter applied', completed_consults)
+				queryset = queryset.filter(status__in=["DELIVERED", "APPROVED_BY_DOCTOR", "ALLOCATED_TO_PHARMACY"])
 			if doctors_queue:
-				queryset = queryset.filter(intake__status="ASSIGNED_TO_DOCTOR")
+				queryset = queryset.filter(status="ASSIGNED_TO_DOCTOR")
 		if account_profile and account_profile.role == "ORGANIZATION":
-			queryset = queryset.filter(intake__client=account_profile.user)
+			queryset = queryset.filter(client=account_profile.user)
+			if request.query_params.get("show_refill_able_intake", False):
+				queryset = queryset.filter(status="DELIVERED")
 			if allocate_rx:
-				queryset = queryset.filter(intake__status="APPROVED_BY_DOCTOR")
+				queryset = queryset.filter(status="APPROVED_BY_DOCTOR")
 		if account_profile and account_profile.role == "BILLING":
-			queryset = queryset.filter( intake__status__in=["DELIVERED"])
+			queryset = queryset.filter( status__in=["DELIVERED"])
 			if billed_consults:
-				queryset = queryset.filter(intake__billing_status="BILLED")
+				queryset = queryset.filter(billing_status="BILLED")
 			if request.query_params.get("unbillable_consults", False):
-				queryset = queryset.filter(intake__billing_status="UNBILLABLE")
+				queryset = queryset.filter(billing_status="UNBILLABLE")
 			if request.query_params.get("paper_billed_consults", False):
-				queryset = queryset.filter(intake__billing_status="PAPER_BILLED")
+				queryset = queryset.filter(billing_status="PAPER_BILLED")
 
 		if account_profile and account_profile.role == "PHARMACY":
-			queryset = queryset.filter(intake__allocated_pharmacy=request.user.id)
+			queryset = queryset.filter(allocated_pharmacy=account_profile)
 			if request.query_params.get("pending_prescriptions", False):
-				queryset = queryset.filter(intake__status="ALLOCATED_TO_PHARMACY")
-
-
-
-
+				queryset = queryset.filter(status="ALLOCATED_TO_PHARMACY")
+		print("Queryset query:", queryset.query)
 		search = request.query_params.get("search")
 		if search:
 			queryset = queryset.filter(
-				Q(first_name__icontains=search)
-				| Q(last_name__icontains=search)
-				| Q(email__icontains=search)
+				Q(patient__first_name__icontains=search)
+				| Q(patient__last_name__icontains=search)
+				| Q(patient__email__icontains=search)
 			)
-
 		first_name = request.query_params.get("first_name")
 		if first_name:
-			queryset = queryset.filter(first_name__icontains=first_name)
+			queryset = queryset.filter(patient__first_name__icontains=first_name)
 
 		last_name = request.query_params.get("last_name")
 		if last_name:
-			queryset = queryset.filter(last_name__icontains=last_name)
+			queryset = queryset.filter(patient__last_name__icontains=last_name)
 
 		manager = request.query_params.get("manager") or request.query_params.get("select_manager")
 		if manager:
 			queryset = queryset.filter(
-				Q(intake__client__username__icontains=manager)
-				| Q(intake__client__first_name__icontains=manager)
-				| Q(intake__client__last_name__icontains=manager)
+				Q(client__username__icontains=manager)
+				| Q(client__first_name__icontains=manager)
+				| Q(client__last_name__icontains=manager)
 			)
 
 		doctor = request.query_params.get("doctor") or request.query_params.get("search_by_doctor") or request.query_params.get("select_doctor")
 		if doctor:
 			queryset = queryset.filter(
-				Q(intake__doctor__user__username__icontains=doctor)
-				| Q(intake__doctor__user__first_name__icontains=doctor)
-				| Q(intake__doctor__user__last_name__icontains=doctor)
+				Q(doctor__user__username__icontains=doctor)
+				| Q(doctor__user__first_name__icontains=doctor)
+				| Q(doctor__user__last_name__icontains=doctor)
 			)
 
 		agent = request.query_params.get("agent") or request.query_params.get("select_agent")
 		if agent:
 			queryset = queryset.filter(
-				Q(intake__intake_agent__username__icontains=agent)
-				| Q(intake__intake_agent__first_name__icontains=agent)
-				| Q(intake__intake_agent__last_name__icontains=agent)
+				Q(intake_agent__username__icontains=agent)
+				| Q(intake_agent__first_name__icontains=agent)
+				| Q(intake_agent__last_name__icontains=agent)
 			)
 
 		insurance_bin = request.query_params.get("insurance_bin")
 		if insurance_bin:
-			queryset = queryset.filter(insurances__bin__icontains=insurance_bin)
+			queryset = queryset.filter(patient__insurances__bin__icontains=insurance_bin)
 
 		insurance_pcn = request.query_params.get("insurance_pcn")
 		if insurance_pcn:
-			queryset = queryset.filter(insurances__pcn__icontains=insurance_pcn)
+			queryset = queryset.filter(patient__insurances__pcn__icontains=insurance_pcn)
 
 		insurance_group = request.query_params.get("insurance_group")
 		if insurance_group:
-			queryset = queryset.filter(insurances__group_id__icontains=insurance_group)
+			queryset = queryset.filter(patient__insurances__group_id__icontains=insurance_group)
 
 		state = request.query_params.get("state")
 		if state:
-			queryset = queryset.filter(state__icontains=state)
+			queryset = queryset.filter(patient__state__icontains=state)
 
 		patient_status = request.query_params.get("patient_status") or request.query_params.get("select_status")
 		if patient_status:
-			queryset = queryset.filter(intake__status__icontains=patient_status)
+			queryset = queryset.filter(status__icontains=patient_status)
 
 		patient_type = request.query_params.get("patient_type")
 		if patient_type:
-			queryset = queryset.filter(insurances__insurance_type__icontains=patient_type)
+			queryset = queryset.filter(patient__insurances__insurance_type__icontains=patient_type)
 
 		return queryset.distinct().order_by("-created_at")
 
@@ -928,7 +1040,8 @@ class IntakeStatusUpdateView(APIView):
 			return Response({"message": "Patient intake status updated successfully."}, status=status.HTTP_200_OK)
 
 		if role == "DOCTOR":
-			patient_intake = PatientIntake.objects.get(doctor=self.user, pk=pk)
+			doctor_profile = DoctorProfile.objects.get(user=self.user)
+			patient_intake = PatientIntake.objects.get(doctor=doctor_profile, pk=pk)
 			patient_intake.status = target_status
 			patient_intake.save()
 			return Response({"message": "Patient intake status updated successfully."}, status=status.HTTP_200_OK)
@@ -952,7 +1065,8 @@ class IntakeStatusUpdateView(APIView):
 			return Response({"message": "Patient intake status updated successfully."}, status=status.HTTP_200_OK)
 
 		if role == "PHARMACY":
-			patient_intake = PatientIntake.objects.get(allocated_pharmacy=self.user.id, pk=pk)
+			account_profile = AccountProfile.objects.get(user=self.user)
+			patient_intake = PatientIntake.objects.get(allocated_pharmacy=account_profile, pk=pk)
 			patient_intake.status = target_status
 			patient_intake.save()
 			return Response({"message": "Patient intake status updated successfully."}, status=status.HTTP_200_OK)
@@ -993,14 +1107,14 @@ class IntakeStatusUpdateView(APIView):
 			pharmacy_account_profile = AccountProfile.objects.get(user__id=pharmacy)
 			if pharmacy_account_profile.role != "PHARMACY":
 				return Response({"error": "Selected user is not a pharmacy."}, status=status.HTTP_400_BAD_REQUEST)
-			patient_intake.pharmacy = pharmacy
+			patient_intake.allocated_pharmacy = pharmacy_account_profile
 			if patient_intake.status == "APPROVED_BY_DOCTOR":
 				patient_intake.status = "ALLOCATED_TO_PHARMACY"
 				patient_intake.save()
 			else:
 				return Response({"error": "Patient not prescribed yet."}, status=status.HTTP_400_BAD_REQUEST)
+			print("ALLOCATE PHARMACY:", pharmacy, patient_intake, patient_intake.allocated_pharmacy)
 			return Response({"message": "Pharmacy allocated successfully."}, status=status.HTTP_200_OK)
-
 		return Response({"error": "You do not have permission to allocate a pharmacy."}, status=status.HTTP_403_FORBIDDEN)
 
 
@@ -1136,6 +1250,9 @@ class IntakeStatusUpdateView(APIView):
 			"add_billing_notes": self.add_billing_notes
 		}
 
+		print("FUNCTION CALLED:", function)
+		print("PAYLOAD DATA:", payload_data)
+
 		return functions.get(
 			function,
 			lambda *args, **kwargs: Response({"error": "Invalid function."}, status=status.HTTP_400_BAD_REQUEST),
@@ -1213,6 +1330,10 @@ class IntakeGetStatusView(APIView):
 						('Unbillable', 'UNBILLABLE'),
 						('Paper Billed', 'PAPER_BILLED')
 			],
+			"DOCTOR": [("Provider Decline", "PROVIDER_DECLINE"),
+					   ("Patient Decline", "PATIENT_DECLINE"),
+					   ("Cant Connect", "CANT_CONNECT"),
+			  ],
 		}
 
 		return Response({"status": status_.get(role, [])}, status=status.HTTP_200_OK)
@@ -1230,3 +1351,95 @@ class IntakeConditionsView(APIView):
 		conditions = PatientCondition.objects.filter(patient=intake)
 		serializer = PatientConditionSerializer(conditions, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class IntakeAudioResponseSerializer(serializers.Serializer):
+	patient_id = serializers.IntegerField()
+	audio_url = serializers.CharField()
+	message = serializers.CharField()
+
+
+class UploadAndFetchIntakeAudio(APIView):
+	"""Upload (managers/admins only) and fetch (any authenticated role) a single audio file per intake."""
+
+	permission_classes = [IsAuthenticated]
+	parser_classes = [MultiPartParser, FormParser]
+
+	@extend_schema(
+		summary="Upload or replace intake audio",
+		description=(
+			"Uploads an audio recording for a patient intake. Only managers and admins may upload. "
+			"Each intake keeps exactly one audio file — uploading again replaces the previous file on disk."
+		),
+		tags=["Intake"],
+		request={
+			"multipart/form-data": {
+				"type": "object",
+				"properties": {
+					"patient_id": {"type": "integer"},
+					"audio": {"type": "string", "format": "binary"},
+				},
+				"required": ["patient_id", "audio"],
+			}
+		},
+		responses={
+			200: IntakeAudioResponseSerializer,
+			400: serializers.JSONField(),
+			403: serializers.JSONField(),
+			404: serializers.JSONField(),
+		},
+	)
+	def post(self, request):
+		account_profile = AccountProfile.objects.filter(user=request.user).first()
+		if not account_profile or account_profile.role not in {"MANAGER", "ADMIN"}:
+			return Response({"detail": "Only managers or admins can upload intake audio."}, status=status.HTTP_403_FORBIDDEN)
+
+		intake_id = request.data.get("intake_id")
+		audio_file = request.FILES.get("audio")
+		if not intake_id or not audio_file:
+			return Response({"detail": "intake_id and audio are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+		intake = PatientIntake.objects.filter(id=intake_id).first()
+		if not intake:
+			return Response({"detail": "Intake not found."}, status=status.HTTP_404_NOT_FOUND)
+
+		if intake.audio_file:
+			intake.audio_file.delete(save=False)
+		intake.audio_file.save(audio_file.name, audio_file, save=True)
+
+		return Response(
+			{
+				"patient_id": intake.patient_id,
+				"audio_url": request.build_absolute_uri(intake.audio_file.url),
+				"message": "Audio uploaded successfully.",
+			},
+			status=status.HTTP_200_OK,
+		)
+
+	@extend_schema(
+		summary="Fetch intake audio",
+		description="Streams the audio recording attached to a patient intake. Available to any authenticated role.",
+		tags=["Intake"],
+		parameters=[
+			OpenApiParameter(
+				"intake_id",
+				int,
+				OpenApiParameter.QUERY,
+				required=True,
+				description="Patient ID whose intake audio should be fetched.",
+			)
+		],
+		responses={200: {"type": "string", "format": "binary"}, 400: serializers.JSONField(), 404: serializers.JSONField()},
+	)
+	def get(self, request):
+		intake_id = request.query_params.get("intake_id")
+		if not intake_id:
+			return Response({"detail": "intake_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+		intake = PatientIntake.objects.filter(id=intake_id).first()
+		if not intake:
+			return Response({"detail": "Intake not found."}, status=status.HTTP_404_NOT_FOUND)
+		if not intake.audio_file:
+			return Response({"detail": "No audio uploaded for this intake."}, status=status.HTTP_404_NOT_FOUND)
+
+		return FileResponse(intake.audio_file.open("rb"), filename=os.path.basename(intake.audio_file.name))

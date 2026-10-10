@@ -1,9 +1,36 @@
+import os
+import string
+
+from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 # Create your models here.
+
+
+def normalize_name(value):
+    """Strip outer whitespace, drop punctuation, and title-case a single name (e.g. " o'brien-JR. " -> "Obrienjr")."""
+    if not value:
+        return value
+    value = value.strip().translate(str.maketrans('', '', string.punctuation))
+    return value.capitalize()
+
+
+class OverwriteStorage(FileSystemStorage):
+    """Overwrites any existing file at the same path instead of renaming the new upload."""
+
+    def get_available_name(self, name, max_length=None):
+        if self.exists(name):
+            self.delete(name)
+        return name
+
+
+def intake_audio_upload_path(instance, filename):
+    """One deterministic path per intake so each intake ever has at most one audio file on disk."""
+    ext = os.path.splitext(filename)[1]
+    return f"audio_files/intake_{instance.id}{ext}"
 
 states = [
     ('AL', 'Alabama'),
@@ -77,6 +104,11 @@ class PatientInfo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        self.first_name = normalize_name(self.first_name)
+        self.last_name = normalize_name(self.last_name)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
@@ -85,7 +117,7 @@ class PatientInfo(models.Model):
 
 class PatientIntake(models.Model):
     patient = models.ForeignKey(PatientInfo, on_delete=models.CASCADE, related_name='intake')
-    height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    height = models.TextField(blank=True, null=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     client = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     intake_agent = models.ForeignKey(
@@ -130,6 +162,14 @@ class PatientIntake(models.Model):
     cordinator_disposition = models.CharField(max_length=255, blank=True, null=True, help_text="The disposition of the cordinator for this patient.")
     internal_notes = models.CharField(max_length=255, blank=True, null=True, help_text="Internal notes for this patient.")
     
+    audio_file = models.FileField(
+        upload_to=intake_audio_upload_path,
+        storage=OverwriteStorage(),
+        blank=True,
+        null=True,
+        help_text="Audio file related to the patient intake. Uploading a new file replaces the previous one.",
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -210,6 +250,37 @@ class Insurance(models.Model):
         self.full_clean() 
         super().save(*args, **kwargs)
 
+    def get_info(self):
+        fields = {
+            "insurance_type": self.insurance_type,
+            "insurance_carrier": self.insurance_carrier,
+            "carrier_phone": self.carrier_phone,
+        }
+        if self.insurance_type == "RX":
+            fields = fields | {
+                "patient_id_rx": self.patient_id_rx,
+                "group_id": self.group_id,
+                "bin": self.bin,
+                "pcn": self.pcn,
+            }   
+        if self.insurance_type == "PIP":
+            fields = fields | {
+                "adjuster_name": self.adjuster_name,
+                "adjuster_phone": self.adjuster_phone,
+                "policy_number": self.policy_number,
+                "claim_number": self.claim_number,
+                "date_of_accident": self.date_of_accident,
+            }
+        if self.insurance_type == "WC":
+            fields = fields | {
+                "adjuster_name": self.adjuster_name,
+                "adjuster_phone": self.adjuster_phone,
+                "payer_name" : self.payer_name,
+                "date_of_injury": self.date_of_injury,
+                "employer_name": self.employer_name,
+            }
+
+        return fields
 """ Patient Insurance Information """
 
 class MedicalHistory(models.Model):
@@ -246,23 +317,23 @@ class PatientFamilyHistory(models.Model):
     """Model to store family medical history for a patient.
     """
     patient = models.ForeignKey(PatientInfo, on_delete=models.CASCADE, related_name='family_histories')
-    asthama = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    bleeding_tendency = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    cancer = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    colitis = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    depression = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    diabetes = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    epilepsy = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    heart_attack = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    high_blood_pressure = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    kidney_disease = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    leukemia = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    migraine = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    schizophrenia = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    stomach_ulcers = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    stroke = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')   
-    suicide = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')
-    tuberculosis = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='None')  
+    asthama = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    bleeding_tendency = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    cancer = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    colitis = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    depression = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    diabetes = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    epilepsy = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    heart_attack = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    high_blood_pressure = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    kidney_disease = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    leukemia = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    migraine = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    schizophrenia = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    stomach_ulcers = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    stroke = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')   
+    suicide = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')
+    tuberculosis = models.CharField(max_length=20, choices=[('None', 'None'), ('Unknown', 'Unknown'), ('Yes', 'Yes')], default='Unknown')  
 
 
 
@@ -363,7 +434,14 @@ class ConditionQuestion(models.Model):
 
     required = models.BooleanField(default=True)
     order = models.PositiveIntegerField(default=1)
-
+    show_when = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="dependent_questions"
+    )
+    
     class Meta:
         ordering = ["order"]
 

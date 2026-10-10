@@ -4,6 +4,7 @@ from reportlab.platypus import HRFlowable, SimpleDocTemplate, Spacer, Table, Tab
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 # from ..prescription_functions import PrescriptionPDFData
 from datetime import datetime
+from xml.sax.saxutils import escape
 import os
 
 from prescription.models import Prescription, Soap_notes
@@ -14,6 +15,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from io import BytesIO
 from django.core.files.base import ContentFile
 from scriptbuilder.models import LetterOfMedicalNecessity
+from trucare import settings
 
 data__ ={
     "intake_info": {
@@ -11741,9 +11743,18 @@ def generate_insurance_table(insurance_data):
     # 6. Generate final table instance
     return Table(data, colWidths=col_widths, style=TableStyle(base_style))
 
-def get_docs_signature_png():
-    file_path = os.path.join(os.path.dirname(__file__), "doc.png")
-    return Image(file_path, width=120, height=36)
+def get_docs_signature_png(signature_file_name=None):
+    if signature_file_name:
+        relative = signature_file_name.removeprefix(settings.MEDIA_URL)  # '/media/' -> ''
+        file_path = os.path.join(settings.MEDIA_ROOT, relative)
+    else:
+        file_path = None
+
+    if not file_path or not os.path.isfile(file_path):
+        file_path = os.path.join(os.path.dirname(__file__), "doc.png")  # fallback
+    signature = Image(file_path, width=120, height=36)
+    signature._restrictSize(120, 36)
+    return signature
     
 
 def generate_doctors_info_for_medication(canvas, doctor_data):
@@ -11774,7 +11785,7 @@ def generate_doctors_info_for_medication(canvas, doctor_data):
     state = clean(doctor.get('state', ''))
     postal_code = clean(doctor.get('postal_code', ''))
 
-    signature = get_docs_signature_png()
+    signature = get_docs_signature_png(doctor.get('signature'))
 
     table_data = [
         [
@@ -12150,17 +12161,30 @@ def generate_medications(data__, available_width=504):
         story.append(condition_heading)
 
         story.append(generate_drug_table(primary_drug.get('drug'), primary_drug_style, available_width))
+        story.append(doctor_section_signature)
+        story.append(doctor_section_spacer)
+        story.append(doctor_section_table)
         story.append(Spacer(1, 12))  # Add some space between secondary drugs
         story.append(Paragraph("<b>Authorized Substitutes:</b>", condition_style))
 
         for secondary_drug in secondary_drugs:
             story.append(generate_drug_table(secondary_drug.get('drug'), secodary_drug_style, available_width))
             story.append(grey_divider())  # Add some space between secondary drugs
+        story.append(PageBreak())
         
         # Generate and append letter of medical necessity for the primary drug
         primary_drug_data = primary_drug.get('drug', {})
         prescribeable_item_id = primary_drug_data.get('id') or primary_drug_data.get('prescribeable_item_id')
-        
+        for secondary_drug in secondary_drugs:
+            story.append(get_patient_info_table(intake_data))
+            story.append(generate_insurance_table(insurance_info[0]))
+            story.append(condition_heading)
+            story.append(generate_drug_table(secondary_drug.get('drug'), secodary_drug_style, available_width))
+            story.append(grey_divider())  # Add some space between secondary drugs
+            story.append(doctor_section_signature)
+            story.append(doctor_section_spacer)
+            story.append(doctor_section_table)
+            story.append(PageBreak())
         if prescribeable_item_id:
             doctor_info = data__.get('doctor', {})
             patient_info = intake_data.get('patient_info', {})
@@ -12191,34 +12215,83 @@ def generate_medications(data__, available_width=504):
     story.extend(lmn_story)
     return story
 
-def build_soap_notes_table(soap_notes):
+def build_soap_notes_section(soap_notes):
     styles = getSampleStyleSheet()
-    style_text = ParagraphStyle(
-        'SoapNotesText',
+    title_style = ParagraphStyle(
+        'SoapNotesTitle',
+        parent=styles['Normal'],
+        fontName='Helvetica-Bold',
+        fontSize=15,
+        leading=19,
+        textColor=colors.HexColor('#173D4A'),
+        spaceAfter=5
+    )
+    heading_style = ParagraphStyle(
+        'SoapNotesSubheading',
+        parent=styles['Normal'],
+        fontName='Helvetica-Bold',
+        fontSize=10,
+        leading=13,
+        textColor=colors.HexColor('#176B70'),
+        spaceBefore=9,
+        spaceAfter=3,
+        keepWithNext=True
+    )
+    body_style = ParagraphStyle(
+        'SoapNotesBody',
         parent=styles['Normal'],
         fontName='Helvetica',
         fontSize=10,
-        leading=13
+        leading=14,
+        textColor=colors.HexColor('#25343A'),
+        spaceAfter=2
     )
-    table_data = [
-        [Paragraph("<b>Subjective</b>", style_text), Paragraph(soap_notes.get('subjective', ''), style_text)],
-        [Paragraph("<b>Objective</b>", style_text), Paragraph(soap_notes.get('objective', ''), style_text)],
-        [Paragraph("<b>Assessment</b>", style_text), Paragraph(soap_notes.get('assessment', ''), style_text)],
-        [Paragraph("<b>Plan</b>", style_text), Paragraph(soap_notes.get('plan', ''), style_text)]
+
+    story = [
+        Paragraph('SOAP NOTES', title_style),
+        HRFlowable(width='100%', thickness=1, color=colors.HexColor('#176B70'),
+                   spaceBefore=1, spaceAfter=7)
     ]
-    table_style = TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, -1), 10),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey)
-    ])
-    return Table(table_data, style=table_style)
+    for heading, key in (
+        ('Subjective', 'subjective'),
+        ('Objective', 'objective'),
+        ('Assessment', 'assessment'),
+        ('Plan', 'plan')
+    ):
+        value = soap_notes.get(key) or 'Not documented.'
+        note_text = '<br/>'.join(escape(line) for line in str(value).splitlines())
+        story.append(Paragraph(heading, heading_style))
+        story.append(Paragraph(note_text, body_style))
+    return story
 
 
+def visit_summary_section(date_time_of_call):
+    styles = getSampleStyleSheet()
+    text = f"""
+        Telephone consults<br/>
+        Total time spent: 15 minutes, greater than half the time spent on
+        counseling and/or coordination of care<br/><br/>
 
+        Date and Time of call: {date_time_of_call}<br/><br/>
+
+        Length of call (min): 15<br/><br/>
+
+        Orders: EM pending coding (CPT-code 99202).
+        Patient understands and agrees with care. Chart routed to physician.
+    """
+
+    heading_style = ParagraphStyle(
+        'VisitSummaryHeading',
+        parent=styles['Normal'],
+        fontName='Helvetica-Bold',
+        fontSize=12,
+        leading=14,
+        textColor=colors.HexColor('#173D4A'),
+        spaceAfter=5
+    )
+    story = [Paragraph('Visit Summary', heading_style)]
+    story.append(Paragraph(text, styles['Normal']))
+    return story
 
 
 def create_pdf(filename, prescription_instance, data__):
@@ -12247,7 +12320,7 @@ def create_pdf(filename, prescription_instance, data__):
     story.extend( generate_medications(data__))
 
     soap_notes_instance = Soap_notes.objects.get(patient_intake=intake_id)
-    story.append(build_soap_notes_table({
+    story.extend(build_soap_notes_section({
         'subjective': soap_notes_instance.subjective,
         'objective': soap_notes_instance.objective,
         'assessment': soap_notes_instance.assessment,
@@ -12255,7 +12328,7 @@ def create_pdf(filename, prescription_instance, data__):
     }))
 
     story.append(PageBreak())
-
+    story.extend(visit_summary_section(intake_data.get('patient_intake').get('updated_at', 'N/A')))
     # Page 2 Content
 
     # Bind the header callback to the build process

@@ -57,12 +57,18 @@ class RegisterSerializer(serializers.Serializer):
     parent_organization_id = serializers.IntegerField(required=False, allow_null=True)
 
     def validate_username(self, value):
-        if User.objects.filter(username=value).exists():
+        user_qs = User.objects.all()
+        if self.instance:
+            user_qs = user_qs.exclude(pk=self.instance.pk)
+        if user_qs.filter(username=value).exists():
             raise serializers.ValidationError("Username already exists.")
         return value
 
     def validate_email(self, value):
-        if User.objects.filter(email=value).exists():
+        user_qs = User.objects.all()
+        if self.instance:
+            user_qs = user_qs.exclude(pk=self.instance.pk)
+        if user_qs.filter(email=value).exists():
             raise serializers.ValidationError("Email already exists.")
         return value
 
@@ -126,6 +132,32 @@ class RegisterSerializer(serializers.Serializer):
             parent_organization=parent_organization,
         )
         return user
+
+    def update(self, instance, validated_data):
+        role = validated_data.pop("role", None)
+        organization_type = validated_data.pop("organization_type", None)
+        parent_org_id = validated_data.pop("parent_organization_id", None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        profile = getattr(instance, "account_profile", None)
+        if profile:
+            if role:
+                profile.role = role
+            if organization_type is not None:
+                profile.organization_type = organization_type
+            if parent_org_id is not None:
+                profile.parent_organization = User.objects.get(id=parent_org_id) if parent_org_id else None
+            profile.save()
+
+        return instance
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+    old_password = serializers.CharField(write_only=True, trim_whitespace=False)
+    new_password = serializers.CharField(write_only=True, min_length=8, trim_whitespace=False)
 
 
 class JWTLoginSerializer(TokenObtainPairSerializer):

@@ -111,6 +111,22 @@ class DoctorLicense(models.Model):
 	def __str__(self):
 		return f"{self.doctor.user.username} - {self.license_number} ({self.license_state})"
 
+class LegacyIdMap(models.Model):
+	"""Two-way link between a legacy Mongo ObjectId and a Django object id."""
+	collection = models.CharField(max_length=50)
+	mongo_id = models.CharField(max_length=24)
+	object_id = models.PositiveIntegerField()
+
+	class Meta:
+		constraints = [
+			models.UniqueConstraint(fields=["collection", "mongo_id"], name="uniq_legacy_mongo_id"),
+			models.UniqueConstraint(fields=["collection", "object_id"], name="uniq_legacy_object_id"),
+		]
+
+	def __str__(self):
+		return f"{self.collection}: {self.mongo_id} <-> {self.object_id}"
+
+
 class PharmacyProfile(models.Model):
 	user = models.OneToOneField(
 		User,

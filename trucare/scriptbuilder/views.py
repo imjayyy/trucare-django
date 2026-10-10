@@ -497,10 +497,12 @@ class ScriptAssignmentViewSet(
 
 	def get_serializer_class(self):
 		if self.action == "create":
+			print("Request data:", self.request.data)
+			ScriptClientRelationship.objects.filter(client=self.request.data.get("client")).delete()
 			return ScriptAssignmentWriteSerializer
 		return ScriptAssignmentReadSerializer
 
-
+	
 @extend_schema_view(
 	list=extend_schema(
 		summary="List script item assignments",

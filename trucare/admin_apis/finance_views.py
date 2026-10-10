@@ -1,6 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.db import transaction
-from django.db.models import Q
+from datetime import timedelta
+from decimal import Decimal
+
+from django.db.models import Count, Prefetch, Q, Sum
+from django.utils import timezone
+from django.utils.dateparse import parse_date
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema, inline_serializer
 from rest_framework import serializers, status
@@ -9,7 +14,7 @@ from rest_framework.response import Response
 
 from accounts.models import AccountProfile, DoctorProfile
 from accounts.views import IsAccountAdmin
-from financials.models import ClientCredit, DoctorConsults
+from financials.models import ClientCredit, ClientCreditRecord, DoctorConsults
 
 
 User = get_user_model()
@@ -63,7 +68,6 @@ class DoctorConsultsReadSerializer(serializers.ModelSerializer):
 			"last_name",
 			"full_name",
 			"email",
-			"credits",
 			"consult_cost",
 			"created_at",
 			"updated_at",
@@ -396,8 +400,9 @@ class ClientFinanceWriteSerializer(serializers.Serializer):
 		except AccountProfile.DoesNotExist as exc:
 			raise serializers.ValidationError({"client_id": "Client not found."}) from exc
 
-		if client.role != AccountProfile.ROLE_ORGANIZATION or client.organization_type != AccountProfile.ORG_CLIENT:
-			raise serializers.ValidationError({"client_id": "Client must be an organization account with CLIENT type."})
+		if client.role != AccountProfile.ROLE_ORGANIZATION or client.organization_type != AccountProfile.ORG_AGENCY:
+			print(client.role, client.organization_type)
+			raise serializers.ValidationError({"client_id": "Client must be an organization account with AGENCY type."})
 		return client
 
 	@transaction.atomic
@@ -435,28 +440,149 @@ class ClientFinanceWriteSerializer(serializers.Serializer):
 		return instance
 
 
+class ClientFinanceOverviewSerializer(serializers.ModelSerializer):
+	client_id = serializers.IntegerField(source="id", read_only=True)
+	username = serializers.CharField(source="user.username", read_only=True)
+	first_name = serializers.CharField(source="user.first_name", read_only=True)
+	last_name = serializers.CharField(source="user.last_name", read_only=True)
+	email = serializers.EmailField(source="user.email", read_only=True)
+	full_name = serializers.SerializerMethodField()
+	finance_id = serializers.SerializerMethodField()
+	credits = serializers.SerializerMethodField()
+	credit_cost = serializers.SerializerMethodField()
+	transaction_count = serializers.SerializerMethodField()
+	total_spent = serializers.SerializerMethodField()
+	transactions = serializers.SerializerMethodField()
+
+	class Meta:
+		model = AccountProfile
+		fields = [
+			"client_id",
+			"username",
+			"first_name",
+			"last_name",
+			"full_name",
+			"email",
+			"organization_type",
+			"finance_id",
+			"credits",
+			"credit_cost",
+			"transaction_count",
+			"total_spent",
+			"transactions",
+		]
+
+	def _credit(self, obj):
+		credits = obj.prefetched_credits
+		return credits[0] if credits else None
+
+	def get_full_name(self, obj):
+		return f"{obj.user.first_name} {obj.user.last_name}".strip()
+
+	def get_finance_id(self, obj):
+		credit = self._credit(obj)
+		return credit.id if credit else None
+
+	def get_credits(self, obj):
+		credit = self._credit(obj)
+		return credit.credits if credit else 0
+
+	def get_credit_cost(self, obj):
+		credit = self._credit(obj)
+		return str(credit.credit_cost) if credit else "0.00"
+
+	def get_transaction_count(self, obj):
+		return obj.transaction_count
+
+	def get_total_spent(self, obj):
+		return str(obj.total_spent or Decimal("0.00"))
+
+	def get_transactions(self, obj):
+		if not hasattr(obj, "period_records"):
+			return None
+		return [
+			{"id": r.id, "intake_id": r.intake_id, "credit_cost": str(r.credit_cost), "created_at": r.created_at}
+			for r in obj.period_records
+		]
+
+
 class ClientFinanceListCreateAPIView(ListCreateAPIView):
 	permission_classes = [IsAccountAdmin]
+	serializer_class = ClientFinanceOverviewSerializer
+
+	def _date_range(self):
+		params = self.request.query_params
+		start = end = None
+		period = params.get("period")
+		today = timezone.localdate()
+		if period == "day":
+			start = today
+		elif period == "week":
+			start = today - timedelta(days=today.weekday())
+		elif period == "month":
+			start = today.replace(day=1)
+		elif period == "year":
+			start = today.replace(month=1, day=1)
+		elif period:
+			raise serializers.ValidationError({"period": "Must be one of day, week, month, year."})
+
+		for key in ("date_from", "date_to"):
+			raw = params.get(key)
+			if not raw:
+				continue
+			value = parse_date(raw)
+			if value is None:
+				raise serializers.ValidationError({key: "Use YYYY-MM-DD format."})
+			if key == "date_from":
+				start = value
+			else:
+				end = value
+		return start, end
 
 	def get_queryset(self):
-		queryset = ClientCredit.objects.select_related("client__user").order_by("id")
+		start, end = self._date_range()
+		records = ClientCreditRecord.objects.order_by("-created_at")
+		record_filter = Q()
+		if start:
+			records = records.filter(created_at__date__gte=start)
+			record_filter &= Q(credit_records__created_at__date__gte=start)
+		if end:
+			records = records.filter(created_at__date__lte=end)
+			record_filter &= Q(credit_records__created_at__date__lte=end)
+
+		queryset = (
+			AccountProfile.objects.filter(
+				role=AccountProfile.ROLE_ORGANIZATION,
+				# organization_type=AccountProfile.ORG_AGENCY,
+			)
+			.select_related("user")
+			.annotate(
+				transaction_count=Count("credit_records", filter=record_filter),
+				total_spent=Sum("credit_records__credit_cost", filter=record_filter),
+			)
+			.prefetch_related(Prefetch("client_credits", to_attr="prefetched_credits"))
+			.order_by("id")
+		)
+		if self.request.query_params.get("include_transactions", "true").lower() != "false":
+			queryset = queryset.prefetch_related(
+				Prefetch("credit_records", queryset=records, to_attr="period_records")
+			)
 		search = self.request.query_params.get("search")
 		if search:
 			queryset = queryset.filter(
-				Q(client__user__username__icontains=search)
-				| Q(client__user__email__icontains=search)
-				| Q(client__user__first_name__icontains=search)
-				| Q(client__user__last_name__icontains=search)
-				| Q(client__organization_type__icontains=search)
+				Q(user__username__icontains=search)
+				| Q(user__email__icontains=search)
+				| Q(user__first_name__icontains=search)
+				| Q(user__last_name__icontains=search)
 			)
-		organization_type = self.request.query_params.get("organization_type")
-		if organization_type:
-			queryset = queryset.filter(client__organization_type=organization_type)
+		client_id = self.request.query_params.get("client_id")
+		if client_id:
+			queryset = queryset.filter(id=client_id)
 		return queryset
 
 	@extend_schema(
 		summary="List client finances",
-		description="Return client credit balances and configured credit cost. Admin-only endpoint.",
+		description="Return all agency clients (even without a ClientCredit row) with credit balance and their credit-record transactions, optionally filtered by period or date range. Admin-only endpoint.",
 		tags=["Admin Finance"],
 		parameters=[
 			*PAGINATION_PARAMETERS,
@@ -465,17 +591,46 @@ class ClientFinanceListCreateAPIView(ListCreateAPIView):
 				type=OpenApiTypes.STR,
 				location=OpenApiParameter.QUERY,
 				required=False,
-				description="Search by username, email, name, or organization type.",
+				description="Search by username, email, or name.",
 			),
 			OpenApiParameter(
-				name="organization_type",
+				name="client_id",
+				type=OpenApiTypes.INT,
+				location=OpenApiParameter.QUERY,
+				required=False,
+				description="Only return this client (AccountProfile id).",
+			),
+			OpenApiParameter(
+				name="include_transactions",
+				type=OpenApiTypes.BOOL,
+				location=OpenApiParameter.QUERY,
+				required=False,
+				description="Defaults to true. Set to false to omit the individual transactions per client.",
+			),
+			OpenApiParameter(
+				name="period",
 				type=OpenApiTypes.STR,
 				location=OpenApiParameter.QUERY,
 				required=False,
-				description="Filter by organization type, typically CLIENT.",
+				enum=["day", "week", "month", "year"],
+				description="Limit transactions to the current day/week/month/year.",
+			),
+			OpenApiParameter(
+				name="date_from",
+				type=OpenApiTypes.DATE,
+				location=OpenApiParameter.QUERY,
+				required=False,
+				description="Transactions on or after this date (overrides period start).",
+			),
+			OpenApiParameter(
+				name="date_to",
+				type=OpenApiTypes.DATE,
+				location=OpenApiParameter.QUERY,
+				required=False,
+				description="Transactions on or before this date.",
 			),
 		],
-		responses={200: paginated_response_serializer("PaginatedClientFinanceRead", ClientFinanceReadSerializer), 401: dict, 403: dict},
+		responses={200: paginated_response_serializer("PaginatedClientFinanceOverview", ClientFinanceOverviewSerializer), 401: dict, 403: dict},
 	)
 	def get(self, request, *args, **kwargs):
 		return super().get(request, *args, **kwargs)

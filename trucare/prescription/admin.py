@@ -52,9 +52,14 @@ class PrescriptionAdmin(admin.ModelAdmin):
     def patient_id(self, obj):
         return obj.patient.id
 
+class PrescriptionItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'prescription', 'name', 'usual_sig')
+    list_filter = ('prescription', 'prescription__patient__patient__first_name', 'prescription__patient__patient__last_name')
+    search_fields = ('prescription__patient__patient__first_name', 'prescription__patient__patient__last_name', 'name')
+
 
 admin.site.register(Prescription, PrescriptionAdmin)
-admin.site.register(PrescriptionItem)
+admin.site.register(PrescriptionItem, PrescriptionItemAdmin)
 admin.site.register(Soap_notes)
 admin.site.register(PrimaryDrug, PrimaryDrugAdmin)
 admin.site.register(SecondaryDrug, SecondaryDrugAdmin)

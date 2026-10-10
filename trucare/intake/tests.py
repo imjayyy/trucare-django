@@ -5,8 +5,71 @@ from rest_framework.test import APIClient
 
 from accounts.models import AccountProfile, DoctorProfile
 from .models import Insurance, PatientInfo, PatientIntake
+from .intake_form_submit_validator import IntakeFormUpdateValidator
 
 User = get_user_model()
+
+
+class IntakeFormUpdateValidatorTests(TestCase):
+    def setUp(self):
+        self.patient = PatientInfo.objects.create(
+            first_name="Alice",
+            last_name="Smith",
+            date_of_birth="1990-01-01",
+            email="update-alice@example.com",
+        )
+        self.intake = PatientIntake.objects.create(
+            patient=self.patient,
+            status="PENDING",
+            height="160",
+        )
+        self.insurance = Insurance.objects.create(
+            patient=self.patient,
+            insurance_type="RX",
+            insurance_carrier="Original Carrier",
+            group_id="GROUP-1",
+            patient_id_rx="PATIENT-1",
+            bin="123456",
+            pcn="ABC",
+        )
+
+    def test_updates_existing_patient_intake_and_related_record(self):
+        result = IntakeFormUpdateValidator(
+            form_data={
+                "patient_info": {"phone_number": "5551234567"},
+                "patient_intake": {"status": "CLAIMED"},
+                "insurances": [{"id": self.insurance.id, "insurance_carrier": "Updated Carrier"}],
+            },
+            patient_id=self.patient.id,
+            intake_id=self.intake.id,
+        ).validate()
+
+        self.patient.refresh_from_db()
+        self.intake.refresh_from_db()
+        self.insurance.refresh_from_db()
+        self.assertEqual(result["patient_info"], self.patient)
+        self.assertEqual(self.patient.phone_number, "5551234567")
+        self.assertEqual(self.intake.status, "CLAIMED")
+        self.assertEqual(self.insurance.insurance_carrier, "Updated Carrier")
+        self.assertEqual(Insurance.objects.filter(patient=self.patient).count(), 1)
+
+    def test_rejects_intake_that_does_not_belong_to_patient(self):
+        other_patient = PatientInfo.objects.create(
+            first_name="Bob",
+            last_name="Jones",
+            date_of_birth="1985-05-05",
+            email="update-bob@example.com",
+        )
+
+        with self.assertRaises(ValueError):
+            IntakeFormUpdateValidator(
+                form_data={"patient_info": {"phone_number": "5550000000"}},
+                patient_id=other_patient.id,
+                intake_id=self.intake.id,
+            ).validate()
+
+        self.patient.refresh_from_db()
+        self.assertIsNone(self.patient.phone_number)
 
 
 class IntakeListViewTests(TestCase):

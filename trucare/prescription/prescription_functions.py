@@ -47,6 +47,7 @@ class ValidatePrescription():
         self.errors = []
         self.Prescription = Prescription
         self.intake_id = intake_id
+        print("prescription_data:", prescription_data)
 
     @transaction.atomic
     def validate_and_save(self):

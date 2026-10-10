@@ -69,9 +69,15 @@ class IntakeCreatePayloadSerializer(serializers.Serializer):
 
 class IntakeUpdatePayloadSerializer(serializers.Serializer):
 	patient_id = serializers.IntegerField(required=True)
+	intake_id = serializers.IntegerField(required=True)
 	patient_info = PatientInfoPayloadSerializer(required=False)
+	patient_intake = serializers.DictField(required=False)
 	insurances = InsurancePayloadSerializer(many=True, required=False)
 	condition_answers = ConditionAnswerPayloadSerializer(many=True, required=False)
+	family_history = serializers.JSONField(required=False)
+	health_records = serializers.ListField(child=serializers.JSONField(), required=False)
+	medical_history = serializers.ListField(child=serializers.JSONField(), required=False)
+	condition_requests = serializers.JSONField(required=False)
 
 
 class IntakeWriteResponseSerializer(serializers.Serializer):
