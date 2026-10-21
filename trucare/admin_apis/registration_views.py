@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from accounts.models import AccountProfile, DoctorLicense, DoctorProfile
 from accounts.views import IsAccountAdmin
-
+import json
 
 User = get_user_model()
 
@@ -397,7 +397,13 @@ class DoctorListCreateAPIView(ListCreateAPIView):
 		],
 	)
 	def post(self, request, *args, **kwargs):
-		serializer = DoctorCreateSerializer(data=request.data)
+		data = request.POST.dict()
+		signature = request.FILES.get('signature')
+		data['signature'] = signature
+		licenses = data.get("licenses")
+		data["licenses"] = json.loads(licenses)	
+		
+		serializer = DoctorCreateSerializer(data=data)
 		serializer.is_valid(raise_exception=True)
 		doctor = serializer.save()
 		output = DoctorReadSerializer(doctor)
@@ -461,8 +467,14 @@ class DoctorDetailAPIView(RetrieveUpdateDestroyAPIView):
 		responses={200: DoctorReadSerializer, 400: dict, 401: dict, 403: dict, 404: dict},
 	)
 	def patch(self, request, *args, **kwargs):
+		print("REQEUST DATA", request.POST.dict())
+		data = request.POST.dict()
+		signature = request.FILES.get('signature')
+		data['signature'] = signature
+		licenses = data.get("licenses")
+		data["licenses"] = json.loads(licenses)	
 		doctor = self.get_object()
-		serializer = DoctorUpdateSerializer(data=request.data, context={"doctor": doctor}, partial=True)
+		serializer = DoctorUpdateSerializer(data=data, context={"doctor": doctor}, partial=True)
 		serializer.is_valid(raise_exception=True)
 		updated = serializer.update(doctor, serializer.validated_data)
 		return Response(DoctorReadSerializer(updated).data, status=status.HTTP_200_OK)

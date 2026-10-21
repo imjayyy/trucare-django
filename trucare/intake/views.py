@@ -29,6 +29,7 @@ from .models import (
 	PatientAnswerChoice,
 	PatientCondition,
 	PatientIntake,
+	normalize_name,
 )
 
 from accounts.models import AccountProfile, DoctorProfile
@@ -176,10 +177,12 @@ class RefillIntake(APIView):
 		if role == 'INTAKE_AGENT':
 			client_instance = AccountProfile.objects.filter(user=account_profile.parent_organization).first()
 			client = account_profile.parent_organization.id
+			client_id = account_profile.parent_organization.id
 			
 		if role == 'ORGANIZATION':
 			client_instance = account_profile
 			client = account_profile.id
+			client_id = account_profile.user.id
 		else:
 			return Response({"detail": "You do not have permission to refill this intake."}, status=status.HTTP_403_FORBIDDEN)
 
@@ -191,7 +194,7 @@ class RefillIntake(APIView):
 		if not intake:
 			return Response({"detail": "You do not have permission to refill this intake."}, status=status.HTTP_404_NOT_FOUND)
 		
-		refill_intake_instance = RefillIntakeFunction(intake_id=intake_id).create()
+		refill_intake_instance = RefillIntakeFunction(intake_id=intake_id, client_id=client_id).create()
 		patient_id = refill_intake_instance.patient.id
 		intake_id = refill_intake_instance.id
 
@@ -1443,3 +1446,37 @@ class UploadAndFetchIntakeAudio(APIView):
 			return Response({"detail": "No audio uploaded for this intake."}, status=status.HTTP_404_NOT_FOUND)
 
 		return FileResponse(intake.audio_file.open("rb"), filename=os.path.basename(intake.audio_file.name))
+
+
+
+class IntakeDuplicateCheck(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def post(self, request):
+		account_profile = AccountProfile.objects.filter(user=request.user).first()
+		if not account_profile:
+			return Response({"detail": "Authentication required."}, status=status.HTTP_403_FORBIDDEN)
+
+		first_name = request.data.get("first_name")
+		last_name = request.data.get("last_name")
+		date_of_birth = request.data.get("date_of_birth")
+		email = request.data.get("email")
+		if not first_name or not last_name or not date_of_birth:
+			return Response({"detail": "first_name, last_name, and date_of_birth are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+		duplicates = PatientIntake.objects.filter(
+			patient__first_name=normalize_name(first_name),
+			patient__last_name=normalize_name(last_name),
+			patient__date_of_birth=date_of_birth,
+		)
+
+		serializer = IntakeListItemSerializer(duplicates, many=True)
+		data = serializer.data
+		if duplicates.exists():
+			return Response(
+				{"detail": "Duplicate intakes found.", "duplicates": data},
+				status=status.HTTP_200_OK,
+			)
+		return Response({"detail": "No duplicates found."}, status=status.HTTP_200_OK)
+
+

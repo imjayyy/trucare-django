@@ -365,8 +365,9 @@ class IntakeFormUpdateValidator:
 
 
 class RefillIntakeFunction():
-    def __init__(self, intake_id):
+    def __init__(self, intake_id, client_id):
         self.intake_id = intake_id
+        self.client_id = client_id
 
     def create(self):
         if not self.intake_id:
@@ -379,6 +380,7 @@ class RefillIntakeFunction():
         intake_original_id = intake.id
         intake.id = None
         intake.pk = None
+        intake.client = self.client_id
         intake.cordinator = None
         intake.doctor = None
         intake.allocated_pharmacy = None

@@ -9,9 +9,12 @@ from django.conf import settings
 from intake.get_intake import GetIntakeInfo
 from .intake_cleaner import IntakeCleaner
 # Configure OpenRouter API
-OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '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')
+OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '')
 OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1'
 MODEL_NAME = 'google/gemini-2.5-flash-lite'  # Correct model name for OpenRouter
+
+# Configure OpenAI API
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
 
 
 def load_sample_data(sample_file: str = 'sample_intake.json') -> Dict:

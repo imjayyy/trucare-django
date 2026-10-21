@@ -445,14 +445,18 @@ class PasswordChangeView(APIView):
 	def put(self, request):
 		account_profile = AccountProfile.objects.get(user=request.user)
 		role = account_profile.role
-		if role != AccountProfile.ROLE_ADMIN:
+		if role not in [AccountProfile.ROLE_ADMIN, AccountProfile.ROLE_ORGANIZATION]:
 			return Response(
 				{"detail": "This is an admin-only action."},
 				status=status.HTTP_403_FORBIDDEN
 			)
+		
+		
 		new_password = request.data.get("new_password")
 		confirm_password = request.data.get("confirm_password")
 		user_id = request.data.get("user_id")
+
+		
 
 		if new_password != confirm_password:
 			return Response(
@@ -461,7 +465,11 @@ class PasswordChangeView(APIView):
 			)
 
 		try:
-			user = User.objects.get(id=user_id)
+			if role == AccountProfile.ROLE_ORGANIZATION:
+				user = AccountProfile.objects.get(id=user_id, parent_organization = request.user).user
+			else:
+				user = User.objects.get(id=user_id)
+
 		except User.DoesNotExist:
 			return Response(
 				{"detail": "User not found."},

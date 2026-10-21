@@ -5,6 +5,7 @@ from .views import (
     IntakeClaimAPIView,
     IntakeDetailAPIView,
     IntakeDoctorListAPIView,
+    IntakeDuplicateCheck,
     IntakeFormAPIView,
     IntakeListView,
     IntakeSearchAPIView,
@@ -29,4 +30,5 @@ urlpatterns = [
     path("conditions/", IntakeConditionsView.as_view(), name="intake-conditions"),
     path("audio/", UploadAndFetchIntakeAudio.as_view(), name="intake-audio"),
     path("refill/", RefillIntake.as_view(), name="intake-refill"),
+    path("check-duplicate/", IntakeDuplicateCheck.as_view(), name="intake-check-duplicate"),
 ]
