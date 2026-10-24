@@ -28,7 +28,8 @@ class PrescribeAbleItem(models.Model):
     name = models.CharField(max_length=255)
     generic_name = models.CharField(
         max_length=255,
-        blank=True
+        blank=True,
+        null=True,
     )
     ndc = models.CharField(
         max_length=100,

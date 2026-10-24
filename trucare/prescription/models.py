@@ -59,7 +59,7 @@ class PrescriptionItem(models.Model):
     category = models.ForeignKey(Condition, on_delete=models.PROTECT)
     item_type = models.CharField(max_length=20)
     name = models.CharField(max_length=255)
-    generic_name = models.CharField(max_length=255, blank=True)
+    generic_name = models.CharField(max_length=255, blank=True, null=True)
     ndc = models.CharField(max_length=100, blank=True, null=True)
     strength = models.CharField(max_length=100, blank=True)
     dosage_form = models.CharField(max_length=100, blank=True)

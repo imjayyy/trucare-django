@@ -524,7 +524,6 @@ class IntakeSearchAPIView(APIView):
 
 		return Response([{
 			"intake_id" : intake.id,
-			"patient_id": intake.patient.id,
 			"first_name": intake.patient.first_name,
 			"last_name": intake.patient.last_name,
 			"status": intake.status,
@@ -603,8 +602,8 @@ class IntakeClaimAPIView(APIView):
 		if not patient_id:
 			return Response({"detail": "patient_id is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-		patient = get_object_or_404(PatientInfo, id=patient_id)
-		intake = PatientIntake.objects.filter(patient=patient).first()
+		# patient = get_object_or_404(PatientInfo, id=patient_id)
+		intake = PatientIntake.objects.filter(id=patient_id).select_related("patient").first()
 		if not intake:
 			return Response({"detail": "Intake not found."}, status=status.HTTP_404_NOT_FOUND)
 		if intake.status not in {None, "PENDING"}:
@@ -613,7 +612,7 @@ class IntakeClaimAPIView(APIView):
 		intake.cordinator = request.user
 		intake.status = "CLAIMED"
 		intake.save(update_fields=["cordinator", "status", "updated_at"])
-		return Response({"patient_id": patient.id, "status": intake.status}, status=status.HTTP_200_OK)
+		return Response({"patient_id": intake.id, "status": intake.status}, status=status.HTTP_200_OK)
 
 
 class IntakeAssignDoctorAPIView(APIView):
