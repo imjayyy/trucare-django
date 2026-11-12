@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 
 from .models import (
+	Allergy,
 	Choice,
 	ChoiceSet,
 	Condition,
@@ -9,12 +10,14 @@ from .models import (
 	HealthRecord,
 	Insurance,
 	MedicalHistory,
+	Medication,
 	PatientInfo,
 	PatientAnswer,
 	PatientAnswerChoice,
 	PatientCondition,
 	PatientFamilyHistory,
 	PatientIntake,
+	Surgery,
 )
 
 class ConditionQuestionAdminForm(forms.ModelForm):
@@ -43,6 +46,20 @@ class ConditionQuestionAdminForm(forms.ModelForm):
             qs = qs.exclude(pk=self.instance.pk)
 
         self.fields["show_when"].queryset = qs
+
+        qs_other = ConditionQuestion.objects.filter(
+            question_type=ConditionQuestion.MULTIPLE_CHOICE,
+            condition=self.instance.condition if self.instance and self.instance.pk else None)
+
+        if self.instance and self.instance.pk:
+            qs_other = qs_other.filter(
+                condition=self.instance.condition
+            )
+
+        if self.instance and self.instance.pk:
+            qs_other = qs_other.exclude(pk=self.instance.pk)    
+
+        self.fields["show_when_other"].queryset = qs_other
 
 		
 class ConditionQuestionAdmin(admin.ModelAdmin):
@@ -81,4 +98,6 @@ admin.site.register(PatientCondition, PatientConditionAdmin)
 admin.site.register(ConditionQuestion, ConditionQuestionAdmin)
 admin.site.register(PatientAnswer)
 admin.site.register(PatientAnswerChoice)
-
+admin.site.register(Surgery)
+admin.site.register(Medication)
+admin.site.register(Allergy)

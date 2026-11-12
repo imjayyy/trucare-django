@@ -2,21 +2,26 @@
 from django.db import transaction
 
 from .models import (
+    Allergy,
     Choice,
     Condition,
     ConditionQuestion,
     HealthRecord,
     Insurance,
     MedicalHistory,
+    Medication,
     PatientAnswer,
     PatientAnswerChoice,
     PatientCondition,
     PatientFamilyHistory,
     PatientInfo,
     PatientIntake,
+    Surgery,
 )
 from .payload_serializers import (
+    AllergyPayloadSerializer,
     ConditionAnswerSerializer,
+    MedicationPayloadSerializer,
     PatientAnswerChoiceSerializer,
     PatientConditionSerializer,
     PatientInfoPayloadSerializer,
@@ -28,6 +33,7 @@ from .payload_serializers import (
     HealthRecordPayloadSerializer,
     MedicalHistoryPayloadSerializer,
     FamilyHistoryPayloadSerializer,
+    SurgeryPayloadSerializer,
 
     )
 
@@ -64,8 +70,8 @@ class IntakeFormSubmitValidator:
         self.HealthRecords = form_data.get("HealthRecords", [])
         self.medical_history = form_data.get("medical_history", [])
         self.medications = form_data.get("medications", [])
-        self.surgeries = form_data.get("surgeries", [])
-        self.allergies = form_data.get("allergies", [])
+        self.surgeries = form_data.get("surgery", [])
+        self.allergies = form_data.get("allergy", [])
         self.medical_conditions = form_data.get("medical_conditions", [])
 
         # validate_non_empty_list(self.condition_requests, "Condition requests")
@@ -76,7 +82,7 @@ class IntakeFormSubmitValidator:
         validate_non_empty_list(self.medications, "Medications")
         validate_non_empty_list(self.surgeries, "Surgeries")
         validate_non_empty_list(self.allergies, "Allergies")
-        validate_non_empty_list(self.medical_conditions, "Medical Conditions")
+        # validate_non_empty_list(self.medical_conditions, "Medical Conditions")
 
 
     @transaction.atomic
@@ -85,10 +91,13 @@ class IntakeFormSubmitValidator:
         self.validate_patient_intake()
         self.validate_insurance()
         self.validate_family_history()
-        self.validate_HealthRecords()
+        # self.validate_HealthRecords()
         self.validate_medical_history()
         self.validate_condition_requests()
-        
+        self.validate_medications()
+        self.validate_allergies()
+        self.validate_surgeries()   
+
         return {"patient_intake": self.patient_intake_serializer.instance,
                 "patient_info": self.patient_info_serializer.instance,
                 }
@@ -142,6 +151,36 @@ class IntakeFormSubmitValidator:
         serializer.is_valid(raise_exception=True)
         serializer.save()
         print('Health records validated and saved:', serializer.instance)
+        return
+
+    def validate_surgeries(self):
+        patient_id = self.patient_info_serializer.instance.id
+        for surgery in self.surgeries:
+            surgery['patient'] = patient_id
+        serializer = SurgeryPayloadSerializer(data=self.surgeries, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        print('Surgeries validated and saved:', serializer.instance)
+        return
+
+    def validate_medications(self):
+        patient_id = self.patient_info_serializer.instance.id
+        for medication in self.medications:
+            medication['patient'] = patient_id
+        serializer = MedicationPayloadSerializer(data=self.medications, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        print('Medications validated and saved:', serializer.instance)
+        return
+
+    def validate_allergies(self):
+        patient_id = self.patient_info_serializer.instance.id
+        for allergy in self.allergies:
+            allergy['patient'] = patient_id
+        serializer = AllergyPayloadSerializer(data=self.allergies, many=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        print('Allergies validated and saved:', serializer.instance)
         return
 
     def validate_medical_history(self):
@@ -229,11 +268,11 @@ class IntakeFormUpdateValidator:
         self.condition_requests = form_data.get("condition_requests")
         self.condition_answers = form_data.get("condition_answers")
         self.family_history = form_data.get("family_history")
-        self.HealthRecords = form_data.get("HealthRecords", form_data.get("health_records"))
+        # self.HealthRecords = form_data.get("HealthRecords", form_data.get("health_records"))
         self.medical_history = form_data.get("medical_history")
         self.medications = form_data.get("medications", [])
-        self.surgeries = form_data.get("surgeries", [])
-        self.allergies = form_data.get("allergies", [])
+        self.surgeries = form_data.get("surgery", [])
+        self.allergies = form_data.get("allergy", [])
         self.medical_conditions = form_data.get("medical_conditions", [])
 
     @transaction.atomic
@@ -247,10 +286,13 @@ class IntakeFormUpdateValidator:
         self.validate_patient_intake()
         self.validate_insurance()
         self.validate_family_history()
-        self.validate_HealthRecords()
+        # self.validate_HealthRecords()
         self.validate_medical_history()
         self.validate_condition_requests()
-
+        self.validate_medications()
+        self.validate_allergies()
+        self.validate_surgeries()   
+        
         return {"patient_intake": self.intake, "patient_info": self.patient}
 
     @staticmethod
@@ -309,6 +351,33 @@ class IntakeFormUpdateValidator:
             record.pop("id", None)
             record["patient"] = self.patient.id
         self._save(HealthRecordPayloadSerializer, None, records, many=True)
+
+    def validate_surgeries(self):
+        if not self.surgeries:
+            return
+        Surgery.objects.filter(patient=self.patient).delete()
+        for surgery in self.surgeries:
+            surgery.pop("id", None)
+            surgery["patient"] = self.patient.id
+        self._save(SurgeryPayloadSerializer, None, self.surgeries, many=True)
+
+    def validate_medications(self):
+        if not self.medications:
+            return
+        Medication.objects.filter(patient=self.patient).delete()
+        for medication in self.medications:
+            medication.pop("id", None)
+            medication["patient"] = self.patient.id
+        self._save(MedicationPayloadSerializer, None, self.medications, many=True)
+
+    def validate_allergies(self):
+        if not self.allergies:
+            return
+        Allergy.objects.filter(patient=self.patient).delete()
+        for allergy in self.allergies:
+            allergy.pop("id", None)
+            allergy["patient"] = self.patient.id
+        self._save(AllergyPayloadSerializer, None, self.allergies, many=True)
 
     def validate_medical_history(self):
         if not self.medical_history:
@@ -376,7 +445,6 @@ class RefillIntakeFunction():
         # patient = intake.patient
         if not intake:
             raise ValueError("Intake not found.")
-
         intake_original_id = intake.id
         intake.id = None
         intake.pk = None
@@ -418,3 +486,10 @@ class RefillIntakeFunction():
                 answer_choice.save()
         
         return intake
+
+
+
+
+
+
+    

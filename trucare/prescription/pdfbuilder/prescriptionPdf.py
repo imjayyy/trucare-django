@@ -11510,37 +11510,53 @@ data__ ={
 
 
 
-
 def draw_page_header(canvas, doc):
-    """Callback function to draw the header on every page."""
+    """Draw header on every page."""
     canvas.saveState()
-    
-    # Configure font and color
+
     canvas.setFont("Helvetica", 10)
-    canvas.setFillColorRGB(0.3, 0.3, 0.3)  # Charcoal color
-    logo_path = "./prescription/pdfbuilder/logo.jpg" 
+    canvas.setFillColorRGB(0.3, 0.3, 0.3)
+
+    logo_path = "./prescription/pdfbuilder/logo.jpg"
     image_width = 120
     image_height = 36
-    # Draw header text (Right-aligned or left-aligned)
+
     header_text = "From : 561-892-4617"
     header_date = "Date : " + datetime.today().strftime("%m/%d/%Y")
-    canvas.drawImage(logo_path, 54, 730, 
-                     width=image_width, height=image_height, 
-                     mask='auto')
-    # canvas.drawString(54 + image_width + 10, doc.height + doc.bottomMargin + 15, header_text)
-    canvas.drawRightString(doc.width + doc.leftMargin, doc.height + doc.bottomMargin + 15, header_date)
-    canvas.drawRightString(doc.width + doc.leftMargin, doc.height + doc.bottomMargin + 3, header_text)
-    
-    # Draw a thin horizontal rule below the header text
+
+    # Position header relative to the top of the page
+    page_width, page_height = doc.pagesize
+    y = page_height - 35
+
+    # Header text
+    canvas.drawString(doc.leftMargin, y, header_text)
+    canvas.drawRightString(page_width - doc.rightMargin, y, header_date)
+
+    # Logo
+    image_y = y - image_height - 8
+    image_start_x = (doc.width - image_width)/2 + doc.leftMargin  # Center the logo horizontally
+    canvas.drawImage(
+        logo_path,
+        image_start_x,
+        image_y,
+        width=image_width,
+        height=image_height,
+        preserveAspectRatio=True,
+        mask='auto'
+    )
+
+    # Horizontal divider
+    line_y = image_y - 15
+
     canvas.setStrokeColorRGB(0.7, 0.7, 0.7)
     canvas.setLineWidth(0.5)
     canvas.line(
-        doc.leftMargin, 
-        doc.height + doc.bottomMargin, 
-        doc.width + doc.leftMargin, 
-        doc.height + doc.bottomMargin
+        doc.leftMargin,
+        line_y,
+        page_width - doc.rightMargin,
+        line_y
     )
-    
+
     canvas.restoreState()
 
 
@@ -11852,6 +11868,96 @@ def get_medications_footer_text():
     ]
 
     return para
+
+def generate_doctors_attestation(data):
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(
+        'DoctorAttestationTitle',
+        parent=styles['Heading5'],
+        fontName='Helvetica-Bold',
+        fontSize=11,
+        leading=14,
+        spaceBefore=8,
+        spaceAfter=6,
+    )
+    body_style = ParagraphStyle(
+        'DoctorAttestationBody',
+        parent=styles['BodyText'],
+        fontName='Helvetica',
+        fontSize=9,
+        leading=12,
+        spaceAfter=6,
+    )
+
+    def clean(value):
+        return str(value).strip() if value not in (None, '') else ''
+
+    payload = data or {}
+    doctor = payload.get('doctor', {}) if isinstance(payload, dict) else {}
+    doctor = doctor.get('doctor')
+
+    user = doctor.get('user') if isinstance(doctor.get('user'), dict) else {}
+    doctor_name = ' '.join(
+        part for part in [
+            clean(user.get('first_name')),
+            clean(user.get('last_name')),
+            clean(doctor.get('first_name')),
+            clean(doctor.get('last_name')),
+        ] if part
+    )
+    if not doctor_name:
+        doctor_name = 'Prescribing Physician'
+
+    npi = clean(doctor.get('npi'))
+    if not npi:
+        npi = clean(payload.get('npi'))
+    patient_info = payload.get('intake_info').get('patient_info') if isinstance(payload.get('intake_info'), dict) else {}
+    attestation_patient_info = f"""
+    Patient: {patient_info.get('first_name', '')} {patient_info.get('last_name', '')} <br/>
+    DOB: {patient_info.get('date_of_birth', '')} <br/>
+    Date Written: {datetime.today().strftime('%m/%d/%Y')} <br/>
+    Consult: {payload.get('intake_info', {}).get('patient_intake', '').get('id')}    <br/> <br/>
+    """
+
+    attestation_text = """
+● I did maintain a valid prescriber-patient relationship with <Patient First and last name>  <br/>
+● I maintained a proper and valid licensure in <Patient State> with license number
+<Doctor state license>.  <br/>
+● I am aware of and my practices conforms with applicable <Patient Sate> law with
+regards to licensure in general and specifically as it relates to the requirements for
+telemedicine.  <br/>
+● I am aware of and my practice conforms with applicable <Patient State> law as it relates
+to requirements for establishing a valid prescriber-patient relationship.  <br/>
+● Establishing the patient identity and patient consent to provide services.  <br/>
+● Confirming services are appropriate for patient’s individual situation and medical needs  <br/>
+● Evaluating the indication, appropriateness and safety of any prescription in keeping with
+the best practice guidelines and formulary limitations that apply to the electronic
+interaction.  <br/>
+● Visit summary available at patient’s request.  <br/>
+● Documenting the clinical evaluation and prescription.  <br/><br/>
+I deemed the following medications medically necessary for <Patient first and last name>  <br/>
+This letter will also serve as an attestation for the authorized substitutions
+If you would like to contact me with any further questions, you may reach me at my office at
+<Doctor Phone number>. Thank you <br/>
+Sincerely, <br/>
+
+"""
+
+    provider_line = f"<b>Provider:</b> {doctor_name}"
+    if npi:
+        provider_line += f" <b>NPI:</b> {npi}"
+
+    return [
+        Paragraph('<b>Doctor\'s Attestation</b>', title_style),
+        Paragraph(attestation_patient_info, body_style),
+        Paragraph("""To whom it may concern: <br/>
+                    This letter will serve as an attestation of the following:""", body_style),
+        Paragraph(attestation_text, body_style),
+        Paragraph(provider_line, body_style),
+        Spacer(1, 4),
+    ]
+
+
 
 def generate_drug_table(drug, style_text, available_width=504):
     # Create a table for the drug information
@@ -12201,9 +12307,10 @@ def generate_medications(data__, available_width=504):
                 lmn_story.extend(letter_content)
                 lmn_story.append(Spacer(1, 12))
         
-        story.append(doctor_section_signature)
-        story.append(doctor_section_spacer)
-        story.append(doctor_section_table)
+        # story.append(doctor_section_spacer)
+        # story.append(doctor_section_table)
+
+
         for paragraph in paragraphs:
             story.append(paragraph)
         story.append(PageBreak())
@@ -12270,11 +12377,11 @@ def visit_summary_section(date_time_of_call):
     text = f"""
         Telephone consults<br/>
         Total time spent: 15 minutes, greater than half the time spent on
-        counseling and/or coordination of care<br/><br/>
+        counseling and/or coordination of care<br/>
 
-        Date and Time of call: {date_time_of_call}<br/><br/>
+        Date and Time of call: {date_time_of_call}<br/>
 
-        Length of call (min): 15<br/><br/>
+        Length of call (min): 15<br/>
 
         Orders: EM pending coding (CPT-code 99202).
         Patient understands and agrees with care. Chart routed to physician.
@@ -12303,10 +12410,10 @@ def create_pdf(filename, prescription_instance, data__):
         pagesize=letter,
         leftMargin=54,  # 0.75 inch
         rightMargin=54,
-        topMargin=70,   # Leave room so text doesn't overlap header
+        topMargin=90,   # Leave room so text doesn't overlap header
         bottomMargin=70
     )
-
+    print("Generating PDF for prescription instance using:", data__)
     intake_data = data__.get('intake_info')
     patient_info = intake_data.get('patient_info')
     insurance_info = intake_data.get('insurances')
@@ -12319,6 +12426,8 @@ def create_pdf(filename, prescription_instance, data__):
     intake_id = prescription_instance.patient.id
     story.extend( generate_medications(data__))
 
+
+
     soap_notes_instance = Soap_notes.objects.get(patient_intake=intake_id)
     story.extend(build_soap_notes_section({
         'subjective': soap_notes_instance.subjective,
@@ -12327,6 +12436,9 @@ def create_pdf(filename, prescription_instance, data__):
         'plan': soap_notes_instance.plan
     }))
 
+    story.append(PageBreak())
+    story.extend(generate_doctors_attestation(data__))
+    # story.extend(doctor_section_signature)
     story.append(PageBreak())
     story.extend(visit_summary_section(intake_data.get('patient_intake').get('updated_at', 'N/A')))
     # Page 2 Content

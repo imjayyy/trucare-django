@@ -377,6 +377,7 @@ class IntakeListItemSerializer(serializers.Serializer):
 	manager = serializers.SerializerMethodField()
 	client = serializers.SerializerMethodField()
 	doctor = serializers.SerializerMethodField()
+	notes = serializers.SerializerMethodField()
 	# insurance_bin = serializers.SerializerMethodField()
 	# insurance_pcn = serializers.SerializerMethodField()
 	# insurance_group = serializers.SerializerMethodField()
@@ -384,6 +385,9 @@ class IntakeListItemSerializer(serializers.Serializer):
 	insurance_info = serializers.SerializerMethodField()
 	audio_file = serializers.SerializerMethodField()
 
+	def get_notes(self, obj):
+		return obj.internal_notes
+	
 	def get_intake_id(self, obj):
 		return self.id
 
@@ -1019,10 +1023,10 @@ class IntakeStatusUpdateView(APIView):
 		accounts_profile = AccountProfile.objects.get(user=self.user)
 		if accounts_profile.role == "MANAGER":
 			patient_intake = PatientIntake.objects.get(cordinator=self.user, pk=pk)
-			patient_intake.billing_notes = notes
+			patient_intake.internal_notes = notes
 			patient_intake.save()
-			return Response({"message": "Billing notes added successfully."}, status=status.HTTP_200_OK)
-		return Response({"error": "You do not have permission to add billing notes."}, status=status.HTTP_403_FORBIDDEN)
+			return Response({"message": "Internal notes added successfully."}, status=status.HTTP_200_OK)
+		return Response({"error": "You do not have permission to add internal notes."}, status=status.HTTP_403_FORBIDDEN)
 
 
 	def update_status(self, pk, payload_data):
@@ -1295,10 +1299,11 @@ class IntakeGetStatusView(APIView):
 		role = account_profile.role
 
 		status_ = {
-			"MANAGER": [("Claimed", "CLAIMED"),
-						("Assigned to Doctor", "ASSIGNED_TO_DOCTOR"),
-						("Provider Decline", "PROVIDER_DECLINE"),
-						("Patient Decline", "PATIENT_DECLINE"),
+			"MANAGER": [
+				# ("Claimed", "CLAIMED"),
+						# ("Assigned to Doctor", "ASSIGNED_TO_DOCTOR"),
+						# ("Provider Decline", "PROVIDER_DECLINE"),
+						# ("Patient Decline", "PATIENT_DECLINE"),
 						("Cant Connect", "CANT_CONNECT"),
 						("Transfer Unsuccessful", "TRANSFER_UNSUCCESSFUL"),
 						("Patient Not Interested", "PATIENT_NOT_INTERESTED"),

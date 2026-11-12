@@ -7,8 +7,10 @@ from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schem
 from rest_framework import serializers, status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
-from accounts.models import AccountProfile, DoctorLicense, DoctorProfile
+from accounts.models import AccountProfile, DoctorLicense, DoctorProfile, AgencyProfile
 from accounts.views import IsAccountAdmin
 import json
 
@@ -627,6 +629,101 @@ class OrganizationDetailAPIView(RetrieveUpdateDestroyAPIView):
 		organization.delete()
 		return Response(status=status.HTTP_204_NO_CONTENT)
 
+class AgencyProfileSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = AgencyProfile
+		fields = [
+			"phone_number",
+			"email",
+			"address",
+			"state",
+			"postal_code",
+			"website",
+			"fax_number",
+		]
+
+class UpdateAgencyProfileAPIView(APIView):
+	permission_classes = [IsAuthenticated]
+
+	@extend_schema(
+		summary="Update organization info",
+		description="Update the organization profile information. Admin-only endpoint.",
+		tags=["Admin Organizations"],
+		request=AgencyProfileSerializer,
+		responses={200: AgencyProfile, 400: dict, 401: dict, 403: dict, 404: dict},
+	)
+	def get(self, request):
+		user = request.user
+		account_profile = AccountProfile.objects.filter(user=user).first()
+		if not account_profile:
+			return Response({"detail": "Account profile not found."}, status=status.HTTP_404_NOT_FOUND)
+		role = account_profile.role
+		if role != AccountProfile.ROLE_ADMIN:
+			profile = AgencyProfile.objects.filter(user_id=user.id).first()
+			if not profile:
+				return Response({"detail": "Agency profile not found."}, status=status.HTTP_404_NOT_FOUND)
+			serializer = AgencyProfileSerializer(profile)
+			return Response(serializer.data, status=status.HTTP_200_OK)
+
+		if role == AccountProfile.ROLE_ADMIN:
+			user_id = request.query_params.get("user_id")
+			if not user_id:
+				return Response({"detail": "user_id query parameter is required for admin users."}, status=status.HTTP_400_BAD_REQUEST)
+			profile = AgencyProfile.objects.filter(user_id=user_id).first()
+			if not profile:
+				return Response({"detail": "Agency profile not found."}, status=status.HTTP_404_NOT_FOUND)
+			serializer = AgencyProfileSerializer(profile)
+			return Response(serializer.data, status=status.HTTP_200_OK)
+
+	@extend_schema(
+		summary="Post/Update organization info",
+		description="Update the organization profile information.",
+		tags=["Admin Organizations"],
+		request=AgencyProfileSerializer,
+		responses={200: AgencyProfile, 400: dict, 401: dict, 403: dict, 404: dict},
+		parameters=[
+			OpenApiParameter(
+				name="user_id",
+				type=OpenApiTypes.INT,
+				location=OpenApiParameter.QUERY,
+				required=False,
+				description="User ID of the organization profile to update. Required for admin users.",
+			),
+		],
+	)
+
+	def post(self, request):
+		user = request.user
+		account_profile = AccountProfile.objects.filter(user=user).first()
+		if not account_profile:
+			return Response({"detail": "Account profile not found."}, status=status.HTTP_404_NOT_FOUND)
+		role = account_profile.role
+		if role != AccountProfile.ROLE_ADMIN:
+			profile = AgencyProfile.objects.filter(user_id=user.id).first()
+			if not profile:
+				return Response({"detail": "Agency profile not found."}, status=status.HTTP_404_NOT_FOUND)
+			serializer = AgencyProfileSerializer(profile, data=request.data, partial=True)
+			if serializer.is_valid():
+				serializer.save()
+				return Response(serializer.data, status=status.HTTP_200_OK)
+			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+		if role == AccountProfile.ROLE_ADMIN:
+			user_id = request.query_params.get("user_id")
+			if not user_id:
+				return Response({"detail": "user_id query parameter is required for admin users."}, status=status.HTTP_400_BAD_REQUEST)
+			profile = AgencyProfile.objects.filter(user_id=user_id).first()
+			if not profile:
+				profile = AgencyProfile.objects.create(user_id=user_id)				
+			serializer = AgencyProfileSerializer(profile, data=request.data, partial=True)
+			if serializer.is_valid():
+				serializer.save()
+				return Response(serializer.data, status=status.HTTP_200_OK)
+			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+	def put(self, request):
+		return self.post(request)
+	
 
 class RoleAccountReadSerializer(serializers.ModelSerializer):
 	user_id = serializers.IntegerField(source="id", read_only=True)

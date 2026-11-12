@@ -749,14 +749,15 @@ class ScriptForIntakeView(APIView):
 
 
 		script = ScriptIntakeRelationship.objects.filter(intake=intake_id).select_related("script").first()
+
 		if not script:
 			client = get_object_or_404(PatientIntake, id=intake_id).client
 			if not client:
 				return Response({"detail": "Client not found for the given intake_id."}, status=status.HTTP_404_NOT_FOUND)
 			account_profile = get_object_or_404(AccountProfile, user=client) if client else None
 			script = ScriptClientRelationship.objects.filter(client=account_profile).select_related("script").first()
-		else:
-			return Response({"detail": "Script not found for the given intake_id."}, status=status.HTTP_404_NOT_FOUND)
+		# else:
+		# 	return Response({"detail": "Script not found for the given intake_id."}, status=status.HTTP_404_NOT_FOUND)
 
 
 		# script_data = ScriptSerializer(script.script).data if script else None

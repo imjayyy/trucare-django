@@ -17,6 +17,7 @@ from .registration_views import (
     ManagerListCreateAPIView,
     OrganizationDetailAPIView,
     OrganizationListCreateAPIView,
+    UpdateAgencyProfileAPIView,
 )
 from .pharmacy_views import (
     PharmacyListCreateAPIView,
@@ -35,6 +36,7 @@ urlpatterns = [
     path("finances/clients/<int:finance_id>/", ClientFinanceDetailAPIView.as_view(), name="admin-client-finance-detail"),
     path("organizations/", OrganizationListCreateAPIView.as_view(), name="admin-organization-list-create"),
     path("organizations/<int:organization_id>/", OrganizationDetailAPIView.as_view(), name="admin-organization-detail"),
+    path("organizations/organization-profile/", UpdateAgencyProfileAPIView.as_view(), name="admin-organization-update"),
     path("doctors/", DoctorListCreateAPIView.as_view(), name="admin-doctor-list-create"),
     path("doctors/<int:doctor_id>/", DoctorDetailAPIView.as_view(), name="admin-doctor-detail"),
     path("pharmacies/", PharmacyListCreateAPIView.as_view(), name="admin-pharmacy-list-create"),

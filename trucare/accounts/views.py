@@ -7,14 +7,20 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .models import AccountProfile, User
+
+
+from .models import AccountProfile, AgencyProfile, DoctorLicense, DoctorProfile, User
 from intake.models import PatientInfo, PatientIntake
 from .serializers import (
+	DoctorLicenseSerializer,
+	DoctorProfileSerializer,
 	JWTLoginSerializer,
 	JWTRefreshSerializer,
 	PasswordChangeSerializer,
 	RegisterSerializer,
 	UserSerializer,
+	AgencyProfileSerializer,
+	AccountProfileSerializer,
 )
 
 
@@ -538,3 +544,126 @@ class DashboardAPIView(APIView):
 			)
 
 		return Response(dashboard_data, status=status.HTTP_200_OK)
+
+
+
+
+class ProfileUpdateView(APIView):
+	permission_classes = [permissions.IsAuthenticated]
+
+	@extend_schema(
+		summary="Update user profile",
+		description="Update the profile of the authenticated user.",
+		tags=["Profile"],
+		request=RegisterSerializer,
+		responses={200: UserSerializer, 400: dict, 401: dict},
+	)
+	def get(self, request):
+		user = request.user
+		profile = AccountProfile.objects.get(user=user)
+		if not profile:
+			return Response({"detail": "Account profile not found."}, status=status.HTTP_404_NOT_FOUND)
+		else:
+			if profile.role == AccountProfile.ROLE_ORGANIZATION:
+				agency_profile = AgencyProfile.objects.get(user=user)
+				serializer = AgencyProfileSerializer(agency_profile)			
+				serializer_data = UserSerializer(user).data
+				serializer_data['agency_profile'] = serializer.data	
+				return Response(serializer_data, status=status.HTTP_200_OK)
+
+			if profile.role == AccountProfile.ROLE_DOCTOR:
+				serializer = UserSerializer(user)
+				doctor_profile = DoctorProfile.objects.get(user=user)
+				doctor_licenses = DoctorLicense.objects.filter(doctor=doctor_profile)
+				serializer_data = serializer.data
+				serializer_data['doctor_profile'] = DoctorProfileSerializer(doctor_profile).data
+				serializer_data['doctor_licenses'] = DoctorLicenseSerializer(doctor_licenses, many=True).data
+				return Response(serializer_data, status=status.HTTP_200_OK)
+
+			if profile.role == AccountProfile.ROLE_BILLING:
+				serializer = UserSerializer(user)
+				serializer_data = serializer.data
+				return Response(serializer_data, status=status.HTTP_200_OK)
+
+			if profile.role == AccountProfile.ROLE_MANAGER:
+				serializer = UserSerializer(user)
+				serializer_data = serializer.data
+				return Response(serializer_data, status=status.HTTP_200_OK)
+			if profile.role == AccountProfile.ROLE_INTAKE_AGENT:
+				serializer = UserSerializer(user)
+				serializer_data = serializer.data
+				return Response(serializer_data, status=status.HTTP_200_OK)
+
+			if profile.role == AccountProfile.ROLE_ADMIN:
+				serializer = UserSerializer(user)
+				serializer_data = serializer.data
+				return Response(serializer_data, status=status.HTTP_200_OK)
+
+	def patch(self, request):
+		user = request.user
+		profile = AccountProfile.objects.get(user=user)
+		if not profile:
+			return Response({"detail": "Account profile not found."}, status=status.HTTP_404_NOT_FOUND)
+		else:
+			if profile.role == AccountProfile.ROLE_ORGANIZATION:
+				user_serializer = UserSerializer(user, data=request.data, partial=True)
+				user_serializer.is_valid(raise_exception=True)
+				user_serializer.save()
+				agency_profile = AgencyProfile.objects.get(user=user)
+				agency_profile_data = request.data.get('agency_profile', {})
+				serializer = AgencyProfileSerializer(agency_profile, data=agency_profile_data, partial=True)
+				serializer.is_valid(raise_exception=True)
+				serializer.save()
+				return Response(serializer.data, status=status.HTTP_200_OK)
+
+			if profile.role == AccountProfile.ROLE_DOCTOR:
+				print(request.data)
+				doctor_profile = DoctorProfile.objects.get(user=user)
+				user_serializer = UserSerializer(user, data=request.data, partial=True)
+				user_serializer.is_valid(raise_exception=True)
+				user_serializer.save()
+				serializer = DoctorProfileSerializer(doctor_profile, data=request.data.get('doctor_profile'), partial=True)
+				serializer.is_valid(raise_exception=True)
+				serializer.save()
+				licenses_data = request.data.get('doctor_licenses', [])
+				for license_data in licenses_data:
+					license_id = license_data.get('id')					
+					if license_id:
+						try:
+							license_instance = DoctorLicense.objects.get(id=license_id, doctor=doctor_profile)
+							license_serializer = DoctorLicenseSerializer(license_instance, data=license_data, partial=True)
+							license_serializer.is_valid(raise_exception=True)
+							license_serializer.save()
+						except DoctorLicense.DoesNotExist:
+							return Response({"detail": f"DoctorLicense with id {license_id} not found."}, status=status.HTTP_404_NOT_FOUND)
+					else:
+						license_data['doctor'] = doctor_profile.id
+						license_serializer = DoctorLicenseSerializer(data=license_data)
+						license_serializer.is_valid(raise_exception=True)
+						license_serializer.save(doctor=doctor_profile)
+
+				return Response(serializer.data, status=status.HTTP_200_OK)
+
+			if profile.role == AccountProfile.ROLE_BILLING:
+				serializer = UserSerializer(user, data=request.data, partial=True)
+				serializer.is_valid(raise_exception=True)
+				serializer.save()
+				return Response(serializer.data, status=status.HTTP_200_OK)
+
+			if profile.role == AccountProfile.ROLE_MANAGER:
+				serializer = UserSerializer(user, data=request.data, partial=True)
+				serializer.is_valid(raise_exception=True)
+				serializer.save()
+				return Response(serializer.data, status=status.HTTP_200_OK)
+
+			if profile.role == AccountProfile.ROLE_INTAKE_AGENT:
+				serializer = UserSerializer(user, data=request.data, partial=True)
+				serializer.is_valid(raise_exception=True)
+				serializer.save()
+				return Response(serializer.data, status=status.HTTP_200_OK)
+
+			if profile.role == AccountProfile.ROLE_ADMIN:
+				serializer = UserSerializer(user, data=request.data, partial=True)
+				serializer.is_valid(raise_exception=True)
+				serializer.save()
+				return Response(serializer.data, status=status.HTTP_200_OK)

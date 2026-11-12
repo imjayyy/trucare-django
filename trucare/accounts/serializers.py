@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import AccountProfile, DoctorLicense, DoctorProfile
+from .models import AccountProfile, AgencyProfile, DoctorLicense, DoctorProfile
 
 
 User = get_user_model()
@@ -12,8 +12,21 @@ User = get_user_model()
 class DoctorLicenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorLicense
-        fields = ["license_number", "state"]
+        fields = "__all__"
 
+
+class AgencyProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AgencyProfile
+        fields = [
+            "phone_number",
+            "email",
+            "address",
+            "state",
+            "postal_code",
+            "website",
+            "fax_number",
+        ]
 
 
 class AccountProfileSerializer(serializers.ModelSerializer):

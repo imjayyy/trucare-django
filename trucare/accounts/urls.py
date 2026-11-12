@@ -9,6 +9,7 @@ from .views import (
     RegisterIntakeAgentAPIView,
     UpdateProfile,
     DashboardAPIView,
+    ProfileUpdateView,
 )
 
 
@@ -22,4 +23,6 @@ urlpatterns = [
     path("dashboard/", DashboardAPIView.as_view(), name="auth-dashboard"),
     path("register-intake-agent/", RegisterIntakeAgentAPIView.as_view(), name="auth-register-intake-agent"),
     path("register-intake-agent/<int:pk>/", RegisterIntakeAgentAPIView.as_view(), name="auth-register-intake-agent-detail"),
+    path("profile-update/", ProfileUpdateView.as_view(), name="auth-profile-update"),
+
 ]

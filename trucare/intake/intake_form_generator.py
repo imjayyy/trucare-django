@@ -156,6 +156,12 @@ def generate_intake_form_json(include_condition_questions=True):
 						"required": False,
 						"options": _build_options(states),
 					},
+					{
+						"name": "zip_code",
+						"label": "Zip Code",
+						"component": "number",
+						"required": False,
+					},
 				],
 			},
 			{
@@ -293,13 +299,6 @@ def generate_intake_form_json(include_condition_questions=True):
 						"showWhen": {"insurance_type": ["PIP"]},
 					},
 					{
-						"name": "payer_name",
-						"label": "Payer Name",
-						"component": "text",
-						"required": False,
-						"showWhen": {"insurance_type": ["WC"]},
-					},
-					{
 						"name": "date_of_injury",
 						"label": "Date of Injury",
 						"component": "date",
@@ -340,87 +339,58 @@ def generate_intake_form_json(include_condition_questions=True):
 					},
 				],
 			},
+			
 			{
-		# 		        ('Medical Conditions', 'Medical Conditions'),
-        # ('Allergies', 'Allergies'),
-        # ('Surgeries', 'Surgeries'),
-        # ('Medications', 'Medications'),
-		# ('other', 'Other'),
-				"id": "medical_conditions",
-				"title": "Medical Conditions",
-				"repeatable": True,
-				"fields": [
-					{
-						"name": "record_type",
-						"label": "Record Type",
-						"component": "select",
-						"required": True,
-						"value": "Medical Conditions",
-						"options": _build_options([("Medical Conditions", "Medical Conditions")]),
-					},
-					{
-						"name": "record_date",
-						"label": "Record Date",
-						"component": "date",
-						"required": False,
-					},
-					{
-						"name": "description",
-						"label": "Description",
-						"component": "textarea",
-						"required": False,
-					},
-				],
-			},
-			{
-				"id": "allergies",
+				"id": "allergy",
 				"title": "Allergies",
 				"repeatable": True,
 				"fields": [
 					{
-						"name": "record_type",
-						"label": "Record Type",
-						"component": "select",
+						"name": "allergen",
+						"label": "Allergen",
+						"component": "text",
 						"required": True,
-						"value": "Allergies",
-						"options": _build_options([("Allergies", "Allergies")]),
+						
 					},
 					{
-						"name": "record_date",
-						"label": "Record Date",
-						"component": "date",
-						"required": False,
-					},
-					{
-						"name": "description",
-						"label": "Description",
+						"name": "reaction",
+						"label": "Reaction",
 						"component": "textarea",
 						"required": False,
+					},
+					{
+						"name": "severity",
+						"label": "Severity",
+						"component": "select",
+						"required": False,
+						"options": _build_options([
+							("Mild", "Mild"),
+							("Moderate", "Moderate"),
+							("Severe", "Severe")
+						])
 					},
 				],
 			},
 			{
-				"id": "surgeries",
+				"id": "surgery",
 				"title": "Surgeries",
 				"repeatable": True,
 				"fields": [
 					{
-						"name": "record_type",
-						"label": "Record Type",
-						"component": "select",
+						"name": "surgery_name",
+						"label": "Surgery Name",
+						"component": "text",
 						"required": True,
-						"value": "Surgeries",
-						"options": _build_options([("Surgeries", "Surgeries")]),
 					},
 					{
-						"name": "record_date",
-						"label": "Record Date",
+						"name": "surgery_date",
+						"label": "Surgery Date",
 						"component": "date",
 						"required": False,
 					},
 					{
-						"name": "description",
-						"label": "Description",
+						"name": "notes",
+						"label": "Notes",
 						"component": "textarea",
 						"required": False,
 					},
@@ -432,22 +402,15 @@ def generate_intake_form_json(include_condition_questions=True):
 				"repeatable": True,
 				"fields": [
 					{
-						"name": "record_type",
-						"label": "Record Type",
-						"component": "select",
+						"name": "medication",
+						"label": "Medication",
+						"component": "text",
 						"required": True,
-						"value": "Medications",
-						"options": _build_options([("Medications", "Medications")]),
-					},
+						
+					},					
 					{
-						"name": "record_date",
-						"label": "Record Date",
-						"component": "date",
-						"required": False,
-					},
-					{
-						"name": "description",
-						"label": "Description",
+						"name": "notes",
+						"label": "Notes",
 						"component": "textarea",
 						"required": False,
 					},
@@ -636,6 +599,10 @@ def generate_intake_form_json(include_condition_questions=True):
 			else:
 				show_when = {requested_field_name: ["YES"]}
 
+			if question.show_when_other:
+				txt_other = f"condition_{condition.id}_question_{question.show_when_other.id}"
+				show_when[txt_other] = ["Other"]
+
 			field = {
 				"name": f"condition_{condition.id}_question_{question.id}",
 				"questionId": question.id,
@@ -644,6 +611,7 @@ def generate_intake_form_json(include_condition_questions=True):
 				"questionType": question.question_type,
 				"required": question.required,
 				"showWhen": show_when,
+				"showWhenOther": {txt_other: ["Other"]} if question.show_when_other else None,
 			}
 
 			options = _build_question_options(question)

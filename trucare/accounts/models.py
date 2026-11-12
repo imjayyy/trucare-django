@@ -61,6 +61,37 @@ class AccountProfile(models.Model):
 		return f"{self.user.username} ({self.role})"
 
 
+class AgencyProfile(models.Model):
+	user = models.OneToOneField(
+		User,
+		on_delete=models.CASCADE,
+		related_name="agency_profile",
+	)
+	"""Contact No, Fax, Website, Prim contact, prime email, prim phone, address, state, zip code"""
+
+	phone_number = models.CharField(max_length=20, blank=True)
+	email = models.EmailField(blank=True)
+	address = models.TextField(blank=True)
+	state = models.CharField(
+		max_length=50,
+		choices=states,
+		blank=True
+	)
+	postal_code = models.CharField(max_length=20, blank=True)
+	website = models.URLField(blank=True)
+	fax_number = models.CharField(max_length=20, blank=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)	
+
+	def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+		account_profile = AccountProfile.objects.get(user=self.user)
+		if not account_profile:
+			raise ValueError("User must have an AccountProfile to create an AgencyProfile.")
+		if account_profile.role != AccountProfile.ROLE_ORGANIZATION:
+			raise ValueError("User must have role 'ORGANIZATION' to create an AgencyProfile.")
+
+		return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+
 
 class DoctorProfile(models.Model):
 	user = models.OneToOneField(

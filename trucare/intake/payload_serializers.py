@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 from .models import HealthRecord, MedicalHistory, PatientInfo, Insurance, ConditionQuestion, Choice, ChoiceSet, PatientAnswer, PatientAnswerChoice, PatientCondition, PatientFamilyHistory, PatientIntake
-
+from .models import Surgery, Medication, Allergy
 
 class PatientInfoPayloadSerializer(serializers.Serializer):
 	first_name = serializers.CharField(max_length=30, required=False)
@@ -101,7 +101,20 @@ class MedicalHistoryPayloadSerializer(serializers.ModelSerializer):
         model = MedicalHistory
         fields = "__all__"
 
+class SurgeryPayloadSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Surgery
+		fields = "__all__"
 
+class MedicationPayloadSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Medication
+		fields = "__all__"
+
+class AllergyPayloadSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Allergy
+		fields = "__all__"
 
 class InsuranceSerializer(serializers.ModelSerializer):
     class Meta:

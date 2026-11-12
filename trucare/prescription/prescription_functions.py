@@ -69,6 +69,10 @@ class ValidatePrescription():
                     primary_drug['prescription'] = self.Prescription.id
                     if "category" not in primary_drug:
                         primary_drug["category"] = condition
+
+                    if 'usual_sig' not in primary_drug:
+                        primary_drug['usual_sig'] = primary_drug.get('sig', '')
+                        
                     prescription_item = PrescriptionItemSerializer(data=primary_drug)
                     prescription_item.is_valid(raise_exception=True)
                     prescription_item.save()

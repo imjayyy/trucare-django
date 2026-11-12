@@ -5,6 +5,7 @@ from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth import get_user_model
+from auditlog.registry import auditlog
 
 User = get_user_model()
 # Create your models here.
@@ -100,7 +101,7 @@ class PatientInfo(models.Model):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     state = models.CharField(choices=states, max_length=20, blank=True, null=True)
-
+    zip_code = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -233,7 +234,7 @@ class Insurance(models.Model):
         elif self.insurance_type == "PIP":
             required = ["insurance_carrier", "policy_number"]
         elif self.insurance_type == "WC":
-            required = ["payer_name", "claim_number", "date_of_injury"]
+            required = ["claim_number", "date_of_injury"]
         else:
             required = []
 
@@ -275,7 +276,6 @@ class Insurance(models.Model):
             fields = fields | {
                 "adjuster_name": self.adjuster_name,
                 "adjuster_phone": self.adjuster_phone,
-                "payer_name" : self.payer_name,
                 "date_of_injury": self.date_of_injury,
                 "employer_name": self.employer_name,
             }
@@ -312,7 +312,43 @@ class HealthRecord(models.Model):
 
     def __str__(self):
         return f"{self.record_type} for {self.patient.first_name} {self.patient.last_name}"
-    
+
+class Medication(models.Model):
+    patient = models.ForeignKey(PatientInfo, on_delete=models.CASCADE, related_name='medications')
+    medication = models.CharField(max_length=100)
+    notes = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.medication} for {self.patient.first_name} {self.patient.last_name}"
+
+class Allergy(models.Model):
+    patient = models.ForeignKey(PatientInfo, on_delete=models.CASCADE, related_name='allergies')
+    allergen = models.CharField(max_length=100)
+    reaction = models.TextField(blank=True, null=True)
+    severity = models.CharField(max_length=50, choices=[
+        ('Mild', 'Mild'),
+        ('Moderate', 'Moderate'),
+        ('Severe', 'Severe'),
+    ], blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.allergen} allergy for {self.patient.first_name} {self.patient.last_name}"
+
+class Surgery(models.Model):
+    patient = models.ForeignKey(PatientInfo, on_delete=models.CASCADE, related_name='surgeries')
+    surgery_name = models.CharField(max_length=100)
+    surgery_date = models.DateField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.surgery_name} for {self.patient.first_name} {self.patient.last_name}"
+
 class PatientFamilyHistory(models.Model):
     """Model to store family medical history for a patient.
     """
@@ -441,6 +477,12 @@ class ConditionQuestion(models.Model):
         on_delete=models.SET_NULL,
         related_name="dependent_questions"
     )
+    show_when_other = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="dependent_questions_other")        
     
     class Meta:
         ordering = ["order"]
@@ -491,3 +533,15 @@ class PatientAnswerChoice(models.Model):
 
     class Meta:
         unique_together = ("answer", "choice")
+
+
+
+auditlog.register(PatientInfo)
+auditlog.register(PatientIntake)
+auditlog.register(Insurance)
+auditlog.register(MedicalHistory)
+auditlog.register(HealthRecord)
+auditlog.register(PatientFamilyHistory)
+auditlog.register(PatientCondition)
+auditlog.register(PatientAnswer)
+auditlog.register(PatientAnswerChoice)

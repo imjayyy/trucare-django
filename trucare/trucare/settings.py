@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'financials',
     'scriptbuilder',
     'prescription',
+    'auditlog'
 ]
 
 MIDDLEWARE = [
@@ -86,6 +87,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'auditlog.middleware.AuditlogMiddleware'    
 ]
 
 ROOT_URLCONF = 'trucare.urls'

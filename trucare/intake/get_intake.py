@@ -2,6 +2,8 @@ from accounts.models import DoctorLicense, DoctorProfile
 from accounts.serializers import DoctorProfileSerializer
 
 from .models import (
+    Allergy,
+    Medication,
     PatientAnswerChoice,
     PatientIntake,
     PatientInfo,
@@ -11,15 +13,19 @@ from .models import (
     PatientFamilyHistory,
     HealthRecord,
     MedicalHistory,
+    Surgery,
 )
 from .payload_serializers import (
+    AllergyPayloadSerializer,
     ConditionAnswerSerializer,
     FamilyHistoryPayloadSerializer,
     HealthRecordPayloadSerializer,
     InsuranceSerializer,
     MedicalHistoryPayloadSerializer,
+    MedicationPayloadSerializer,
     PatientInfoSerializer,
     PatientIntakeSerializer,
+    SurgeryPayloadSerializer,
 )
 
 
@@ -37,7 +43,11 @@ class GetIntakeInfo():
             return None
         insurances = Insurance.objects.filter(patient=self.patient_info)
         family_history = PatientFamilyHistory.objects.filter(patient=self.patient_info)
-        health_records = HealthRecord.objects.filter(patient=self.patient_info)
+        
+        surgeries = Surgery.objects.filter(patient=self.patient_info)
+        medications = Medication.objects.filter(patient=self.patient_info)  
+        allergies = Allergy.objects.filter(patient=self.patient_info)
+
         medical_history = MedicalHistory.objects.filter(patient=self.patient_info)
         requested_conditions = self.get_requested_conditions()
         condition_answers_data = self.get_condition_answers()
@@ -47,8 +57,11 @@ class GetIntakeInfo():
             "patient_intake": PatientIntakeSerializer(self.patient_intake).data,
             "insurances": InsuranceSerializer(insurances, many=True).data,
             "family_history": FamilyHistoryPayloadSerializer(family_history, many=True).data,
-            "health_records": HealthRecordPayloadSerializer(health_records, many=True).data,
+
             "medical_history": MedicalHistoryPayloadSerializer(medical_history, many=True).data,
+            "surgery": SurgeryPayloadSerializer(surgeries, many=True).data,
+            "medications": MedicationPayloadSerializer(medications, many=True).data,
+            "allergy": AllergyPayloadSerializer(allergies, many=True).data,
             "requested_conditions": requested_conditions,
             "condition_answers": condition_answers_data,
         }
