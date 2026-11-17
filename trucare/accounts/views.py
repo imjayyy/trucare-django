@@ -7,8 +7,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-
-
 from .models import AccountProfile, AgencyProfile, DoctorLicense, DoctorProfile, User
 from intake.models import PatientInfo, PatientIntake
 from .serializers import (
@@ -398,9 +396,6 @@ class RegisterIntakeAgentAPIView(APIView):
 				{"detail": "Account profile not found."},
 				status=status.HTTP_403_FORBIDDEN
 			)
-
-
-
 
 class UpdateProfile(APIView):
 	permission_classes = [permissions.IsAuthenticated]

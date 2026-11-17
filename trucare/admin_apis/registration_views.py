@@ -246,11 +246,16 @@ class OrganizationWriteSerializer(serializers.Serializer):
 		user_data = _build_user_fields(validated_data, ["username", "email", "first_name", "last_name"])
 
 		user = User.objects.create_user(password=password, **user_data)
+		
 		AccountProfile.objects.create(
 			user=user,
 			role=AccountProfile.ROLE_ORGANIZATION,
 			organization_type=organization_type,
 		)
+		
+		if organization_type == AccountProfile.ORG_AGENCY:
+			AgencyProfile.objects.create(user=user)
+
 		return user
 
 

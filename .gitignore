@@ -3,3 +3,4 @@ aws_info.txt
 server_creds.txt
 trucare/db.sqlite3
 /trucare/db.sqlite3
+venv
