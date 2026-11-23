@@ -41,6 +41,7 @@ data = [
         
 ]
 
+#Bilal
 class ValidatePrescription():
     def __init__(self, prescription_data, Prescription, intake_id):
         self.prescription_data = prescription_data
@@ -51,7 +52,6 @@ class ValidatePrescription():
 
     @transaction.atomic
     def validate_and_save(self):
-
         try:
             for item in self.prescription_data:
                 condition = item.get("category_id")
@@ -60,9 +60,11 @@ class ValidatePrescription():
                 primary_drug = item.get("primaryDrug")
                 secondary_drugs = item.get("secondaryDrugs")
 
-
                 if denied: 
-                    PatientCondition.objects.filter(condition__id=condition, patient__id = self.intake_id).update(denied_by_doctor=True, denied_reason=denied_reason)
+                    PatientCondition.objects.filter(
+                        condition__id=condition, 
+                        patient__id=self.intake_id
+                    ).update(denied_by_doctor=True, denied_reason=denied_reason)
                 else:
                     print(condition, item.get("category_name"), denied, "denied", denied_reason, "denied reason")
 
@@ -73,32 +75,44 @@ class ValidatePrescription():
                     if 'usual_sig' not in primary_drug:
                         primary_drug['usual_sig'] = primary_drug.get('sig', '')
                         
+                    # --- AUTO-POPULATE LETTER REQUIREMENTS FROM MASTER CATALOG ---
+                    # Find the catalog item ID (checking both 'prescribeable_item' and 'id')
+                    catalog_item_id = primary_drug.get("prescribeable_item") or primary_drug.get("id")
+                    if catalog_item_id:
+                        try:
+                            master_item = PrescribeAbleItem.objects.get(id=catalog_item_id)
+                            # Copy the letter flags from the master record into the serializer data
+                            primary_drug['requires_letter_of_medical_necessity'] = master_item.requires_letter_of_medical_necessity
+                            if master_item.letter_of_medical_necessity:
+                                primary_drug['letter_of_medical_necessity'] = master_item.letter_of_medical_necessity.id
+                        except PrescribeAbleItem.DoesNotExist:
+                            pass
+                    # -------------------------------------------------------------
+                        
                     prescription_item = PrescriptionItemSerializer(data=primary_drug)
                     prescription_item.is_valid(raise_exception=True)
                     prescription_item.save()
                     prescription_item_instance = prescription_item.instance
-                    pd = PrimaryDrug.objects.create(prescription=self.Prescription, drug=prescription_item_instance)
-                    # pd_serializer = PrimaryDrugSerializer(data={"prescription": prescription_item_instance.prescription.id, "drug": prescription_item_instance.id})
-                    # pd_serializer.is_valid(raise_exception=True)
-                    # pd_serializer.save()
-                    sd_querry = PrescribeAbleItem.objects.filter(id__in=[int(id_) for id_ in secondary_drugs])
-                    sd_data = PrescribeAbleItemSerializer(sd_querry, many=True).data
+                    
+                    PrimaryDrug.objects.create(prescription=self.Prescription, drug=prescription_item_instance)
+                    
+                    # Handle secondary drugs / substitutes if any
+                    if secondary_drugs:
+                        sd_query = PrescribeAbleItem.objects.filter(id__in=[int(id_) for id_ in secondary_drugs])
+                        sd_data = PrescribeAbleItemSerializer(sd_query, many=True).data
 
-                    for sd in sd_data:
-                        sd['prescription'] = self.Prescription.id
-                        sd['drug'] = sd
+                        for sd in sd_data:
+                            sd['prescription'] = self.Prescription.id
+                            sd['drug'] = sd
+                            # Optional: you can also copy letter flags for secondary drugs if needed
 
-                    serializer = PrescriptionItemSerializer(data=sd_data, many=True)
-                    serializer.is_valid(raise_exception=True)
-                    drugs = serializer.save()
-                    drug_ids = [drug.id for drug in drugs]
-                    sd_data = []
-                    for ids in drug_ids:
-                        SecondaryDrug.objects.create(prescription=self.Prescription, drug_id=ids)
+                        serializer = PrescriptionItemSerializer(data=sd_data, many=True)
+                        serializer.is_valid(raise_exception=True)
+                        drugs = serializer.save()
                         
-                    # sd_serializer = SecondaryDrugSerializer(data=sd_data, many=True)
-                    # sd_serializer.is_valid(raise_exception=True)
-                    # sd_serializer.save()
+                        for drug in drugs:
+                            SecondaryDrug.objects.create(prescription=self.Prescription, drug_id=drug.id)
+                            
             return True, self.errors
         except Exception as e:
             self.errors.append(str(e))
@@ -106,6 +120,73 @@ class ValidatePrescription():
             print("Error occurred during prescription validation and saving:", str(e))
 
         return len(self.errors) == 0, self.errors
+        
+#Alex
+# class ValidatePrescription():
+#     def __init__(self, prescription_data, Prescription, intake_id):
+#         self.prescription_data = prescription_data
+#         self.errors = []
+#         self.Prescription = Prescription
+#         self.intake_id = intake_id
+#         print("prescription_data:", prescription_data)
+
+#     @transaction.atomic
+#     def validate_and_save(self):
+
+#         try:
+#             for item in self.prescription_data:
+#                 condition = item.get("category_id")
+#                 denied = item.get("isDenied")
+#                 denied_reason = item.get("denialReason")
+#                 primary_drug = item.get("primaryDrug")
+#                 secondary_drugs = item.get("secondaryDrugs")
+
+
+#                 if denied: 
+#                     PatientCondition.objects.filter(condition__id=condition, patient__id = self.intake_id).update(denied_by_doctor=True, denied_reason=denied_reason)
+#                 else:
+#                     print(condition, item.get("category_name"), denied, "denied", denied_reason, "denied reason")
+
+#                     primary_drug['prescription'] = self.Prescription.id
+#                     if "category" not in primary_drug:
+#                         primary_drug["category"] = condition
+
+#                     if 'usual_sig' not in primary_drug:
+#                         primary_drug['usual_sig'] = primary_drug.get('sig', '')
+                        
+#                     prescription_item = PrescriptionItemSerializer(data=primary_drug)
+#                     prescription_item.is_valid(raise_exception=True)
+#                     prescription_item.save()
+#                     prescription_item_instance = prescription_item.instance
+#                     pd = PrimaryDrug.objects.create(prescription=self.Prescription, drug=prescription_item_instance)
+#                     # pd_serializer = PrimaryDrugSerializer(data={"prescription": prescription_item_instance.prescription.id, "drug": prescription_item_instance.id})
+#                     # pd_serializer.is_valid(raise_exception=True)
+#                     # pd_serializer.save()
+#                     sd_querry = PrescribeAbleItem.objects.filter(id__in=[int(id_) for id_ in secondary_drugs])
+#                     sd_data = PrescribeAbleItemSerializer(sd_querry, many=True).data
+
+#                     for sd in sd_data:
+#                         sd['prescription'] = self.Prescription.id
+#                         sd['drug'] = sd
+
+#                     serializer = PrescriptionItemSerializer(data=sd_data, many=True)
+#                     serializer.is_valid(raise_exception=True)
+#                     drugs = serializer.save()
+#                     drug_ids = [drug.id for drug in drugs]
+#                     sd_data = []
+#                     for ids in drug_ids:
+#                         SecondaryDrug.objects.create(prescription=self.Prescription, drug_id=ids)
+                        
+#                     # sd_serializer = SecondaryDrugSerializer(data=sd_data, many=True)
+#                     # sd_serializer.is_valid(raise_exception=True)
+#                     # sd_serializer.save()
+#             return True, self.errors
+#         except Exception as e:
+#             self.errors.append(str(e))
+#             transaction.set_rollback(True)  
+#             print("Error occurred during prescription validation and saving:", str(e))
+
+#         return len(self.errors) == 0, self.errors
 
 
 

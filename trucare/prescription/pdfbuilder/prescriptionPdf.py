@@ -1,17 +1,17 @@
 from reportlab.lib import colors
+from prescription.models import PrescriptionItem
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import HRFlowable, SimpleDocTemplate, Spacer, Table, TableStyle, Paragraph, Image
+from reportlab.platypus import HRFlowable, SimpleDocTemplate, Spacer, Table, TableStyle, Paragraph, Image, Paragraph, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 # from ..prescription_functions import PrescriptionPDFData
 from datetime import datetime
 from xml.sax.saxutils import escape
 import os
-
+import re
+import logging
+import html
+from django.db.models import Q
 from prescription.models import Prescription, Soap_notes
-
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, PageBreak
-from reportlab.lib.styles import getSampleStyleSheet
 from io import BytesIO
 from django.core.files.base import ContentFile
 from scriptbuilder.models import LetterOfMedicalNecessity
@@ -11559,9 +11559,6 @@ def draw_page_header(canvas, doc):
 
     canvas.restoreState()
 
-
-
-
 def get_patient_info_table(intake_data):    # Simple, compact style for form labels and values
     patient_info = intake_data.get('patient_info')
     col_widths = [144, 90, 100, 60, 110]
@@ -11786,9 +11783,14 @@ def generate_doctors_info_for_medication(canvas, doctor_data):
     def clean(val):
         return str(val) if val is not None else ""
 
-    doctor = (doctor_data or {}).get('doctor', {})
-    user = doctor.get('user', {})
-    license_info = (doctor_data or {}).get('license', {})
+    doctor_raw = (doctor_data or {}).get('doctor')
+    doctor = doctor_raw if isinstance(doctor_raw, dict) else {}
+
+    user_raw = doctor.get('user')
+    user = user_raw if isinstance(user_raw, dict) else {}
+
+    license_info_raw = (doctor_data or {}).get('license')
+    license_info = license_info_raw if isinstance(license_info_raw, dict) else {}
 
     prescriber_name = " ".join(
         part for part in [user.get('first_name', ''), user.get('last_name', '')] if part
@@ -11848,26 +11850,27 @@ def get_medications_footer_text():
         'FooterText',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8,
-        leading=10
+        fontSize=9,
+        leading=10,
+        spaceBefore=4,
+        spaceAfter=4
     )
 
-    authorization_text = """
-                            I authorize the P.I.C. (Pharmacists in Charge) to substitute the prescribed product that I prescribed with one of the
-                            alternative formulas or products I have prescribed if the patient does not have insurance, has a high deductible or
-                            copay, or has an insurance policy that does not cover the particular product or compound I have prescribed. By
-                            signing this prescription, I authorize the pharmacy to adjust the quantity written as needed based on patient's
-                            insurance plan limitations.I understand that the purpose of this agreement is to provide each patient with an
-                            affordable option within the same scope as the initially-prescribed medication.
-                        """
-    footer_text = """This document is NOT valid for any patient covered by Medicare (Parts A, B, C, or D,) or other federally funded payor plans."""
+    authorization_text = (
+        "I authorize the P.I.C. (Pharmacists in Charge) to substitute the prescribed product that I prescribed with one of the "
+        "alternative formulas or products I have prescribed if the patient does not have insurance, has a high deductible or "
+        "copay, or has an insurance policy that does not cover the particular product or compound I have prescribed. By "
+        "signing this prescription, I authorize the pharmacy to adjust the quantity written as needed based on patient's "
+        "insurance plan limitations. I understand that the purpose of this agreement is to provide each patient with an "
+        "affordable option within the same scope as the initially-prescribed medication."
+    )
+    
+    footer_text = "<b>This document is NOT valid for any patient covered by Medicare (Parts A, B, C, or D,) or other federally funded payor plans.</b>"
 
-    para = [
+    return [
         Paragraph(authorization_text, style_text),
         Paragraph(footer_text, style_text)
     ]
-
-    return para
 
 def generate_doctors_attestation(data):
     styles = getSampleStyleSheet()
@@ -11893,10 +11896,16 @@ def generate_doctors_attestation(data):
         return str(value).strip() if value not in (None, '') else ''
 
     payload = data or {}
-    doctor = payload.get('doctor', {}) if isinstance(payload, dict) else {}
-    doctor = doctor.get('doctor')
+    
+    # Safely extract doctor dict
+    doctor_container = payload.get('doctor', {}) if isinstance(payload, dict) else {}
+    doctor_raw = doctor_container.get('doctor') if isinstance(doctor_container, dict) else None
+    doctor = doctor_raw if isinstance(doctor_raw, dict) else {}
 
-    user = doctor.get('user') if isinstance(doctor.get('user'), dict) else {}
+    # Safely extract user dict
+    user_raw = doctor.get('user') if isinstance(doctor, dict) else None
+    user = user_raw if isinstance(user_raw, dict) else {}
+
     doctor_name = ' '.join(
         part for part in [
             clean(user.get('first_name')),
@@ -11911,12 +11920,19 @@ def generate_doctors_attestation(data):
     npi = clean(doctor.get('npi'))
     if not npi:
         npi = clean(payload.get('npi'))
-    patient_info = payload.get('intake_info').get('patient_info') if isinstance(payload.get('intake_info'), dict) else {}
+
+    # Safely extract intake and patient info
+    intake_info = payload.get('intake_info') if isinstance(payload.get('intake_info'), dict) else {}
+    patient_info = intake_info.get('patient_info') if isinstance(intake_info.get('patient_info'), dict) else {}
+    
+    patient_intake_obj = intake_info.get('patient_intake')
+    intake_id_val = patient_intake_obj.get('id', '') if isinstance(patient_intake_obj, dict) else getattr(patient_intake_obj, 'id', '')
+
     attestation_patient_info = f"""
     Patient: {patient_info.get('first_name', '')} {patient_info.get('last_name', '')} <br/>
     DOB: {patient_info.get('date_of_birth', '')} <br/>
     Date Written: {datetime.today().strftime('%m/%d/%Y')} <br/>
-    Consult: {payload.get('intake_info', {}).get('patient_intake', '').get('id')}    <br/> <br/>
+    Consult: {intake_id_val}    <br/> <br/>
     """
 
     attestation_text = """
@@ -11960,6 +11976,9 @@ Sincerely, <br/>
 
 
 def generate_drug_table(drug, style_text, available_width=504):
+    if not isinstance(drug, dict):
+        drug = {}
+
     # Create a table for the drug information
 
     drug_data = [
@@ -12013,100 +12032,161 @@ def generate_drug_table(drug, style_text, available_width=504):
 
     return drug_table
 
-def generate_letter_of_medical_necessity(prescribeable_item_id, doctor_info=None, patient_info=None, condition_info=None, treatment_plan=None, available_width=504):
+logger = logging.getLogger(__name__)
+
+def clean_html_for_reportlab(html_content):
     """
-    Generate a letter of medical necessity for a prescribeable item.
-    
-    Args:
-        prescribeable_item_id: ID of the PrescribeAbleItem
-        doctor_info: Dictionary containing doctor information (optional)
-        patient_info: Dictionary containing patient information (optional)
-        condition_info: Dictionary containing condition/questionnaire information (optional)
-        treatment_plan: String containing the treatment plan (optional)
-        available_width: Width available for the letter content
-    
-    Returns:
-        List of Platypus flowable objects for the letter, or None if no letter found
+    Converts standard HTML block tags and lists from WYSIWYG editors into 
+    ReportLab-compatible inline markup.
     """
+    if not html_content:
+        return ""
+    
     try:
+        # 1. Convert lists to line-break bullet points (since ReportLab doesn't support <ul>/<li>)
+        cleaned = re.sub(r'<ul[^>]*>', '<br/>', html_content)
+        cleaned = re.sub(r'</ul>', '<br/>', cleaned)
+        cleaned = re.sub(r'<ol[^>]*>', '<br/>', cleaned)
+        cleaned = re.sub(r'</ol>', '<br/>', cleaned)
+        cleaned = re.sub(r'<li[^>]*>', '• ', cleaned)
+        cleaned = re.sub(r'</li>', '<br/>', cleaned)
+        
+        # 2. Convert divs and Spans to plain text / line breaks
+        cleaned = re.sub(r'<div[^>]*>', '', cleaned)
+        cleaned = re.sub(r'</div>', '<br/>', cleaned)
+        cleaned = re.sub(r'<span[^>]*>', '', cleaned)
+        cleaned = re.sub(r'</span>', '', cleaned)
+        
+        # 3. Replace paragraph tags with double line breaks
+        cleaned = re.sub(r'</p>\s*<p[^>]*>', '<br/><br/>', cleaned)
+        cleaned = re.sub(r'<p[^>]*>', '', cleaned)
+        cleaned = re.sub(r'</p>', '', cleaned)
+        
+        # 4. Clean up break tags
+        cleaned = re.sub(r'<br\s*/?>', '<br/>', cleaned)
+        
+        return cleaned.strip()
+    except Exception as e:
+        print(f"DEBUG clean_html_for_reportlab error: {str(e)}")
+        return html_content # Fallback to raw if regex fails
+
+def safe_xml_text(text):
+    """
+    Safely escapes text for ReportLab Paragraphs, ensuring unescaped 
+    '&' or '<' don't crash the XML parser.
+    """
+    if not text:
+        return ""
+    return html.escape(str(text))
+def generate_letter_of_medical_necessity(prescribeable_item_id=None, prescribeable_item=None, doctor_info=None, patient_info=None, condition_info=None, treatment_plan=None, available_width=504):
+    """
+    Generate a letter of medical necessity for a prescribeable item with full debugging
+    and flexible ID parameter matching (supports both prescribeable_item_id and prescribeable_item).
+    """
+    # Normalize target item ID from either parameter argument
+    target_id = prescribeable_item_id or prescribeable_item
+    print(f"DEBUG generate_letter: Starting generation for target ID={target_id} (passed item_id={prescribeable_item_id}, item={prescribeable_item})")
+    
+    if not target_id:
+        print("DEBUG generate_letter: No valid prescribeable item ID or reference provided.")
+        return None
+
+    try:
+        # Flexible query supporting both model field variations (prescribeable_item_id or prescribeable_item)
         letter = LetterOfMedicalNecessity.objects.filter(
-            prescribeable_item_id=prescribeable_item_id,
+            Q(prescribeable_item_id=target_id) | Q(prescribeable_item=target_id),
             included_in_script=True
         ).first()
         
         if not letter:
+            print(f"DEBUG generate_letter: No LetterOfMedicalNecessity record found with included_in_script=True for ID/Ref {target_id}")
             return None
+        
+        print(f"DEBUG generate_letter: Found Letter record ID {letter.id}, Title: '{getattr(letter, 'title', 'None')}'")
         
         story = []
         style_sheet = getSampleStyleSheet()
         body_style = style_sheet['BodyText']
+        
         heading_style = ParagraphStyle(
             'LetterHeading',
+            parent=body_style,
             fontName='Helvetica-Bold',
             fontSize=14,
+            leading=18,
             textColor=colors.black,
             spaceAfter=12,
             spaceBefore=12
         )
         
-        # Add title if present
-        if letter.title:
-            story.append(Paragraph(letter.title, heading_style))
+        section_spacer = Spacer(1, 10)
         
-        # Add custom logo if uploaded
+        # Add title if present
+        if letter.title and letter.title.strip():
+            story.append(Paragraph(safe_xml_text(letter.title.strip()), heading_style))
+            story.append(section_spacer)
+        
+        # Add custom logo with aspect ratio preservation
         if letter.custom_logo_upload:
             try:
-                img = Image(letter.custom_logo_upload.path, width=150, height=75)
+                img_path = letter.custom_logo_upload.path
+                print(f"DEBUG generate_letter: Loading logo from path: {img_path}")
+                img = Image(img_path)
+                aspect = img.imageHeight / float(img.imageWidth)
+                img.drawWidth = 150
+                img.drawHeight = 150 * aspect
                 story.append(img)
-                story.append(Spacer(1, 0.2))
-            except:
-                pass  # Skip logo if it can't be loaded
+                story.append(section_spacer)
+            except Exception as img_err:
+                print(f"DEBUG generate_letter WARNING: Could not load custom logo: {str(img_err)}")
+                logger.warning(f"Could not load custom logo for letter: {img_err}")
         
-        # Add doctor's information if flagged
+        # Add doctor's information safely
         if letter.include_doctors_information and doctor_info:
-            doctor_text = f"""
-            <b>Physician Information:</b><br/>
-            {doctor_info.get('name', '')}<br/>
-            {doctor_info.get('specialty', '')}<br/>
-            {doctor_info.get('contact', '')}<br/>
-            """
+            doctor_text = (
+                f"<b>Physician Information:</b><br/>"
+                f"{safe_xml_text(doctor_info.get('name', ''))}<br/>"
+                f"{safe_xml_text(doctor_info.get('specialty', ''))}<br/>"
+                f"{safe_xml_text(doctor_info.get('contact', ''))}"
+            )
             story.append(Paragraph(doctor_text, body_style))
-            story.append(Spacer(1, 0.2))
+            story.append(section_spacer)
         
-        # Add condition questionnaire if flagged
+        # Add condition questionnaire
         if letter.include_condition_questionnaire and condition_info:
-            condition_text = f"""
-            <b>Clinical Justification:</b><br/>
-            {condition_info}
-            """
+            condition_text = f"<b>Clinical Justification:</b><br/>{safe_xml_text(condition_info)}"
             story.append(Paragraph(condition_text, body_style))
-            story.append(Spacer(1, 0.2))
+            story.append(section_spacer)
         
-        # Add main letter content
+        # Add main letter content (cleaned for ReportLab HTML parser)
         if letter.letter_content_html:
-            story.append(Paragraph(letter.letter_content_html, body_style))
-            story.append(Spacer(1, 0.2))
+            safe_html = clean_html_for_reportlab(letter.letter_content_html)
+            if safe_html:
+                story.append(Paragraph(safe_html, body_style))
+                story.append(section_spacer)
         
-        # Add treatment plan if flagged
+        # Add treatment plan
         if letter.include_treatment_plan and treatment_plan:
-            treatment_text = f"""
-            <b>Treatment Plan:</b><br/>
-            {treatment_plan}
-            """
+            treatment_text = f"<b>Treatment Plan:</b><br/>{safe_xml_text(treatment_plan)}"
             story.append(Paragraph(treatment_text, body_style))
-            story.append(Spacer(1, 0.2))
+            story.append(section_spacer)
         
         # Add description if present
-        if letter.description:
-            desc_text = f"<i>{letter.description}</i>"
+        if letter.description and letter.description.strip():
+            desc_text = f"<i>{safe_xml_text(letter.description.strip())}</i>"
             story.append(Paragraph(desc_text, body_style))
         
-        return story if story else None
+        print(f"DEBUG generate_letter: Successfully compiled {len(story)} flowable elements for ID {target_id}")
+        return story if len(story) > 0 else None
         
     except LetterOfMedicalNecessity.DoesNotExist:
+        print(f"DEBUG generate_letter: LetterOfMedicalNecessity.DoesNotExist caught for ID {target_id}")
         return None
     except Exception as e:
-        print(f"Error generating letter of medical necessity: {str(e)}")
+        print(f"CRITICAL ERROR generate_letter_of_medical_necessity: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        logger.error(f"Error generating letter of medical necessity: {str(e)}")
         return None
 
 def generate_lmn_from_prescription_item(item):
@@ -12219,107 +12299,248 @@ def generate_lmn_from_prescription_item(item):
         print(f"Error generating LMN from prescription item: {str(e)}")
         return []
 
+# TO help generate medications
+
+def extract_checkbox_answers(intake_data: dict) -> list[dict]:
+    """
+    Extracts choice-based answers (such as 'Where is the pain located?')
+    and formats them with a `checkbox` list.
+    """
+    raw_answers = (intake_data or {}).get("condition_answers") or []
+    checkbox_records = []
+
+    for ans in raw_answers:
+        question_text = (ans.get("question_text") or "").strip()
+        selected_choices = ans.get("selected_choices") or []
+
+        if selected_choices:
+            checkbox_items = [
+                {
+                    "id": choice.get("id"),
+                    "text": choice.get("text"),
+                    "checked": True,
+                }
+                for choice in selected_choices
+                if isinstance(choice, dict) and choice.get("text")
+            ]
+
+            checkbox_records.append({
+                "condition_id": ans.get("condition_id"),
+                "condition_name": (ans.get("condition_name") or "").replace("?", "").strip(),
+                "answer_id": ans.get("answer_id"),
+                "question_id": ans.get("question_id"),
+                "question_text": question_text,
+                "selected_choice_ids": ans.get("selected_choice_ids") or [],
+                "checkbox": checkbox_items,
+            })
+
+    return checkbox_records
+
+
+def _format_pdf_question_label(question_text: str) -> str:
+    """
+    Maps pain/location questions to 'Located:' for PDF display.
+    """
+    cleaned = (question_text or "").strip().rstrip("?").lower()
+    if "where is" in cleaned and "locat" in cleaned:
+        return "Located:"
+    return (question_text or "Selection").strip()
+
+
+def format_checkbox_pdf_text(checkbox_records: list[dict]) -> str:
+    """
+    Takes only the first checkbox record and formats it with the question
+    on the first line and the checked options with a checkmark on the next line.
+    """
+    if not checkbox_records:
+        return ""
+
+    first_rec = checkbox_records[0]
+    q_label = _format_pdf_question_label(first_rec.get("question_text") or "Selection")
+    selected_labels = ", ".join(
+        f"[✓] {item['text']}"
+        for item in (first_rec.get("checkbox") or [])
+        if item.get("checked") and item.get("text")
+    )
+
+    if not selected_labels:
+        return ""
+
+    return f"<b>{q_label}</b><br/>{selected_labels}"
+
 
 def generate_medications(data__, available_width=504):
-    intake_data = data__.get('intake_info')
-    # patient_info = intake_data.get('patient_info')
-    insurance_info = intake_data.get('insurances')
-    prescription_items = data__.get('prescription_items')
-    
+    intake_data = data__.get('intake_info') or {}
+    insurance_info = data__.get('insurances') or [{}]
+    prescription_items = data__.get('prescription_items') or []
+    doctor_data = data__.get('doctor') or {}
+
+    # Extract all checkbox-formatted answers and group by condition_id
+    checkbox_answers = extract_checkbox_answers(intake_data)
+    intake_data["checkbox_answers"] = checkbox_answers
+
+    checkbox_by_condition = {}
+    for record in checkbox_answers:
+        cid = record.get("condition_id")
+        checkbox_by_condition.setdefault(cid, []).append(record)
+
     story = []
     condition_style = ParagraphStyle(
-    'WhiteBlack',
-    fontName='Helvetica',    
-    fontSize=12,
-    textColor=colors.white,
-    backColor=colors.black,
-    leading=20,
-    spaceBefore=0,
-    spaceAfter=0,
-    alignment=1  # Center alignment
-)
+        'WhiteBlack',
+        fontName='Helvetica',
+        fontSize=12,
+        textColor=colors.white,
+        backColor=colors.black,
+        leading=16,
+        spaceBefore=6,
+        spaceAfter=4,
+        alignment=1  # Center alignment
+    )
+    checkbox_style = ParagraphStyle(
+        'CheckboxInfo',
+        fontName='Helvetica',
+        fontSize=10,
+        leading=14,
+        spaceBefore=4,
+        spaceAfter=6,
+    )
     primary_drug_style = getSampleStyleSheet()['BodyText']
-    available_width = 504
-    secodary_drug_style = getSampleStyleSheet()['BodyText']
-    lmn_medications = []
-    lmn_story = []
+    secondary_drug_style = getSampleStyleSheet()['BodyText']
+
+    is_first_condition = True
+
     for conditions in prescription_items:
-        condition = conditions.get('condition', {})
-        condition_name = condition.get('condition_name', "")
-        
-        condition_name = condition_name.replace("?", "")
-        primary_drug = conditions.get('primary_drug', {})
-        secondary_drugs = conditions.get('secondary_drugs', [])
-        if primary_drug.get('drug').get('show_in_script') == False:
-            if primary_drug.get('drug').get('requires_letter_of_medical_necessity') == True:
-                lmn_medications.append(primary_drug)
-                continue
-            
-        # Generate the table for the current condition and its drugs
-        condition_heading = Paragraph(f"<i><b>Condition:</b> {condition_name}</i>", condition_style)
-        print("Primary_drug", primary_drug)
+        # --- 1. FRESH ISOLATION PER CONDITION ---
+        condition = conditions.get('condition') or {}
+        condition_id = condition.get('condition_id') or conditions.get('condition_id')
+        condition_name = (condition.get('condition_name') or "").replace("?", "").strip()
 
+        primary_drug = conditions.get('primary_drug') or {}
+        secondary_drugs = conditions.get('secondary_drugs') or []
 
-        doctor_section_signature, doctor_section_spacer, doctor_section_table = generate_doctors_info_for_medication(None, data__.get('doctor', {}))
-        paragraphs = get_medications_footer_text()
-        story.append(get_patient_info_table(intake_data))
-        story.append(generate_insurance_table(insurance_info[0]))
-        story.append(condition_heading)
+        drug = (primary_drug.get('drug') if isinstance(primary_drug, dict) else {}) or {}
 
-        story.append(generate_drug_table(primary_drug.get('drug'), primary_drug_style, available_width))
-        story.append(doctor_section_signature)
-        story.append(doctor_section_spacer)
-        story.append(doctor_section_table)
-        story.append(Spacer(1, 12))  # Add some space between secondary drugs
-        story.append(Paragraph("<b>Authorized Substitutes:</b>", condition_style))
-
+        # Filter to only visible secondary drugs up front
+        visible_secondary_drugs = []
         for secondary_drug in secondary_drugs:
-            story.append(generate_drug_table(secondary_drug.get('drug'), secodary_drug_style, available_width))
-            story.append(grey_divider())  # Add some space between secondary drugs
-        story.append(PageBreak())
-        
-        # Generate and append letter of medical necessity for the primary drug
-        primary_drug_data = primary_drug.get('drug', {})
-        prescribeable_item_id = primary_drug_data.get('id') or primary_drug_data.get('prescribeable_item_id')
-        for secondary_drug in secondary_drugs:
-            story.append(get_patient_info_table(intake_data))
-            story.append(generate_insurance_table(insurance_info[0]))
-            story.append(condition_heading)
-            story.append(generate_drug_table(secondary_drug.get('drug'), secodary_drug_style, available_width))
-            story.append(grey_divider())  # Add some space between secondary drugs
-            story.append(doctor_section_signature)
-            story.append(doctor_section_spacer)
-            story.append(doctor_section_table)
+            sec_drug_obj = (secondary_drug or {}).get('drug') or {}
+            if sec_drug_obj and sec_drug_obj.get('show_in_script') is not False:
+                visible_secondary_drugs.append(sec_drug_obj)
+
+        has_primary_drug = bool(drug) and drug.get('show_in_script') is not False
+
+        # Skip if there is nothing visible to render for this condition
+        if not has_primary_drug and not visible_secondary_drugs:
+            continue
+
+        # Start every condition after the first on a fresh page
+        if not is_first_condition:
             story.append(PageBreak())
-        if prescribeable_item_id:
-            doctor_info = data__.get('doctor', {})
-            patient_info = intake_data.get('patient_info', {})
-            condition_text = condition.get('condition_name', '')
-            
-            letter_content = generate_letter_of_medical_necessity(
-                prescribeable_item_id=prescribeable_item_id,
-                doctor_info=doctor_info,
-                patient_info=patient_info,
-                condition_info=condition_text)
-            
-            if letter_content:
-                lmn_story.append(Spacer(1, 12))
-                lmn_story.extend(letter_content)
-                lmn_story.append(Spacer(1, 12))
-        
-        # story.append(doctor_section_spacer)
-        # story.append(doctor_section_table)
+        is_first_condition = False
+
+        # Keep only the first checkbox question for this condition and save in data
+        first_checkbox_only = checkbox_by_condition.get(condition_id, [])[:1]
+        conditions["checkbox"] = first_checkbox_only
+        if isinstance(primary_drug, dict):
+            primary_drug["checkbox"] = first_checkbox_only
+        if isinstance(drug, dict):
+            drug["checkbox"] = first_checkbox_only
+
+        checkbox_markup = format_checkbox_pdf_text(first_checkbox_only)
+
+        # --- PART 1: PRIMARY MEDICATION PAGE/BLOCK ---
+        story.append(get_patient_info_table(intake_data))
+        if insurance_info:
+            story.append(generate_insurance_table(insurance_info[0]))
+
+        story.append(Paragraph(f"<i><b>Condition:</b> {condition_name}</i>", condition_style))
+        if checkbox_markup:
+            story.append(Paragraph(checkbox_markup, checkbox_style))
+        if has_primary_drug:
+            story.append(generate_drug_table(drug, primary_drug_style, available_width))
+            story.append(grey_divider())
+
+        # FRESH Doctor signature instances for primary (Prevents object duplication crashes)
+        doc_sig_1, doc_spc_1, doc_tbl_1 = generate_doctors_info_for_medication(None, doctor_data)
+        story.append(doc_sig_1)
+        story.append(doc_spc_1)
+        story.append(doc_tbl_1)
+
+        # --- PART 2: AUTHORIZED SUBSTITUTES BLOCK ---
+        if visible_secondary_drugs:
+            # Clean break between primary prescription and substitutes page
+            story.append(PageBreak())
+            story.append(get_patient_info_table(intake_data))
+            if insurance_info:
+                story.append(generate_insurance_table(insurance_info[0]))
+            story.append(Paragraph(f"<i><b>Condition:</b> {condition_name} (Substitutes)</i>", condition_style))
+            if checkbox_markup:
+                story.append(Paragraph(checkbox_markup, checkbox_style))
+
+            story.append(Spacer(1, 4))
+            story.append(Paragraph("<b>Authorized Substitutes:</b>", condition_style))
+
+            for sec_drug_obj in visible_secondary_drugs:
+                story.append(generate_drug_table(sec_drug_obj, secondary_drug_style, available_width))
+                story.append(grey_divider())
+
+            # FRESH Doctor signature instances for substitutes
+            doc_sig_2, doc_spc_2, doc_tbl_2 = generate_doctors_info_for_medication(None, doctor_data)
+            story.append(Spacer(1, 8))
+            story.append(doc_sig_2)
+            story.append(doc_spc_2)
+            story.append(doc_tbl_2)
+
+    return story
 
 
-        for paragraph in paragraphs:
-            story.append(paragraph)
-        story.append(PageBreak())
+def build_soap_notes_section(soap_notes):
+    styles = getSampleStyleSheet()
+    title_style = ParagraphStyle(
+        'SoapNotesTitle',
+        parent=styles['Normal'],
+        fontName='Helvetica-Bold',
+        fontSize=15,
+        leading=19,
+        textColor=colors.HexColor('#173D4A'),
+        spaceAfter=5
+    )
+    heading_style = ParagraphStyle(
+        'SoapNotesSubheading',
+        parent=styles['Normal'],
+        fontName='Helvetica-Bold',
+        fontSize=10,
+        leading=13,
+        textColor=colors.HexColor('#176B70'),
+        spaceBefore=9,
+        spaceAfter=3,
+        keepWithNext=True
+    )
+    body_style = ParagraphStyle(
+        'SoapNotesBody',
+        parent=styles['Normal'],
+        fontName='Helvetica',
+        fontSize=10,
+        leading=14,
+        textColor=colors.HexColor('#25343A'),
+        spaceAfter=2
+    )
 
-
-    # for drugs in lmn_medications:
-
-
-    story.extend(lmn_story)
+    story = [
+        Paragraph('SOAP NOTES', title_style),
+        HRFlowable(width='100%', thickness=1, color=colors.HexColor('#176B70'),
+                   spaceBefore=1, spaceAfter=7)
+    ]
+    for heading, key in (
+        ('Subjective', 'subjective'),
+        ('Objective', 'objective'),
+        ('Assessment', 'assessment'),
+        ('Plan', 'plan')
+    ):
+        value = soap_notes.get(key) or 'Not documented.'
+        note_text = '<br/>'.join(escape(line) for line in str(value).splitlines())
+        story.append(Paragraph(heading, heading_style))
+        story.append(Paragraph(note_text, body_style))
     return story
 
 def build_soap_notes_section(soap_notes):
@@ -12400,61 +12621,127 @@ def visit_summary_section(date_time_of_call):
     story.append(Paragraph(text, styles['Normal']))
     return story
 
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 def create_pdf(filename, prescription_instance, data__):
-    # Establish document with safe margins for the header
-    # prescription_instance = data__.get('prescription_instance')
+    data__ = data__ if isinstance(data__, dict) else {}
+    
     buffer = BytesIO()
     doc = SimpleDocTemplate(
         buffer, 
         pagesize=letter,
-        leftMargin=54,  # 0.75 inch
+        leftMargin=54,
         rightMargin=54,
-        topMargin=90,   # Leave room so text doesn't overlap header
+        topMargin=90,
         bottomMargin=70
     )
-    print("Generating PDF for prescription instance using:", data__)
-    intake_data = data__.get('intake_info')
-    patient_info = intake_data.get('patient_info')
-    insurance_info = intake_data.get('insurances')
-    prescription_items = data__.get('prescription_items')
+    
+    intake_data = data__.get('intake_info') or {}
+    prescription_items_data = data__.get('prescription_items') or []
+    doctor_info = data__.get('doctor', {})
+    patient_info = intake_data.get('patient_info', {})
     
     styles = getSampleStyleSheet()
     story = []
     
-    # Medications Content
     intake_id = prescription_instance.patient.id
-    story.extend( generate_medications(data__))
 
+    # 1. Medications Content
+    if prescription_items_data:
+        meds_content = generate_medications(data__)
+        if meds_content:
+            story.extend(meds_content)
 
+    # 2. Legal Footer Text (at the bottom of the medications page)
+    story.append(Spacer(1, 160))
+    for paragraph in get_medications_footer_text():
+        story.append(paragraph)
+    
+    story.append(PageBreak())
 
-    soap_notes_instance = Soap_notes.objects.get(patient_intake=intake_id)
-    story.extend(build_soap_notes_section({
-        'subjective': soap_notes_instance.subjective,
-        'objective': soap_notes_instance.objective,
-        'assessment': soap_notes_instance.assessment,
-        'plan': soap_notes_instance.plan
-    }))
+    # # 3. Letters of Medical Necessity Section (Moved right after Medications/Legal Footer)
+    lmn_story = []
+    prescription_items_qs = PrescriptionItem.objects.filter(prescription=prescription_instance)
+    
+    for pi in prescription_items_qs:
+        print(f"DEBUG create_pdf: Checking PrescriptionItem ID: {pi.id}, Name: {pi.name}, Requires Letter: {pi.requires_letter_of_medical_necessity}")
+        
+        target_letter = pi.letter_of_medical_necessity
+        
+        if not target_letter and pi.requires_letter_of_medical_necessity:
+            target_letter = LetterOfMedicalNecessity.objects.filter(
+                Q(prescribeable_item__name__iexact=pi.name) | 
+                Q(title__icontains=pi.name),
+                included_in_script=True
+            ).first()
+
+        if target_letter and target_letter.included_in_script:
+            print(f"DEBUG create_pdf: Found Letter record ID {target_letter.id} for PrescriptionItem '{pi.name}'")
+            
+            condition_name = (
+                getattr(pi.category, 'name', None) or 
+                getattr(pi.category, 'title', None) or 
+                getattr(pi.category, 'category_name', None) or 
+                str(pi.category or "")
+            )
+            condition_name = condition_name.replace("?", "")
+            
+            letter_content = generate_letter_of_medical_necessity(
+                prescribeable_item=target_letter.prescribeable_item_id,
+                doctor_info=doctor_info,
+                patient_info=patient_info,
+                condition_info=condition_name
+            )
+            
+            if letter_content:
+                print(f"DEBUG create_pdf: Successfully generated letter story items: {len(letter_content)}")
+                lmn_story.extend(letter_content)
+                lmn_story.append(PageBreak())
+            else:
+                print(f"DEBUG create_pdf: generate_letter_of_medical_necessity returned None for letter ID {target_letter.id}.")
+        else:
+            print(f"DEBUG create_pdf: No linked LetterOfMedicalNecessity found or required for PrescriptionItem '{pi.name}'.")
+
+    if lmn_story:
+        story.extend(lmn_story)
+
+    soap_notes_instance = Soap_notes.objects.filter(patient_intake=intake_id).first()
+    if soap_notes_instance:
+        story.extend(build_soap_notes_section({
+            'subjective': soap_notes_instance.subjective,
+            'objective': soap_notes_instance.objective,
+            'assessment': soap_notes_instance.assessment,
+            'plan': soap_notes_instance.plan
+        }))
+    story.append(PageBreak())
+
+    story.append(Spacer(1, 15))
+    attestation_content = generate_doctors_attestation(data__)
+    if attestation_content:
+        story.extend(attestation_content)
 
     story.append(PageBreak())
-    story.extend(generate_doctors_attestation(data__))
-    # story.extend(doctor_section_signature)
-    story.append(PageBreak())
-    story.extend(visit_summary_section(intake_data.get('patient_intake').get('updated_at', 'N/A')))
-    # Page 2 Content
 
-    # Bind the header callback to the build process
+    patient_intake_info = intake_data.get('patient_intake')
+    updated_at = None
+    if isinstance(patient_intake_info, dict):
+        updated_at = patient_intake_info.get('updated_at')
+    elif patient_intake_info:
+        updated_at = getattr(patient_intake_info, 'updated_at', None)
+
+    if updated_at:
+        summary_content = visit_summary_section(updated_at)
+        if summary_content:
+            story.append(Spacer(1, 15))
+            story.extend(summary_content)
+
     doc.build(story, onFirstPage=draw_page_header, onLaterPages=draw_page_header)
     buffer.seek(0)
 
-    # 8. STEP 2: Save the buffer content directly to your FileField
-    # Django triggers 'prescription_upload_path', using the real ID from step 2
     prescription_instance.pdf_file.save(
         filename,
         ContentFile(buffer.read()), 
         save=True
     )
-    
-    # Clean up memory
     buffer.close()
-

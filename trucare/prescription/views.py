@@ -19,6 +19,8 @@ from .models import Soap_notes
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
+
+# Alex
 class PrescriptionAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -30,39 +32,52 @@ class PrescriptionAPIView(APIView):
         responses={201: dict, 400: dict},
     )
     def post(self, request, intake_id):
-        # intake_id is already passed as a parameter
         prescription_data = request.data        
         user = request.user
-        doctor_profile = get_object_or_404(DoctorProfile, user=user)
-        print("doctor_profile:", doctor_profile)
-        prescription, created = Prescription.objects.get_or_create(patient_id=intake_id, doctor=doctor_profile)
-        if not created:
-            # If the prescription already exists, delete the existing primary and secondary drugs
-            PrimaryDrug.objects.filter(prescription=prescription).delete()
-            SecondaryDrug.objects.filter(prescription=prescription).delete()
-            PrescriptionItem.objects.filter(prescription=prescription).delete()
-        else:
-            add_doctor_consult(doctor_profile, PatientIntake.objects.get(id=intake_id))
-
-        validator = ValidatePrescription(prescription_data, prescription, intake_id)
-        validated, errors = validator.validate_and_save()
         
-        print("validated:", validated, "errors:", errors)
-        if not validated:
-            return Response({"errors": errors}, status=400)
-        if validated:
-            # try:
-                
-            # except Exception as e:
-            #     return Response({"error": str(e)}, status=500)
+        doctor_profile = get_object_or_404(DoctorProfile, user=user)
+
+        try:
+            # 1. Safely check if the PatientIntake exists first (Prevents FK crash)
+            patient_intake = get_object_or_404(PatientIntake, id=intake_id)
+
+            # 2. Now safe to get or create the prescription
+            # Note: Ensure whether your model field is named 'patient' or 'patient_id'
+            prescription, created = Prescription.objects.get_or_create(
+                patient=patient_intake, # Or patient_id=intake_id depending on your model definition
+                doctor=doctor_profile
+            )
+            
+            if not created:
+                PrimaryDrug.objects.filter(prescription=prescription).delete()
+                SecondaryDrug.objects.filter(prescription=prescription).delete()
+                PrescriptionItem.objects.filter(prescription=prescription).delete()
+            else:
+                add_doctor_consult(doctor_profile, patient_intake)
+
+            validator = ValidatePrescription(prescription_data, prescription, intake_id)
+            validated, errors = validator.validate_and_save()
+            
+            if not validated:
+                return Response({"errors": errors}, status=400)
 
             intake_data = PrescriptionPDFData(intake_id).get_pdf_data()
+
             create_pdf(f"prescription_{intake_id}.pdf", prescription, intake_data)
+            
             PatientIntake.objects.filter(id=intake_id).update(
                 status="APPROVED_BY_DOCTOR",
                 updated_at=timezone.now(),
             )
+            
             return Response({"message": "Prescription data validated and saved successfully."}, status=201)
+
+        except PatientIntake.DoesNotExist:
+            return Response({"error": f"Patient intake with ID {intake_id} does not exist."}, status=404)
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return Response({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
 
         
 class DoctorDeniedAPIView(APIView):
@@ -112,7 +127,7 @@ class PrescriptionDataAPIView(APIView):
 
         return Response(prescription, status=200)
 
-
+#Bilal
 class PrescriptionPDFAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -120,16 +135,49 @@ class PrescriptionPDFAPIView(APIView):
         summary="Download Prescription PDF",
         description="Generate and download a prescription PDF for a specific intake.",
         tags=["Prescription"],
-        responses={200: bytes, 400: dict, 500: dict},
+        responses={200: bytes, 400: dict, 404: dict, 500: dict},
     )
     def get(self, request):
         intake_id = request.query_params.get("intake_id")
-        presription = Prescription.objects.get(patient=intake_id)
-        file = presription.pdf_file if presription.pdf_file else None
+        if not intake_id:
+            return Response({"error": "intake_id query parameter is required."}, status=400)
 
-        response = HttpResponse(file, content_type="application/pdf")
-        response["Content-Disposition"] = f'attachment; filename="prescription_{intake_id}.pdf"'
-        return response
+        try:
+            # Use patient_id based on your model choices
+            prescription = Prescription.objects.filter(patient_id=intake_id).order_by('-created_at').first()
+            
+            if not prescription:
+                return Response({"error": "Prescription not found for the given intake_id."}, status=404)
+                
+            if not prescription.pdf_file:
+                return Response({"error": "PDF file has not been generated for this prescription yet."}, status=404)
+            
+            file = prescription.pdf_file
+            response = HttpResponse(file, content_type="application/pdf")
+            response["Content-Disposition"] = f'attachment; filename="prescription_{intake_id}.pdf"'
+            return response
+            
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
+#Alex
+# class PrescriptionPDFAPIView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     @extend_schema(
+#         summary="Download Prescription PDF",
+#         description="Generate and download a prescription PDF for a specific intake.",
+#         tags=["Prescription"],
+#         responses={200: bytes, 400: dict, 500: dict},
+#     )
+#     def get(self, request):
+#         intake_id = request.query_params.get("intake_id")
+#         presription = Prescription.objects.get(patient=intake_id)
+#         file = presription.pdf_file if presription.pdf_file else None
+
+#         response = HttpResponse(file, content_type="application/pdf")
+#         response["Content-Disposition"] = f'attachment; filename="prescription_{intake_id}.pdf"'
+#         return response
 
 
 class GenerateSoapNotesAPIView(APIView):
