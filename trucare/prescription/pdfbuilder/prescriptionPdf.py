@@ -11559,8 +11559,13 @@ def draw_page_header(canvas, doc):
 
     canvas.restoreState()
 
-def get_patient_info_table(intake_data):    # Simple, compact style for form labels and values
-    patient_info = intake_data.get('patient_info')
+def _val(data_dict, key):
+    value = data_dict.get(key)
+    return "" if value is None else str(value)
+
+
+def get_patient_info_table(intake_data):
+    patient_info = intake_data.get('patient_info') or {}
     col_widths = [144, 90, 100, 60, 110]
     styles = getSampleStyleSheet()
     style_text = ParagraphStyle(
@@ -11568,72 +11573,56 @@ def get_patient_info_table(intake_data):    # Simple, compact style for form lab
         parent=styles['Normal'],
         fontName='Helvetica',
         fontSize=10,
-        leading=13
+        leading=13,
     )
 
-    # 3. Define raw table grid data 
-    # Use Paragraphs to style text fragments (like bold labels)
+    first_name = _val(patient_info, 'first_name')
+    last_name = _val(patient_info, 'last_name')
+    full_name = f"{first_name} {last_name}".strip()
+
+    # Keep every row at 5 columns to match len(col_widths) == 5
     data = [
-        # Row 0
         [
-            Paragraph("<b>Patient Name:</b> " + patient_info.get('first_name', '') + " " + patient_info.get('last_name', ''), style_text), "", "", 
-            Paragraph("<b>DOB:</b> " + patient_info.get('dob', ''), style_text), ""
+            Paragraph(f"<b>Patient Name:</b> {full_name}", style_text), "", "",
+            Paragraph(f"<b>DOB:</b> {_val(patient_info, 'dob')}", style_text), "",
         ],
-        # Row 1
         [
-            Paragraph("<b>Address:</b> " + patient_info.get('address', ''), style_text), "", 
-            Paragraph("<b>City:</b> " + patient_info.get('city', ''), style_text), 
-            Paragraph("<b>State:</b> " + patient_info.get('state', ''), style_text), 
+            Paragraph(f"<b>Address:</b> {_val(patient_info, 'address')}", style_text), "",
+            Paragraph(f"<b>City:</b> {_val(patient_info, 'city')}", style_text),
+            Paragraph(f"<b>State:</b> {_val(patient_info, 'state')}", style_text),
+            "",
         ],
-        # Row 2
         [
-            Paragraph("<b>Patient Phone:</b> " + patient_info.get('phone_number', ''), style_text), "", "", 
-            Paragraph("<b>Zip:</b> " + patient_info.get('zip', ''), style_text)
+            Paragraph(f"<b>Patient Phone:</b> {_val(patient_info, 'phone_number')}", style_text), "", "",
+            Paragraph(f"<b>Zip:</b> {_val(patient_info, 'zip')}", style_text), "",
         ],
-       
-   
     ]
 
-    # 4. Map cell structural merges and borders
     t_style = TableStyle([
         # Row 0: Merge Patient Name (cols 0-2), Merge DOB (cols 3-4)
         ('SPAN', (0, 0), (2, 0)),
         ('SPAN', (3, 0), (4, 0)),
-        
+
         # Row 1: Merge Address (cols 0-1)
         ('SPAN', (0, 1), (1, 1)),
-        
-        # Row 2: Merge Phone (cols 0-2), Merge Diagnosis (cols 3-4)
+
+        # Row 2: Merge Phone (cols 0-2), Merge Zip (cols 3-4)
         ('SPAN', (0, 2), (2, 2)),
         ('SPAN', (3, 2), (4, 2)),
-        
-        # Row 3: Merge Allergies across all columns
-        ('SPAN', (0, 3), (4, 3)),
-        
-        # Row 4: Merge Payer (cols 0-2), Merge Claim Num (cols 3-4)
-        ('SPAN', (0, 4), (2, 4)),
-        ('SPAN', (3, 4), (4, 4)),
-        
-        # Row 5: Merge Adjuster Name (cols 0-2), Merge Adjuster Num (cols 3-4)
-        ('SPAN', (0, 5), (2, 5)),
-        ('SPAN', (3, 5), (4, 5)),
-        
+
         # Layout Alignment Rules
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
         ('TOPPADDING', (0, 0), (-1, -1), 4),
         ('LEFTPADDING', (0, 0), (-1, -1), 2),
         ('RIGHTPADDING', (0, 0), (-1, -1), 2),
-        
-        # Horizontal lines matching the original form image
+
+        # Horizontal lines
         ('LINEBELOW', (0, 0), (-1, -1), 0.5, colors.HexColor('#CCCCCC')),
-        ('LINEBELOW', (0, 0), (-1, 0), 1.5, colors.black), # Darker thick top line
+        ('LINEBELOW', (0, 0), (-1, 0), 1.5, colors.black),
     ])
 
-    # 5. Build and generate document
-    table = Table(data, colWidths=col_widths, style=t_style)
-
-    return table
+    return Table(data, colWidths=col_widths, style=t_style)
 
 
 def grey_divider():

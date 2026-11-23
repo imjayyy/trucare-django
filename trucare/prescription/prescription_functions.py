@@ -87,7 +87,6 @@ class ValidatePrescription():
                                 primary_drug['letter_of_medical_necessity'] = master_item.letter_of_medical_necessity.id
                         except PrescribeAbleItem.DoesNotExist:
                             pass
-                    # -------------------------------------------------------------
                         
                     prescription_item = PrescriptionItemSerializer(data=primary_drug)
                     prescription_item.is_valid(raise_exception=True)
