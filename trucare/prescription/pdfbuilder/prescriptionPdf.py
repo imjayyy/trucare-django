@@ -12455,9 +12455,8 @@ def generate_medications(data__, available_width=504):
         story.append(doc_spc_1)
         story.append(doc_tbl_1)
 
-        # --- PART 2: AUTHORIZED SUBSTITUTES BLOCK ---
+        # --- PART 2: AUTHORIZED SUBSTITUTES LIST BLOCK ---
         if visible_secondary_drugs:
-            # Clean break between primary prescription and substitutes page
             story.append(PageBreak())
             story.append(get_patient_info_table(intake_data))
             if insurance_info:
@@ -12473,12 +12472,33 @@ def generate_medications(data__, available_width=504):
                 story.append(generate_drug_table(sec_drug_obj, secondary_drug_style, available_width))
                 story.append(grey_divider())
 
-            # FRESH Doctor signature instances for substitutes
+            # FRESH Doctor signature instances for substitutes list
             doc_sig_2, doc_spc_2, doc_tbl_2 = generate_doctors_info_for_medication(None, doctor_data)
             story.append(Spacer(1, 8))
             story.append(doc_sig_2)
             story.append(doc_spc_2)
             story.append(doc_tbl_2)
+
+            # --- PART 3: INDIVIDUAL SECONDARY MEDICATION PAGES ---
+            for sec_drug_obj in visible_secondary_drugs:
+                sec_drug_obj["checkbox"] = first_checkbox_only
+
+                story.append(PageBreak())
+                story.append(get_patient_info_table(intake_data))
+                if insurance_info:
+                    story.append(generate_insurance_table(insurance_info[0]))
+                story.append(Paragraph(f"<i><b>Condition:</b> {condition_name}</i>", condition_style))
+                if checkbox_markup:
+                    story.append(Paragraph(checkbox_markup, checkbox_style))
+
+                story.append(generate_drug_table(sec_drug_obj, secondary_drug_style, available_width))
+                story.append(grey_divider())
+
+                # FRESH Doctor signature instances per individual secondary drug page
+                doc_sig_sec, doc_spc_sec, doc_tbl_sec = generate_doctors_info_for_medication(None, doctor_data)
+                story.append(doc_sig_sec)
+                story.append(doc_spc_sec)
+                story.append(doc_tbl_sec)
 
     return story
 
